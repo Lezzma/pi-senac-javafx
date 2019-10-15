@@ -86,20 +86,20 @@ public class Sistema extends javax.swing.JFrame {
         linkTabelaProdutos = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
         tabelaProdutos = new javax.swing.JTable();
-        telaCadastraUsuarios = new javax.swing.JPanel();
+        telaCadastraCliente = new javax.swing.JPanel();
         jPanel7 = new javax.swing.JPanel();
-        jLabel7 = new javax.swing.JLabel();
-        txt_cpf_user = new javax.swing.JFormattedTextField();
+        lbl_nome_user = new javax.swing.JLabel();
         txt_nome_user = new javax.swing.JTextField();
-        jLabel6 = new javax.swing.JLabel();
-        jLabel8 = new javax.swing.JLabel();
-        jLabel9 = new javax.swing.JLabel();
-        txt_senha_user = new javax.swing.JPasswordField();
-        jLabel11 = new javax.swing.JLabel();
-        txt_email_user = new javax.swing.JTextField();
-        jLabel12 = new javax.swing.JLabel();
-        txt_confirm_senha_user = new javax.swing.JPasswordField();
+        lbl_rg_user = new javax.swing.JLabel();
         txt_rg_user = new javax.swing.JTextField();
+        lbl_cpf_user = new javax.swing.JLabel();
+        txt_cpf_user = new javax.swing.JFormattedTextField();
+        lbl_email_user = new javax.swing.JLabel();
+        txt_email_user = new javax.swing.JTextField();
+        lbl_senha_user = new javax.swing.JLabel();
+        txt_senha_user = new javax.swing.JPasswordField();
+        lbl_confirm_senha_user = new javax.swing.JLabel();
+        txt_confirm_senha_user = new javax.swing.JPasswordField();
         pane_titulo_user = new javax.swing.JPanel();
         jLabel20 = new javax.swing.JLabel();
         btn_cancelar_cliente = new javax.swing.JPanel();
@@ -604,18 +604,12 @@ public class Sistema extends javax.swing.JFrame {
 
         homeJpainel.add(jPanel2, "card2");
 
-        telaCadastraUsuarios.setBackground(new java.awt.Color(255, 255, 255));
+        telaCadastraCliente.setBackground(new java.awt.Color(255, 255, 255));
 
         jPanel7.setBackground(new java.awt.Color(255, 255, 255));
         jPanel7.setBorder(javax.swing.BorderFactory.createEtchedBorder());
 
-        jLabel7.setText("RG:");
-
-        try {
-            txt_cpf_user.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.MaskFormatter("###.###.###-##")));
-        } catch (java.text.ParseException ex) {
-            ex.printStackTrace();
-        }
+        lbl_nome_user.setText("Nome:");
 
         txt_nome_user.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -623,15 +617,27 @@ public class Sistema extends javax.swing.JFrame {
             }
         });
 
-        jLabel6.setText("Confirmar senha:");
+        lbl_rg_user.setText("RG:");
 
-        jLabel8.setText("Senha:");
+        txt_rg_user.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txt_rg_userActionPerformed(evt);
+            }
+        });
 
-        jLabel9.setText("E-mail:");
+        lbl_cpf_user.setText("CPF:");
 
-        jLabel11.setText("Nome:");
+        try {
+            txt_cpf_user.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.MaskFormatter("###.###.###-##")));
+        } catch (java.text.ParseException ex) {
+            ex.printStackTrace();
+        }
 
-        jLabel12.setText("CPF:");
+        lbl_email_user.setText("E-mail:");
+
+        lbl_senha_user.setText("Senha:");
+
+        lbl_confirm_senha_user.setText("Confirmar senha:");
 
         txt_confirm_senha_user.addFocusListener(new java.awt.event.FocusAdapter() {
             public void focusGained(java.awt.event.FocusEvent evt) {
@@ -639,12 +645,6 @@ public class Sistema extends javax.swing.JFrame {
             }
             public void focusLost(java.awt.event.FocusEvent evt) {
                 txt_confirm_senha_userFocusLost(evt);
-            }
-        });
-
-        txt_rg_user.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                txt_rg_userActionPerformed(evt);
             }
         });
 
@@ -657,23 +657,24 @@ public class Sistema extends javax.swing.JFrame {
                     .addGroup(jPanel7Layout.createSequentialGroup()
                         .addGap(39, 39, 39)
                         .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(jLabel7)
-                            .addComponent(jLabel11)
-                            .addComponent(jLabel12)
-                            .addComponent(jLabel9, javax.swing.GroupLayout.PREFERRED_SIZE, 46, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel8))
+                            .addComponent(lbl_rg_user)
+                            .addComponent(lbl_nome_user)
+                            .addComponent(lbl_cpf_user)
+                            .addComponent(lbl_email_user, javax.swing.GroupLayout.PREFERRED_SIZE, 46, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(lbl_senha_user))
                         .addGap(18, 18, 18)
                         .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(txt_rg_user, javax.swing.GroupLayout.PREFERRED_SIZE, 147, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(txt_nome_user, javax.swing.GroupLayout.PREFERRED_SIZE, 262, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(txt_cpf_user, javax.swing.GroupLayout.PREFERRED_SIZE, 147, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(txt_email_user, javax.swing.GroupLayout.PREFERRED_SIZE, 261, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(txt_senha_user, javax.swing.GroupLayout.PREFERRED_SIZE, 249, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                            .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                                .addComponent(txt_senha_user, javax.swing.GroupLayout.Alignment.LEADING)
+                                .addComponent(txt_email_user, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 261, Short.MAX_VALUE))))
                     .addGroup(jPanel7Layout.createSequentialGroup()
                         .addContainerGap()
-                        .addComponent(jLabel6)
+                        .addComponent(lbl_confirm_senha_user)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(txt_confirm_senha_user, javax.swing.GroupLayout.PREFERRED_SIZE, 249, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(txt_confirm_senha_user, javax.swing.GroupLayout.PREFERRED_SIZE, 261, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap(738, Short.MAX_VALUE))
         );
         jPanel7Layout.setVerticalGroup(
@@ -682,26 +683,26 @@ public class Sistema extends javax.swing.JFrame {
                 .addContainerGap()
                 .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(txt_nome_user, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel11))
+                    .addComponent(lbl_nome_user))
                 .addGap(18, 18, 18)
                 .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel7)
+                    .addComponent(lbl_rg_user)
                     .addComponent(txt_rg_user, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel12)
+                    .addComponent(lbl_cpf_user)
                     .addComponent(txt_cpf_user, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel9)
+                    .addComponent(lbl_email_user)
                     .addComponent(txt_email_user, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel8)
+                    .addComponent(lbl_senha_user)
                     .addComponent(txt_senha_user, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel6)
+                    .addComponent(lbl_confirm_senha_user)
                     .addComponent(txt_confirm_senha_user, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(85, Short.MAX_VALUE))
         );
@@ -817,36 +818,36 @@ public class Sistema extends javax.swing.JFrame {
         });
         jScrollPane6.setViewportView(lista_usuarios);
 
-        javax.swing.GroupLayout telaCadastraUsuariosLayout = new javax.swing.GroupLayout(telaCadastraUsuarios);
-        telaCadastraUsuarios.setLayout(telaCadastraUsuariosLayout);
-        telaCadastraUsuariosLayout.setHorizontalGroup(
-            telaCadastraUsuariosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+        javax.swing.GroupLayout telaCadastraClienteLayout = new javax.swing.GroupLayout(telaCadastraCliente);
+        telaCadastraCliente.setLayout(telaCadastraClienteLayout);
+        telaCadastraClienteLayout.setHorizontalGroup(
+            telaCadastraClienteLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(pane_titulo_user, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-            .addGroup(telaCadastraUsuariosLayout.createSequentialGroup()
+            .addGroup(telaCadastraClienteLayout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jScrollPane6)
                 .addContainerGap())
-            .addGroup(telaCadastraUsuariosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addGroup(telaCadastraUsuariosLayout.createSequentialGroup()
+            .addGroup(telaCadastraClienteLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(telaCadastraClienteLayout.createSequentialGroup()
                     .addContainerGap()
                     .addComponent(jPanel7, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addContainerGap()))
         );
-        telaCadastraUsuariosLayout.setVerticalGroup(
-            telaCadastraUsuariosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(telaCadastraUsuariosLayout.createSequentialGroup()
+        telaCadastraClienteLayout.setVerticalGroup(
+            telaCadastraClienteLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(telaCadastraClienteLayout.createSequentialGroup()
                 .addComponent(pane_titulo_user, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(396, 396, 396)
                 .addComponent(jScrollPane6, javax.swing.GroupLayout.DEFAULT_SIZE, 188, Short.MAX_VALUE)
                 .addContainerGap())
-            .addGroup(telaCadastraUsuariosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addGroup(telaCadastraUsuariosLayout.createSequentialGroup()
+            .addGroup(telaCadastraClienteLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(telaCadastraClienteLayout.createSequentialGroup()
                     .addGap(173, 173, 173)
                     .addComponent(jPanel7, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addContainerGap(212, Short.MAX_VALUE)))
         );
 
-        homeJpainel.add(telaCadastraUsuarios, "telaCadastraUsuarios");
+        homeJpainel.add(telaCadastraCliente, "telaCadastraUsuarios");
 
         tela_frente_caixa.setBackground(new java.awt.Color(255, 255, 255));
         tela_frente_caixa.setMaximumSize(new java.awt.Dimension(500, 1220));
@@ -1385,34 +1386,34 @@ public class Sistema extends javax.swing.JFrame {
     
     private void btn_salvar_pedidoMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btn_salvar_pedidoMouseClicked
         // TODO add your handling code here:
-          String codigo, nome,disponivel;
-        double preco;
-        int quantidade, quantidadeMin;
-
-        //Validação de campos obrigatório
-        if (!"".equals(txtCodigo.getText())
-            && !"".equals(txtNome.getText())
-            && !"".equals(txtPreco.getText())) {
-
-            codigo = txtCodigo.getText();
-            nome = txtNome.getText();
-            preco = Double.parseDouble(txtPreco.getText());
-
-            Produtos novoProduto = new Produtos();
-            novoProduto.setCodigo(codigo);
-            novoProduto.setNome(nome);
-            novoProduto.setPreco(preco);
-            listaProdutos.add(novoProduto);
-
-            dispose();
-            telaPrincipal.attTabela();
-            //abre novamente a tela principal
-        }else{
-            JOptionPane.showMessageDialog(null,
-                "para criar um produtos todos os campos devem conter conteudo",
-                "Erro validação",
-                JOptionPane.ERROR_MESSAGE);
-        }
+//          String codigo, nome,disponivel;
+//        double preco;
+//        int quantidade, quantidadeMin;
+//
+//        //Validação de campos obrigatório
+//        if (!"".equals(txtCodigo.getText())
+//            && !"".equals(txtNome.getText())
+//            && !"".equals(txtPreco.getText())) {
+//
+//            codigo = txtCodigo.getText();
+//            nome = txtNome.getText();
+//            preco = Double.parseDouble(txtPreco.getText());
+//
+//            Produtos novoProduto = new Produtos();
+//            novoProduto.setCodigo(codigo);
+//            novoProduto.setNome(nome);
+//            novoProduto.setPreco(preco);
+//            listaProdutos.add(novoProduto);
+//
+//            dispose();
+//            telaPrincipal.attTabela();
+//            //abre novamente a tela principal
+//        }else{
+//            JOptionPane.showMessageDialog(null,
+//                "para criar um produtos todos os campos devem conter conteudo",
+//                "Erro validação",
+//                JOptionPane.ERROR_MESSAGE);
+//        }
     }//GEN-LAST:event_btn_salvar_pedidoMouseClicked
 
     private void btn_salvar_pedidoMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btn_salvar_pedidoMouseEntered
@@ -1510,8 +1511,6 @@ public class Sistema extends javax.swing.JFrame {
     private javax.swing.JPanel homeJpainel;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
-    private javax.swing.JLabel jLabel11;
-    private javax.swing.JLabel jLabel12;
     private javax.swing.JLabel jLabel13;
     private javax.swing.JLabel jLabel14;
     private javax.swing.JLabel jLabel15;
@@ -1547,10 +1546,6 @@ public class Sistema extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel46;
     private javax.swing.JLabel jLabel47;
     private javax.swing.JLabel jLabel5;
-    private javax.swing.JLabel jLabel6;
-    private javax.swing.JLabel jLabel7;
-    private javax.swing.JLabel jLabel8;
-    private javax.swing.JLabel jLabel9;
     private javax.swing.JList jList1;
     private javax.swing.JList jList2;
     private javax.swing.JList jList3;
@@ -1578,12 +1573,18 @@ public class Sistema extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane6;
     private javax.swing.JSeparator jSeparator1;
     private javax.swing.JTable jTable1;
+    private javax.swing.JLabel lbl_confirm_senha_user;
+    private javax.swing.JLabel lbl_cpf_user;
+    private javax.swing.JLabel lbl_email_user;
+    private javax.swing.JLabel lbl_nome_user;
+    private javax.swing.JLabel lbl_rg_user;
+    private javax.swing.JLabel lbl_senha_user;
     private javax.swing.JLabel linkTabelaProdutos;
     private javax.swing.JTable lista_usuarios;
     private javax.swing.JPanel pane_titulo_user;
     private javax.swing.JPanel sideBar;
     private javax.swing.JTable tabelaProdutos;
-    private javax.swing.JPanel telaCadastraUsuarios;
+    private javax.swing.JPanel telaCadastraCliente;
     private javax.swing.JPanel tela_frente_caixa;
     private javax.swing.JTextField txtCodigo;
     private javax.swing.JTextField txtNome;

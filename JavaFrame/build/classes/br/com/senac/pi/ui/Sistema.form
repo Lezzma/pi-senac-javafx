@@ -880,7 +880,7 @@
             </Container>
           </SubComponents>
         </Container>
-        <Container class="javax.swing.JPanel" name="telaCadastraUsuarios">
+        <Container class="javax.swing.JPanel" name="telaCadastraCliente">
           <Properties>
             <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
               <Color blue="ff" green="ff" red="ff" type="rgb"/>
@@ -949,26 +949,28 @@
                               <Group type="102" alignment="0" attributes="0">
                                   <EmptySpace min="-2" pref="39" max="-2" attributes="0"/>
                                   <Group type="103" groupAlignment="1" attributes="0">
-                                      <Component id="jLabel7" min="-2" max="-2" attributes="0"/>
-                                      <Component id="jLabel11" min="-2" max="-2" attributes="0"/>
-                                      <Component id="jLabel12" alignment="1" min="-2" max="-2" attributes="0"/>
-                                      <Component id="jLabel9" min="-2" pref="46" max="-2" attributes="0"/>
-                                      <Component id="jLabel8" alignment="1" min="-2" max="-2" attributes="0"/>
+                                      <Component id="lbl_rg_user" min="-2" max="-2" attributes="0"/>
+                                      <Component id="lbl_nome_user" min="-2" max="-2" attributes="0"/>
+                                      <Component id="lbl_cpf_user" alignment="1" min="-2" max="-2" attributes="0"/>
+                                      <Component id="lbl_email_user" min="-2" pref="46" max="-2" attributes="0"/>
+                                      <Component id="lbl_senha_user" alignment="1" min="-2" max="-2" attributes="0"/>
                                   </Group>
                                   <EmptySpace type="separate" max="-2" attributes="0"/>
                                   <Group type="103" groupAlignment="0" attributes="0">
                                       <Component id="txt_rg_user" alignment="0" min="-2" pref="147" max="-2" attributes="0"/>
                                       <Component id="txt_nome_user" alignment="0" min="-2" pref="262" max="-2" attributes="0"/>
                                       <Component id="txt_cpf_user" min="-2" pref="147" max="-2" attributes="0"/>
-                                      <Component id="txt_email_user" min="-2" pref="261" max="-2" attributes="0"/>
-                                      <Component id="txt_senha_user" min="-2" pref="249" max="-2" attributes="0"/>
+                                      <Group type="103" alignment="0" groupAlignment="1" max="-2" attributes="0">
+                                          <Component id="txt_senha_user" alignment="0" max="32767" attributes="0"/>
+                                          <Component id="txt_email_user" alignment="0" pref="261" max="32767" attributes="0"/>
+                                      </Group>
                                   </Group>
                               </Group>
                               <Group type="102" alignment="0" attributes="0">
                                   <EmptySpace max="-2" attributes="0"/>
-                                  <Component id="jLabel6" min="-2" max="-2" attributes="0"/>
+                                  <Component id="lbl_confirm_senha_user" min="-2" max="-2" attributes="0"/>
                                   <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                                  <Component id="txt_confirm_senha_user" min="-2" pref="249" max="-2" attributes="0"/>
+                                  <Component id="txt_confirm_senha_user" min="-2" pref="261" max="-2" attributes="0"/>
                               </Group>
                           </Group>
                           <EmptySpace pref="738" max="32767" attributes="0"/>
@@ -981,31 +983,31 @@
                           <EmptySpace max="-2" attributes="0"/>
                           <Group type="103" groupAlignment="3" attributes="0">
                               <Component id="txt_nome_user" alignment="3" min="-2" max="-2" attributes="0"/>
-                              <Component id="jLabel11" alignment="3" min="-2" max="-2" attributes="0"/>
+                              <Component id="lbl_nome_user" alignment="3" min="-2" max="-2" attributes="0"/>
                           </Group>
                           <EmptySpace type="separate" max="-2" attributes="0"/>
                           <Group type="103" groupAlignment="0" attributes="0">
-                              <Component id="jLabel7" min="-2" max="-2" attributes="0"/>
+                              <Component id="lbl_rg_user" min="-2" max="-2" attributes="0"/>
                               <Component id="txt_rg_user" min="-2" max="-2" attributes="0"/>
                           </Group>
                           <EmptySpace type="separate" max="-2" attributes="0"/>
                           <Group type="103" groupAlignment="3" attributes="0">
-                              <Component id="jLabel12" alignment="3" min="-2" max="-2" attributes="0"/>
+                              <Component id="lbl_cpf_user" alignment="3" min="-2" max="-2" attributes="0"/>
                               <Component id="txt_cpf_user" alignment="3" min="-2" max="-2" attributes="0"/>
                           </Group>
                           <EmptySpace type="separate" max="-2" attributes="0"/>
                           <Group type="103" groupAlignment="3" attributes="0">
-                              <Component id="jLabel9" alignment="3" min="-2" max="-2" attributes="0"/>
+                              <Component id="lbl_email_user" alignment="3" min="-2" max="-2" attributes="0"/>
                               <Component id="txt_email_user" alignment="3" min="-2" max="-2" attributes="0"/>
                           </Group>
                           <EmptySpace type="separate" max="-2" attributes="0"/>
                           <Group type="103" groupAlignment="0" attributes="0">
-                              <Component id="jLabel8" min="-2" max="-2" attributes="0"/>
+                              <Component id="lbl_senha_user" min="-2" max="-2" attributes="0"/>
                               <Component id="txt_senha_user" min="-2" max="-2" attributes="0"/>
                           </Group>
                           <EmptySpace type="separate" max="-2" attributes="0"/>
                           <Group type="103" groupAlignment="3" attributes="0">
-                              <Component id="jLabel6" alignment="3" min="-2" max="-2" attributes="0"/>
+                              <Component id="lbl_confirm_senha_user" alignment="3" min="-2" max="-2" attributes="0"/>
                               <Component id="txt_confirm_senha_user" alignment="3" min="-2" max="-2" attributes="0"/>
                           </Group>
                           <EmptySpace pref="85" max="32767" attributes="0"/>
@@ -1014,9 +1016,29 @@
                 </DimensionLayout>
               </Layout>
               <SubComponents>
-                <Component class="javax.swing.JLabel" name="jLabel7">
+                <Component class="javax.swing.JLabel" name="lbl_nome_user">
+                  <Properties>
+                    <Property name="text" type="java.lang.String" value="Nome:"/>
+                  </Properties>
+                </Component>
+                <Component class="javax.swing.JTextField" name="txt_nome_user">
+                  <Events>
+                    <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="txt_nome_userActionPerformed"/>
+                  </Events>
+                </Component>
+                <Component class="javax.swing.JLabel" name="lbl_rg_user">
                   <Properties>
                     <Property name="text" type="java.lang.String" value="RG:"/>
+                  </Properties>
+                </Component>
+                <Component class="javax.swing.JTextField" name="txt_rg_user">
+                  <Events>
+                    <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="txt_rg_userActionPerformed"/>
+                  </Events>
+                </Component>
+                <Component class="javax.swing.JLabel" name="lbl_cpf_user">
+                  <Properties>
+                    <Property name="text" type="java.lang.String" value="CPF:"/>
                   </Properties>
                 </Component>
                 <Component class="javax.swing.JFormattedTextField" name="txt_cpf_user">
@@ -1026,49 +1048,29 @@
                     </Property>
                   </Properties>
                 </Component>
-                <Component class="javax.swing.JTextField" name="txt_nome_user">
-                  <Events>
-                    <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="txt_nome_userActionPerformed"/>
-                  </Events>
-                </Component>
-                <Component class="javax.swing.JLabel" name="jLabel6">
-                  <Properties>
-                    <Property name="text" type="java.lang.String" value="Confirmar senha:"/>
-                  </Properties>
-                </Component>
-                <Component class="javax.swing.JLabel" name="jLabel8">
-                  <Properties>
-                    <Property name="text" type="java.lang.String" value="Senha:"/>
-                  </Properties>
-                </Component>
-                <Component class="javax.swing.JLabel" name="jLabel9">
+                <Component class="javax.swing.JLabel" name="lbl_email_user">
                   <Properties>
                     <Property name="text" type="java.lang.String" value="E-mail:"/>
                   </Properties>
                 </Component>
-                <Component class="javax.swing.JPasswordField" name="txt_senha_user">
-                </Component>
-                <Component class="javax.swing.JLabel" name="jLabel11">
-                  <Properties>
-                    <Property name="text" type="java.lang.String" value="Nome:"/>
-                  </Properties>
-                </Component>
                 <Component class="javax.swing.JTextField" name="txt_email_user">
                 </Component>
-                <Component class="javax.swing.JLabel" name="jLabel12">
+                <Component class="javax.swing.JLabel" name="lbl_senha_user">
                   <Properties>
-                    <Property name="text" type="java.lang.String" value="CPF:"/>
+                    <Property name="text" type="java.lang.String" value="Senha:"/>
+                  </Properties>
+                </Component>
+                <Component class="javax.swing.JPasswordField" name="txt_senha_user">
+                </Component>
+                <Component class="javax.swing.JLabel" name="lbl_confirm_senha_user">
+                  <Properties>
+                    <Property name="text" type="java.lang.String" value="Confirmar senha:"/>
                   </Properties>
                 </Component>
                 <Component class="javax.swing.JPasswordField" name="txt_confirm_senha_user">
                   <Events>
                     <EventHandler event="focusGained" listener="java.awt.event.FocusListener" parameters="java.awt.event.FocusEvent" handler="txt_confirm_senha_userFocusGained"/>
                     <EventHandler event="focusLost" listener="java.awt.event.FocusListener" parameters="java.awt.event.FocusEvent" handler="txt_confirm_senha_userFocusLost"/>
-                  </Events>
-                </Component>
-                <Component class="javax.swing.JTextField" name="txt_rg_user">
-                  <Events>
-                    <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="txt_rg_userActionPerformed"/>
                   </Events>
                 </Component>
               </SubComponents>
