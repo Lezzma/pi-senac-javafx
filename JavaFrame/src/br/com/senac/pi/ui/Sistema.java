@@ -1,10 +1,9 @@
 package br.com.senac.pi.ui;
 
-
 import Controler.ControlerUsuarios;
-import br.com.senac.pi.entidades.Produtos;
 import br.com.senac.pi.entidades.Usuario;
-import static br.com.senac.pi.repositorio.ProdutoRepositorio.listaProdutos;
+import br.com.senac.repositorios.RepositorioTabela;
+import br.com.senac.repositorios.RepositorioTabelasUsuario;
 import java.awt.CardLayout;
 import java.awt.Color;
 import java.util.ArrayList;
@@ -12,25 +11,29 @@ import java.util.List;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
-
 public class Sistema extends javax.swing.JFrame {
 
-    private DefaultTableModel model;
-
+    private final DefaultTableModel model;
 
     static public Sistema telaPrincipal = new Sistema();
     CardLayout cardLayout;
     ControlerUsuarios controlerUsuarios = new ControlerUsuarios();
     List<Usuario> listaDeUsuarios = new ArrayList<>();
-    
+    private RepositorioTabelasUsuario repositorioTabelaUsuario;
     public Sistema() {
+
         initComponents();
+        repositorioTabelaUsuario = new RepositorioTabelasUsuario();
         cardLayout = (CardLayout) homeJpainel.getLayout();
         cardLayout.show(homeJpainel, "jpainelHome");
+
         listaDeUsuarios = controlerUsuarios.pegarUsuarios();
-        
-        model = (DefaultTableModel) lista_usuarios.getModel();
-        popularTabelaUsuarios();
+        model = (DefaultTableModel) tabela_de_usuarios.getModel();
+
+        //realizar o prenchimento da tabela
+         repositorioTabelaUsuario.inserirUsuarioTeste(listaDeUsuarios, model);
+      
+
     }
 
     @SuppressWarnings("unchecked")
@@ -109,7 +112,7 @@ public class Sistema extends javax.swing.JFrame {
         jLabel46 = new javax.swing.JLabel();
         jLabel47 = new javax.swing.JLabel();
         jScrollPane6 = new javax.swing.JScrollPane();
-        lista_usuarios = new javax.swing.JTable();
+        tabela_de_usuarios = new javax.swing.JTable();
         tela_frente_caixa = new javax.swing.JPanel();
         jPanel1 = new javax.swing.JPanel();
         jPanel6 = new javax.swing.JPanel();
@@ -788,7 +791,7 @@ public class Sistema extends javax.swing.JFrame {
                 .addContainerGap(24, Short.MAX_VALUE))
         );
 
-        lista_usuarios.setModel(new javax.swing.table.DefaultTableModel(
+        tabela_de_usuarios.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
             },
@@ -811,12 +814,12 @@ public class Sistema extends javax.swing.JFrame {
                 return canEdit [columnIndex];
             }
         });
-        lista_usuarios.addMouseListener(new java.awt.event.MouseAdapter() {
+        tabela_de_usuarios.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
-                lista_usuariosMouseClicked(evt);
+                tabela_de_usuariosMouseClicked(evt);
             }
         });
-        jScrollPane6.setViewportView(lista_usuarios);
+        jScrollPane6.setViewportView(tabela_de_usuarios);
 
         javax.swing.GroupLayout telaCadastraClienteLayout = new javax.swing.GroupLayout(telaCadastraCliente);
         telaCadastraCliente.setLayout(telaCadastraClienteLayout);
@@ -1195,70 +1198,35 @@ public class Sistema extends javax.swing.JFrame {
         pack();
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
+    //repopula tabela
 
-    public void attTabela() {
-        model.setNumRows(0);
-        for (Usuario p : listaDeUsuarios) {
-            model.addRow(
-                    new Object[]{
-                        p.getNome(),
-                        p.getRg(),
-                        p.getCpf(),
-                        p.getEmail()
-                    });
-        }
-    }
-    public void popularTabelaUsuarios(){
-                
-                 
-                if (listaDeUsuarios.isEmpty()) {
-                        Usuario testeUsuario = new Usuario();
-                        testeUsuario.setNome("josé");
-                        testeUsuario.setRg("502222227");
-                        testeUsuario.setCpf("33333333333");
-                        testeUsuario.setEmail("ppp@hotmail.com");
-                        testeUsuario.setSenha("81776279");
-                        listaDeUsuarios.add(testeUsuario);
-                    }
-                
-                model.setNumRows(0);
-                for (Usuario p : listaDeUsuarios) {
-                        model.addRow(
-                                new Object[]{ 
-                                        p.getNome(),
-                                        p.getRg(),
-                                        p.getCpf(),
-                                        p.getEmail()
-                                    });
-                        }
-    }
-/*==============================================================================
+    /*==============================================================================
  ACÕES DO BUTOES, ALTERAR TELA, ABRIR NOVA JANELA E MAUSE HOVER.
  ==============================================================================*/
     private void tabelaProdutosAncestorAdded(javax.swing.event.AncestorEvent evt) {//GEN-FIRST:event_tabelaProdutosAncestorAdded
         //        if (listaProdutos.isEmpty()) {
-            //            Produtos testeProduto = new Produtos();
-            //            testeProduto.setCodigo("123123");
-            //            testeProduto.setNome("teste");
-            //            testeProduto.setPreco(120);
-            //            testeProduto.setQuantidade(1);
-            //            testeProduto.setQuantidadeMin(0);
-            //            testeProduto.setDisponivel("sim");
-            //            listaProdutos.add(testeProduto);
-            //
-            //        }
+        //            Produtos testeProduto = new Produtos();
+        //            testeProduto.setCodigo("123123");
+        //            testeProduto.setNome("teste");
+        //            testeProduto.setPreco(120);
+        //            testeProduto.setQuantidade(1);
+        //            testeProduto.setQuantidadeMin(0);
+        //            testeProduto.setDisponivel("sim");
+        //            listaProdutos.add(testeProduto);
+        //
+        //        }
         //        model.setNumRows(0);
         //        for (Produtos p : listaProdutos) {
-            //            model.addRow(
-                //                new Object[]{
-                    //                    p.getCodigo(),
-                    //                    p.getNome(),
-                    //                    p.getPreco(),
-                    //                    p.getQuantidade(),
-                    //                    p.getQuantidadeMin(),
-                    //                    p.getDisponivel()
-                    //                });
-            //            }
+        //            model.addRow(
+        //                new Object[]{
+        //                    p.getCodigo(),
+        //                    p.getNome(),
+        //                    p.getPreco(),
+        //                    p.getQuantidade(),
+        //                    p.getQuantidadeMin(),
+        //                    p.getDisponivel()
+        //                });
+        //            }
     }//GEN-LAST:event_tabelaProdutosAncestorAdded
 
     private void tabelaProdutosMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tabelaProdutosMouseClicked
@@ -1294,7 +1262,7 @@ public class Sistema extends javax.swing.JFrame {
 
     private void btn_novo_produtoMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btn_novo_produtoMouseClicked
         // TODO add your handling code here:
-         cardLayout.show(homeJpainel, "telaCadastrarProdutos");
+        cardLayout.show(homeJpainel, "telaCadastrarProdutos");
     }//GEN-LAST:event_btn_novo_produtoMouseClicked
 
     private void btn_novo_clienteMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btn_novo_clienteMouseClicked
@@ -1304,12 +1272,12 @@ public class Sistema extends javax.swing.JFrame {
 
     private void btn_gerar_relatorioMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btn_gerar_relatorioMouseClicked
         // TODO add your handling code here:
-         new JanelaDoGrafico().setVisible(true);
+        new JanelaDoGrafico().setVisible(true);
     }//GEN-LAST:event_btn_gerar_relatorioMouseClicked
 
     private void btn_novo_produtoMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btn_novo_produtoMouseExited
         // TODO add your handling code here:
-        
+
         btn_novo_produto.setBackground(new Color(51, 152, 219));//cor quando entra no botton
     }//GEN-LAST:event_btn_novo_produtoMouseExited
 
@@ -1320,7 +1288,7 @@ public class Sistema extends javax.swing.JFrame {
 
     private void btn_novo_clienteMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btn_novo_clienteMouseEntered
         // TODO add your handling code here:
-         btn_novo_cliente.setBackground(new Color(119, 183, 225));//Cor quando entra no botton
+        btn_novo_cliente.setBackground(new Color(119, 183, 225));//Cor quando entra no botton
     }//GEN-LAST:event_btn_novo_clienteMouseEntered
 
     private void btn_novo_clienteMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btn_novo_clienteMouseExited
@@ -1340,7 +1308,7 @@ public class Sistema extends javax.swing.JFrame {
 
     private void btn_cancelar_pedidoMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btn_cancelar_pedidoMouseEntered
         // TODO add your handling code here:
-         btn_cancelar_pedido.setBackground(new Color(119, 183, 225));//Cor quando entra no botton
+        btn_cancelar_pedido.setBackground(new Color(119, 183, 225));//Cor quando entra no botton
     }//GEN-LAST:event_btn_cancelar_pedidoMouseEntered
 
     private void btn_cancelar_pedidoMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btn_cancelar_pedidoMouseExited
@@ -1350,7 +1318,7 @@ public class Sistema extends javax.swing.JFrame {
 
     private void btn_sairMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btn_sairMouseEntered
         // TODO add your handling code here:
-         btn_sair.setBackground(new Color(119, 183, 225));//Cor quando entra no botton
+        btn_sair.setBackground(new Color(119, 183, 225));//Cor quando entra no botton
     }//GEN-LAST:event_btn_sairMouseEntered
 
     private void btn_sairMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btn_sairMouseExited
@@ -1360,30 +1328,30 @@ public class Sistema extends javax.swing.JFrame {
 
     private void btn_cancelar_pedidoMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btn_cancelar_pedidoMouseClicked
         // TODO add your handling code here:
-         cardLayout.show(homeJpainel, "jpainelHome");
+        cardLayout.show(homeJpainel, "jpainelHome");
     }//GEN-LAST:event_btn_cancelar_pedidoMouseClicked
 
     private void btn_sairMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btn_sairMouseClicked
         // TODO add your handling code here:
-         dispose();
+        dispose();
         new Login().setVisible(true);
     }//GEN-LAST:event_btn_sairMouseClicked
 
     private void btn_gerarPeidoMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btn_gerarPeidoMouseClicked
         // TODO add your handling code here:
-         new TelaDeCompra().setVisible(true);
+        new TelaDeCompra().setVisible(true);
     }//GEN-LAST:event_btn_gerarPeidoMouseClicked
 
     private void btn_gerarPeidoMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btn_gerarPeidoMouseEntered
         // TODO add your handling code here:
-         btn_gerarPeido.setBackground(new Color(119, 183, 225));//Cor quando entra no botton
+        btn_gerarPeido.setBackground(new Color(119, 183, 225));//Cor quando entra no botton
     }//GEN-LAST:event_btn_gerarPeidoMouseEntered
 
     private void btn_gerarPeidoMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btn_gerarPeidoMouseExited
         // TODO add your handling code here:
         btn_gerarPeido.setBackground(new Color(51, 152, 219));//cor quando sai do botton
     }//GEN-LAST:event_btn_gerarPeidoMouseExited
-    
+
     private void btn_salvar_pedidoMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btn_salvar_pedidoMouseClicked
         // TODO add your handling code here:
 //          String codigo, nome,disponivel;
@@ -1443,12 +1411,12 @@ public class Sistema extends javax.swing.JFrame {
 
     private void btn_salvar_clienteMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btn_salvar_clienteMouseClicked
         // TODO add your handling code here:
-        if(new ControlerUsuarios().criarUsuario(txt_nome_user.getText(),txt_rg_user.getText(),
-                txt_cpf_user.getText(),txt_email_user.getText(),txt_senha_user.getText())){
-                JOptionPane.showMessageDialog(null, "Usuario inserido com sucesso");
-                attTabela();
+        if (new ControlerUsuarios().criarUsuario(txt_nome_user.getText(), txt_rg_user.getText(),
+                txt_cpf_user.getText(), txt_email_user.getText(), txt_senha_user.getText())) {
+            JOptionPane.showMessageDialog(null, "Usuario inserido com sucesso");
+            repositorioTabelaUsuario.atualizaTabela(model, listaDeUsuarios);
         }
-        
+
     }//GEN-LAST:event_btn_salvar_clienteMouseClicked
 
     private void btn_salvar_clienteMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btn_salvar_clienteMouseEntered
@@ -1478,15 +1446,16 @@ public class Sistema extends javax.swing.JFrame {
 
     private void jLabel40MouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel40MouseEntered
         // TODO add your handling code here:
-        
+
     }//GEN-LAST:event_jLabel40MouseEntered
 
-    private void lista_usuariosMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lista_usuariosMouseClicked
+    private void tabela_de_usuariosMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tabela_de_usuariosMouseClicked
         // TODO add your handling code here:
         
-        int userClicado = model.getRowCount()-1;
-        new editarUsuario(this, rootPaneCheckingEnabled,listaDeUsuarios.get(userClicado)).setVisible(true);
-    }//GEN-LAST:event_lista_usuariosMouseClicked
+                int userClicado = tabela_de_usuarios.getSelectedRow();
+                new TelaEditaUsuario(listaDeUsuarios.get(userClicado),model).setVisible(true);
+               
+    }//GEN-LAST:event_tabela_de_usuariosMouseClicked
 
     public static void main(String args[]) {
         java.awt.EventQueue.invokeLater(() -> {
@@ -1580,10 +1549,10 @@ public class Sistema extends javax.swing.JFrame {
     private javax.swing.JLabel lbl_rg_user;
     private javax.swing.JLabel lbl_senha_user;
     private javax.swing.JLabel linkTabelaProdutos;
-    private javax.swing.JTable lista_usuarios;
     private javax.swing.JPanel pane_titulo_user;
     private javax.swing.JPanel sideBar;
     private javax.swing.JTable tabelaProdutos;
+    private javax.swing.JTable tabela_de_usuarios;
     private javax.swing.JPanel telaCadastraCliente;
     private javax.swing.JPanel tela_frente_caixa;
     private javax.swing.JTextField txtCodigo;
