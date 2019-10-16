@@ -5,11 +5,13 @@
  */
 package br.com.senac.pi.entidades;
 
+import java.util.Objects;
+
 /**
  *
  * @author netos
  */
-public class Usuario {
+public class Usuario<T> {
     private int id;
     private String nome;
     private String email;
@@ -35,11 +37,6 @@ public class Usuario {
     }
     public Usuario(){}
 
-    
-
-   
-  
-    
     public int getId() {
         return id;
     }
@@ -90,6 +87,43 @@ public class Usuario {
 
     public void setSetor(String setor) {
         this.setor = setor;
+    }
+
+    @Override
+    public int hashCode() {
+        int hash = 7;
+        hash = 23 * hash + Objects.hashCode(this.nome);
+        hash = 23 * hash + Objects.hashCode(this.email);
+        hash = 23 * hash + Objects.hashCode(this.rg);
+        hash = 23 * hash + Objects.hashCode(this.cpf);
+        return hash;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final Usuario<?> other = (Usuario<?>) obj;
+        if (!Objects.equals(this.nome, other.nome)) {
+            return false;
+        }
+        if (!Objects.equals(this.email, other.email)) {
+            return false;
+        }
+        if (!Objects.equals(this.rg, other.rg)) {
+            return false;
+        }
+        if (!Objects.equals(this.cpf, other.cpf)) {
+            return false;
+        }
+        return true;
     }
     
     
