@@ -25,7 +25,9 @@ public class ProdutoRepositorio implements DaoRepositorio<Produtos> {
 
     @Override
     public void inserir(Produtos entidade) {
-        listaProdutos.add(entidade);
+       
+         listaProdutos.add(entidade);
+        
     }
 
     @Override
@@ -38,7 +40,7 @@ public class ProdutoRepositorio implements DaoRepositorio<Produtos> {
 
     @Override
     public void deletar(Produtos entidade) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+       listaProdutos.remove(entidade);
     }
 
 }

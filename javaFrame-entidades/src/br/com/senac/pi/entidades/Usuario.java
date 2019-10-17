@@ -16,11 +16,11 @@ public class Usuario<T> {
     private String nome;
     private String email;
     private String senha;
-    private String setor;
+    private Setor setor;
     private String rg;
     private String cpf;
 
-    public Usuario(int id, String nome, String email, String senha, String setor) {
+    public Usuario(int id, String nome, String email,String rg,String cpf, String senha, Setor setor) {
         this.id = id;
         this.nome = nome;
         this.email = email;
@@ -81,11 +81,11 @@ public class Usuario<T> {
         this.senha = senha;
     }
 
-    public String getSetor() {
+    public Setor getSetor() {
         return setor;
     }
 
-    public void setSetor(String setor) {
+    public void setSetor(Setor setor) {
         this.setor = setor;
     }
 

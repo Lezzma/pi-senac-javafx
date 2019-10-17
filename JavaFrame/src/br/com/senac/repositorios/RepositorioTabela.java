@@ -6,6 +6,7 @@
 package br.com.senac.repositorios;
 
 import java.util.List;
+import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 
 /**
@@ -13,6 +14,9 @@ import javax.swing.table.DefaultTableModel;
  * @author jose.rsneto10
  */
 public interface RepositorioTabela<T> {
-    void atualizaTabela(DefaultTableModel model, List<T> entidade);
-    void inserirUsuarioTeste(List<T> entidade, DefaultTableModel model);
+    
+    void convertModelTabela(JTable tabela);
+    void atualizaTabela(List<T> entidade);
+    void inserirEntidadeTeste(List<T> entidade);
+    
 }

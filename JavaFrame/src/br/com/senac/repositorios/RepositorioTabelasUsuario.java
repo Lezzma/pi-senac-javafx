@@ -7,6 +7,7 @@ package br.com.senac.repositorios;
 
 import br.com.senac.pi.entidades.Usuario;
 import java.util.List;
+import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 
 /**
@@ -14,24 +15,36 @@ import javax.swing.table.DefaultTableModel;
  * @author jose.rsneto10
  */
 public class RepositorioTabelasUsuario implements RepositorioTabela<Usuario> {
+    DefaultTableModel model;
+    
+    public RepositorioTabelasUsuario(JTable tabela){
+        this.convertModelTabela(tabela);
+    }
+
     @Override
-    public void atualizaTabela(DefaultTableModel model, List<Usuario> entidade) {
+    public void convertModelTabela(JTable tabela) {
+       this.model = (DefaultTableModel) tabela.getModel();
+    }
+    
+    @Override
+    public void atualizaTabela(List<Usuario> entidade) {
         new Thread(() -> {
             model.setNumRows(0);
             entidade.forEach(p -> {
             model.addRow(
                     new Object[]{
                         p.getNome(),
+                        p.getEmail(),
                         p.getRg(),
                         p.getCpf(),
-                        p.getEmail()
+                        p.getSetor()
                     });
         });
          }).start();
     }
 
     @Override
-    public void inserirUsuarioTeste(List<Usuario> entidade,DefaultTableModel model) {
+    public void inserirEntidadeTeste(List<Usuario> entidade) {
         new Thread(() -> {
             if (entidade.isEmpty()) {
             Usuario testeUsuario = new Usuario();
@@ -42,7 +55,7 @@ public class RepositorioTabelasUsuario implements RepositorioTabela<Usuario> {
             testeUsuario.setSenha("81776279");
             entidade.add(testeUsuario);
         }
-        atualizaTabela(model, entidade);
+        atualizaTabela(entidade);
         }).start();
         
     }

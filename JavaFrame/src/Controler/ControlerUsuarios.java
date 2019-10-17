@@ -5,6 +5,7 @@
  */
 package Controler;
 
+import br.com.senac.pi.entidades.Setor;
 import br.com.senac.pi.entidades.Usuario;
 import br.com.senac.pi.repositorio.UsuarioRepositorio;
 import java.util.List;
@@ -19,9 +20,9 @@ public class ControlerUsuarios {
     
     //Cria novo usuario
     
-    public static Boolean criarUsuario(String nome,String rg, String cpf, String email,String senha){
+    public static Boolean criarUsuario(int id, String nome, String email,String rg,String cpf, String senha, Setor setor){
         try {
-            Usuario novoUsuario = new Usuario( nome, rg, cpf, email,senha);
+            Usuario novoUsuario = new Usuario(id, nome,email ,rg, cpf,senha,setor);
             dao.inserir(novoUsuario);
             return true;
         } catch (Exception e) {

@@ -1,11 +1,32 @@
 package br.com.senac.pi.ui;
 
+import Controler.LoginControler;
+import br.com.senac.pi.entidades.Setor;
+import br.com.senac.pi.entidades.Usuario;
+import br.com.senac.pi.repositorio.UsuarioRepositorio;
+import java.util.List;
 import javax.swing.JOptionPane;
 
 public class Login extends javax.swing.JFrame {
-   
+    private UsuarioRepositorio dao = new UsuarioRepositorio();
+    private List<Usuario> usuarios;
+    
     public Login(){
         initComponents();
+        this.usuarios = dao.getAll();
+        if(usuarios.isEmpty()){
+            Usuario admin = new Usuario();
+            admin.setNome("admin");
+            admin.setSenha("admin");
+            admin.setSetor(Setor.admin);
+            usuarios.add(admin);
+            
+            Usuario cliente = new Usuario();
+            cliente.setNome("teste");
+            cliente.setSenha("123");
+            cliente.setSetor(Setor.cliente);
+            usuarios.add(cliente);
+        }
     }
 
     @SuppressWarnings("unchecked")
@@ -143,17 +164,19 @@ public class Login extends javax.swing.JFrame {
         pack();
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
-
+   
     private void entrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_entrarActionPerformed
-      if(login.getText().equals("admin") && senha.getText().equals("admin")){
-          dispose();
-          new Sistema().setVisible(true);
-      }else{
-          JOptionPane.showMessageDialog(null,"Login ou senha invalido!",
+           LoginControler autUserControler = new LoginControler();
+       
+           if(!autUserControler.autUser(login.getText(), senha.getText())){
+                  dispose();
+                  new Sistema(autUserControler.getUserLogado()).setVisible(true);
+              } else {
+                JOptionPane.showMessageDialog(null,"Login ou senha invalido!",
                   "Erro",
                   JOptionPane.ERROR_MESSAGE
                   );
-      }
+        }
 
     }//GEN-LAST:event_entrarActionPerformed
     

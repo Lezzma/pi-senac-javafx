@@ -10,37 +10,40 @@ import br.com.senac.pi.repositorio.UsuarioRepositorio;
 import br.com.senac.repositorios.RepositorioTabelasUsuario;
 import java.awt.Color;
 import java.util.List;
-import javax.swing.JOptionPane;
-import javax.swing.table.DefaultTableModel;
+import javax.swing.JTable;
 
 /**
  *
  * @author jose.rsneto10
  */
 public class TelaEditaUsuario extends javax.swing.JFrame {
-    private DefaultTableModel model;
-    private Usuario usuario;
-    private Usuario UsuarioAntesDeEditar;
+   
+    private final JTable tabela;
+    
+    private final Usuario usuario;
+    private final Usuario UsuarioAntesDeEditar;
     
     private List<Usuario> listaDeUsuario = new UsuarioRepositorio().getAll();
-    private UsuarioRepositorio dao = new UsuarioRepositorio();
+    private final UsuarioRepositorio dao = new UsuarioRepositorio();
     /**
      * Creates new form TelaEditaUsuario
      */
-    public TelaEditaUsuario() {
+ 
+    /**
+     * Creates new form TelaEditaUsuario
+     * @param usuario
+     * @param tabela
+     */
+    public TelaEditaUsuario(Usuario usuario,JTable tabela){
         initComponents();
-    }
-    
-    public TelaEditaUsuario(Usuario usuario,DefaultTableModel model){
-     
-        initComponents();
-        this.model = model;
+        
+        this.tabela = tabela;
         this.usuario = usuario;
         this.UsuarioAntesDeEditar = listaDeUsuario.get(listaDeUsuario.indexOf(usuario));
         
         prencheDadosUsuario(usuario);
     }
-
+  
     private void prencheDadosUsuario(Usuario usuario1) {
         edit_txt_nome.setText(usuario1.getNome());
         edit_txt_email.setText(usuario1.getEmail());
@@ -242,7 +245,7 @@ public class TelaEditaUsuario extends javax.swing.JFrame {
             
         }
         dispose();
-        new RepositorioTabelasUsuario().atualizaTabela(model, dao.getAll());
+        new RepositorioTabelasUsuario(tabela).atualizaTabela(dao.getAll());
     }//GEN-LAST:event_btn_salvar_clienteMouseClicked
 
     private void btn_salvar_clienteMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btn_salvar_clienteMouseEntered
@@ -290,37 +293,7 @@ public class TelaEditaUsuario extends javax.swing.JFrame {
     /**
      * @param args the command line arguments
      */
-    public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(TelaEditaUsuario.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(TelaEditaUsuario.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(TelaEditaUsuario.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(TelaEditaUsuario.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        //</editor-fold>
-
-        /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new TelaEditaUsuario().setVisible(true);
-            }
-        });
-    }
+    
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel btn_cancelar_editar_user;

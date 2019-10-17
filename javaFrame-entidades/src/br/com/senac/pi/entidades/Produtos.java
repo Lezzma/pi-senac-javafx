@@ -14,7 +14,13 @@ public class Produtos {
     private String codigo, nome, disponivel;
     private double preco;
     private int quantidade, quantidadeMin;
-
+    public Produtos(){}
+    public Produtos(String codigo, String nome, double preco) {
+        this.codigo = codigo;
+        this.nome = nome;
+        this.preco = preco;
+    }
+    
     public String getDisponivel() {
         return disponivel;
     }
