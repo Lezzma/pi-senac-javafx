@@ -5,19 +5,14 @@
  */
 package br.com.senac.repositorios;
 
-import br.com.senac.pi.entidades.Setor;
+import br.com.senac.pi.entidades.Cliente;
 import javax.swing.JPanel;
 
 /**
  *
  * @author jrneto
  */
-public class ColocaBotoesVenda implements PoliticaDeAcesso<Setor>{
-   
-   
-    
-
-   
+public class PoliticaAcessoCliente implements PoliticaDeAcesso<Cliente>{
 
     @Override
     public void recebeBotoesRestritos(JPanel... JPanel) {
@@ -30,14 +25,8 @@ public class ColocaBotoesVenda implements PoliticaDeAcesso<Setor>{
     }
 
     @Override
-    public void setProximoSetor(Setor proximaSetor) {
+    public void setProximoSetor(Cliente proximaSetor) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
-    
-    
-
-   
-
-   
     
 }

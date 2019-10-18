@@ -5,13 +5,15 @@
  */
 package br.com.senac.repositorios;
 
+import br.com.senac.pi.entidades.Setor;
 import javax.swing.JPanel;
 
 /**
  *
  * @author jrneto
  */
-public interface RepositorioPolitcaDeAcesso<T> {
-    void colocarBotoesDousuario(T entidade);
+public interface PoliticaDeAcesso<T> {
+
     void recebeBotoesRestritos(JPanel...JPanel);
+    void setProximoSetor(T proximaSetor);
 }

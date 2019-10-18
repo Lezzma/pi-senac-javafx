@@ -3,11 +3,21 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
+            <file>file:/C:/Users/jrneto/Documents/NetBeansProjects/pi-senac-javafx/JavaFrame/src/br/com/senac/pi/ui/TelaDeCompra.java</file>
+            <file>file:/C:/Users/jrneto/Documents/NetBeansProjects/pi-senac-javafx/JavaFrame/src/Controler/LoginControler.java</file>
+            <file>file:/C:/Users/jrneto/Documents/NetBeansProjects/pi-senac-javafx/JavaFrame/src/br/com/senac/pi/ui/TelaDeConfirmacao.java</file>
+            <file>file:/C:/Users/jrneto/Documents/NetBeansProjects/pi-senac-javafx/JavaFrame/src/br/com/senac/repositorios/RepositorioPolitcaDeAcesso.java</file>
+            <file>file:/C:/Users/jrneto/Documents/NetBeansProjects/pi-senac-javafx/JavaFrame/src/br/com/senac/pi/ui/Login.java</file>
             <file>file:/C:/Users/jrneto/Documents/NetBeansProjects/pi-senac-javafx/JavaFrame/src/br/com/senac/pi/ui/Sistema.java</file>
+            <file>file:/C:/Users/jrneto/Documents/NetBeansProjects/pi-senac-javafx/JavaFrame/src/br/com/senac/pi/ui/Main.java</file>
             <file>file:/C:/Users/jrneto/Documents/NetBeansProjects/pi-senac-javafx/JavaFrame/src/br/com/senac/repositorios/RepositorioTabelasUsuario.java</file>
+            <file>file:/C:/Users/jrneto/Documents/NetBeansProjects/pi-senac-javafx/JavaFrame/src/br/com/senac/pi/ui/JanelaDoGrafico.java</file>
             <file>file:/C:/Users/jrneto/Documents/NetBeansProjects/pi-senac-javafx/JavaFrame/src/br/com/senac/pi/ui/EditarProduto.java</file>
             <file>file:/C:/Users/jrneto/Documents/NetBeansProjects/pi-senac-javafx/JavaFrame/src/Controler/ControlerUsuarios.java</file>
             <file>file:/C:/Users/jrneto/Documents/NetBeansProjects/pi-senac-javafx/JavaFrame/src/br/com/senac/repositorios/RepositorioTabelaProduto.java</file>
+            <file>file:/C:/Users/jrneto/Documents/NetBeansProjects/pi-senac-javafx/JavaFrame/src/br/com/senac/pi/ui/TelaEditaUsuario.java</file>
+            <file>file:/C:/Users/jrneto/Documents/NetBeansProjects/pi-senac-javafx/JavaFrame/src/br/com/senac/repositorios/RepositorioTabela.java</file>
+            <file>file:/C:/Users/jrneto/Documents/NetBeansProjects/pi-senac-javafx/JavaFrame/src/br/com/senac/repositorios/ColocaBotoesVenda.java</file>
         </group>
     </open-files>
 </project-private>

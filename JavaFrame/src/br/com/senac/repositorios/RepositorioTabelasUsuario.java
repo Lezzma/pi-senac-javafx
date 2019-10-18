@@ -59,5 +59,10 @@ public class RepositorioTabelasUsuario implements RepositorioTabela<Usuario> {
         }).start();
         
     }
+
+    @Override
+    public void retornaItemPesquisado(Usuario entidade) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
      
 }

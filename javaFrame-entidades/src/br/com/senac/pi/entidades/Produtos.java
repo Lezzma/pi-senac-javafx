@@ -11,14 +11,23 @@ package br.com.senac.pi.entidades;
  */
 public class Produtos {
 
-    private String codigo, nome, disponivel;
+    private String codigo, nome, disponivel,marca;
     private double preco;
     private int quantidade, quantidadeMin;
+    
     public Produtos(){}
     public Produtos(String codigo, String nome, double preco) {
         this.codigo = codigo;
         this.nome = nome;
         this.preco = preco;
+    }
+
+    public String getMarca() {
+        return marca;
+    }
+
+    public void setMarca(String marca) {
+        this.marca = marca;
     }
     
     public String getDisponivel() {
@@ -68,5 +77,7 @@ public class Produtos {
     public void setPreco(double preco) {
         this.preco = preco;
     }
+
+
 
 }

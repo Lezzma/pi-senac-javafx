@@ -17,6 +17,9 @@ public class Login extends javax.swing.JFrame {
         if(usuarios.isEmpty()){
             Usuario admin = new Usuario();
             admin.setNome("admin");
+            admin.setEmail("admin@senac.com");
+            admin.setRg("33.333.333-x");
+            admin.setCpf("333.333.333.33");
             admin.setSenha("admin");
             admin.setSetor(Setor.admin);
             usuarios.add(admin);
@@ -26,6 +29,12 @@ public class Login extends javax.swing.JFrame {
             cliente.setSenha("123");
             cliente.setSetor(Setor.cliente);
             usuarios.add(cliente);
+            
+             Usuario vendas = new Usuario();
+            vendas.setNome("vendas");
+            vendas.setSenha("123");
+            vendas.setSetor(Setor.vendas);
+            usuarios.add(vendas);
         }
     }
 
@@ -167,16 +176,34 @@ public class Login extends javax.swing.JFrame {
    
     private void entrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_entrarActionPerformed
            LoginControler autUserControler = new LoginControler();
-       
-           if(!autUserControler.autUser(login.getText(), senha.getText())){
+           if(!(login.getText().equals("") || senha.getText().equals(""))){
+              if(autUserControler.autUser(login.getText(), senha.getText())){
+                  if(autUserControler.getUserLogado().getSetor().equals(Setor.vendas)){
+                    dispose();
+                    new TelaFrenteDeCaixa().setVisible(true);
+                  }else{
                   dispose();
-                  new Sistema(autUserControler.getUserLogado()).setVisible(true);
-              } else {
-                JOptionPane.showMessageDialog(null,"Login ou senha invalido!",
-                  "Erro",
-                  JOptionPane.ERROR_MESSAGE
-                  );
-        }
+                    new Sistema(autUserControler.getUserLogado()).setVisible(true);  
+                  }
+                    
+              }else{
+                  JOptionPane.showMessageDialog(null,"Usuario invalido \n"
+                          + "Possivei problemas;\n"
+                          + "1- Login ou senha inválidos\n"
+                          + "2- Seu tipo de usuário está definido como cliente",
+                    "Acesso negado!",
+                    JOptionPane.ERROR_MESSAGE);
+              
+              }
+           }else{
+                JOptionPane.showMessageDialog(null,"Prencha todos os campos!",
+                    "Campos invalidos",
+                    JOptionPane.ERROR_MESSAGE);
+           }
+        
+        
+        
+       
 
     }//GEN-LAST:event_entrarActionPerformed
     

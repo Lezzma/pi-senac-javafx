@@ -6,7 +6,6 @@
 package br.com.senac.repositorios;
 
 import br.com.senac.pi.entidades.Produtos;
-import br.com.senac.pi.entidades.Usuario;
 import java.util.List;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
@@ -15,10 +14,11 @@ import javax.swing.table.DefaultTableModel;
  *
  * @author jrneto
  */
-public class RepositorioTabelaProduto implements RepositorioTabela<Produtos>{
+public class RepositoreCarrinho implements RepositorioTabela<Produtos>{
+
     DefaultTableModel model;
     
-    public RepositorioTabelaProduto(JTable tabela){
+    public RepositoreCarrinho(JTable tabela){
         this.convertModelTabela(tabela);
     }
 
@@ -67,5 +67,6 @@ public class RepositorioTabelaProduto implements RepositorioTabela<Produtos>{
        
       
     }
+    
     
 }

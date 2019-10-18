@@ -18,5 +18,6 @@ public interface RepositorioTabela<T> {
     void convertModelTabela(JTable tabela);
     void atualizaTabela(List<T> entidade);
     void inserirEntidadeTeste(List<T> entidade);
+    void retornaItemPesquisado(T entidade);
     
 }
