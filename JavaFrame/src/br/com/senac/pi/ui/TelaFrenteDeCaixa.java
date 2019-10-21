@@ -5,8 +5,14 @@
  */
 package br.com.senac.pi.ui;
 
+import br.com.senac.pi.entidades.Carrinho;
+import br.com.senac.pi.entidades.Cliente;
 import br.com.senac.pi.entidades.Produtos;
+import br.com.senac.pi.entidades.Usuario;
+import br.com.senac.pi.entidades.Venda;
 import br.com.senac.pi.repositorio.DaoCarrinho;
+import br.com.senac.pi.repositorio.DaoVendas;
+import br.com.senac.pi.ui.janelas.atalhos.TelaDeCadastroDeCliente;
 import br.com.senac.pi.ui.janelas.atalhos.TelaPesquisaProdutoFrenteDeCaixa;
 import br.com.senac.repositorios.RepositoreCarrinho;
 import br.com.senac.repositorios.RepositorioTabela;
@@ -14,8 +20,11 @@ import java.awt.Color;
 import java.awt.KeyEventDispatcher;
 import java.awt.KeyboardFocusManager;
 import java.awt.event.KeyEvent;
+import java.time.Instant;
+import java.util.Date;
 import java.util.List;
-import java.util.function.Consumer;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 
@@ -24,40 +33,74 @@ import javax.swing.JOptionPane;
  * @author jrneto
  */
 public class TelaFrenteDeCaixa extends javax.swing.JFrame {
-    DaoCarrinho dao = new DaoCarrinho();
-    List<Produtos> listaCarrinho;
+
+    private DaoCarrinho daoCarrinho = new DaoCarrinho();
+    private DaoVendas daoVendas = new DaoVendas();
+
+    private Cliente clienteVinculado;
+    private Usuario usuarioLogado;
+    private RepositorioTabela repositorioCarrinho;
+    double total = 0;
+    double valorRecebido = 0;
+
     /**
      * Creates new form TelaFrenteDeCaixa
      */
-    public TelaFrenteDeCaixa() {
-        
+    public TelaFrenteDeCaixa(Usuario usuario) {
+
         initComponents();
-        this.listaCarrinho = dao.getAll();
+
         this.setExtendedState(JFrame.MAXIMIZED_BOTH);
-        
+        this.usuarioLogado = usuario;
+        this.repositorioCarrinho = new RepositoreCarrinho(tabela_carrinho);
+        this.repositorioCarrinho.atualizaTabela(daoCarrinho.getAll());
+
         capturaClickDoteclado();
-        RepositorioTabela carrinho = new RepositoreCarrinho(tabela_carrinho);
-        carrinho.atualizaTabela(listaCarrinho);
-        double total = 0;
-        for(Produtos p: listaCarrinho){
-           total += p.getPreco();
+        ValorTotal.setText("0.0");
+        verificaTemCliente(clienteVinculado);
+    }
+
+    private void colocaValorTotal() {
+        for (Produtos p : daoCarrinho.getAll()) {
+            this.total += p.getPreco() * p.getQuantidade();
         }
-        
-        ValorTotal.setText(String.valueOf(total));
-        
-        
-                
+        ValorTotal.setText(String.valueOf(this.total));
+
+    }
+
+    public Cliente getClienteVinculado() {
+        return clienteVinculado;
+    }
+
+    private void verificaTemCliente(Cliente cliente) {
+
+        if (this.clienteVinculado == null) {
+            btn_realizarVenda.setVisible(false);
+            txt_sem_cliente.setVisible(true);
+        } else {
+            txt_sem_cliente.setVisible(false);
+            btn_realizarVenda.setVisible(true);
+        }
+    }
+
+    public void vinculaCliente(Cliente cliente) {
+        this.clienteVinculado = cliente;
+        verificaTemCliente(this.clienteVinculado);
     }
 
     private void capturaClickDoteclado() {
         KeyboardFocusManager
                 .getCurrentKeyboardFocusManager()
                 .addKeyEventDispatcher(new KeyEventDispatcher() {
-                    
+
                     @Override
                     public boolean dispatchKeyEvent(KeyEvent ke) {
                         if (ke.getID() == ke.KEY_RELEASED && ke.getKeyCode() == KeyEvent.VK_F7) {
-                            new TelaPesquisaProdutoFrenteDeCaixa(tabela_carrinho,ValorTotal).setVisible(true);
+                            new TelaPesquisaProdutoFrenteDeCaixa(tabela_carrinho, ValorTotal).setVisible(true);
+                            return true;
+                        }
+                        if (ke.getID() == ke.KEY_RELEASED && ke.getKeyCode() == KeyEvent.VK_F8) {
+                            new TelaDeCadastroDeCliente(TelaFrenteDeCaixa.this, true, TelaFrenteDeCaixa.this).setVisible(true);
                             return true;
                         }
                         return false;
@@ -77,10 +120,13 @@ public class TelaFrenteDeCaixa extends javax.swing.JFrame {
         tela_frente_caixa = new javax.swing.JPanel();
         jPanel1 = new javax.swing.JPanel();
         jPanel6 = new javax.swing.JPanel();
+        jPanel7 = new javax.swing.JPanel();
+        txt_codigo_barra = new javax.swing.JLabel();
         jLabel13 = new javax.swing.JLabel();
         jScrollPane2 = new javax.swing.JScrollPane();
         tabela_carrinho = new javax.swing.JTable();
         jPanel10 = new javax.swing.JPanel();
+        jLabel14 = new javax.swing.JLabel();
         jPanel11 = new javax.swing.JPanel();
         jLabel17 = new javax.swing.JLabel();
         jPanel12 = new javax.swing.JPanel();
@@ -90,20 +136,25 @@ public class TelaFrenteDeCaixa extends javax.swing.JFrame {
         jPanel13 = new javax.swing.JPanel();
         jPanel14 = new javax.swing.JPanel();
         jLabel22 = new javax.swing.JLabel();
+        txt_valor_recebido = new javax.swing.JTextField();
         jPanel15 = new javax.swing.JPanel();
         jLabel23 = new javax.swing.JLabel();
-        jScrollPane3 = new javax.swing.JScrollPane();
-        jList1 = new javax.swing.JList();
-        jScrollPane4 = new javax.swing.JScrollPane();
-        jList2 = new javax.swing.JList();
+        txt_troco = new javax.swing.JLabel();
         jPanel16 = new javax.swing.JPanel();
         jLabel15 = new javax.swing.JLabel();
+        txt_quantidade = new javax.swing.JLabel();
         jPanel17 = new javax.swing.JPanel();
         jLabel16 = new javax.swing.JLabel();
+        txt_valor_unitario = new javax.swing.JLabel();
         btn_sair_frente_de_caixa = new javax.swing.JPanel();
         jLabel34 = new javax.swing.JLabel();
         jLabel35 = new javax.swing.JLabel();
         jLabel1 = new javax.swing.JLabel();
+        jLabel2 = new javax.swing.JLabel();
+        btn_realizarVenda = new javax.swing.JPanel();
+        jLabel36 = new javax.swing.JLabel();
+        jLabel37 = new javax.swing.JLabel();
+        txt_sem_cliente = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setUndecorated(true);
@@ -127,9 +178,32 @@ public class TelaFrenteDeCaixa extends javax.swing.JFrame {
 
         jPanel6.setBackground(new java.awt.Color(51, 153, 255));
 
+        jPanel7.setBackground(new java.awt.Color(51, 153, 255));
+
+        txt_codigo_barra.setText("jLabel3");
+
         jLabel13.setFont(new java.awt.Font("Segoe UI", 1, 24)); // NOI18N
         jLabel13.setForeground(new java.awt.Color(255, 255, 255));
         jLabel13.setText("CÓDIGO DE BARRAS");
+
+        javax.swing.GroupLayout jPanel7Layout = new javax.swing.GroupLayout(jPanel7);
+        jPanel7.setLayout(jPanel7Layout);
+        jPanel7Layout.setHorizontalGroup(
+            jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel7Layout.createSequentialGroup()
+                .addComponent(jLabel13)
+                .addGap(0, 0, Short.MAX_VALUE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel7Layout.createSequentialGroup()
+                .addGap(0, 0, Short.MAX_VALUE)
+                .addComponent(txt_codigo_barra, javax.swing.GroupLayout.PREFERRED_SIZE, 190, javax.swing.GroupLayout.PREFERRED_SIZE))
+        );
+        jPanel7Layout.setVerticalGroup(
+            jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel7Layout.createSequentialGroup()
+                .addComponent(jLabel13, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(30, 30, 30)
+                .addComponent(txt_codigo_barra, javax.swing.GroupLayout.DEFAULT_SIZE, 33, Short.MAX_VALUE))
+        );
 
         javax.swing.GroupLayout jPanel6Layout = new javax.swing.GroupLayout(jPanel6);
         jPanel6.setLayout(jPanel6Layout);
@@ -137,15 +211,15 @@ public class TelaFrenteDeCaixa extends javax.swing.JFrame {
             jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel6Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jLabel13)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addComponent(jPanel7, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap())
         );
         jPanel6Layout.setVerticalGroup(
             jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel6Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jLabel13, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(52, Short.MAX_VALUE))
+                .addComponent(jPanel7, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         tabela_carrinho.setModel(new javax.swing.table.DefaultTableModel(
@@ -174,19 +248,32 @@ public class TelaFrenteDeCaixa extends javax.swing.JFrame {
                 return canEdit [columnIndex];
             }
         });
+        tabela_carrinho.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tabela_carrinhoMouseClicked(evt);
+            }
+        });
         jScrollPane2.setViewportView(tabela_carrinho);
 
         jPanel10.setBackground(new java.awt.Color(51, 153, 255));
+
+        jLabel14.setFont(new java.awt.Font("Segoe UI", 1, 24)); // NOI18N
+        jLabel14.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel14.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel14.setText("Lista De produtos");
 
         javax.swing.GroupLayout jPanel10Layout = new javax.swing.GroupLayout(jPanel10);
         jPanel10.setLayout(jPanel10Layout);
         jPanel10Layout.setHorizontalGroup(
             jPanel10Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 0, Short.MAX_VALUE)
+            .addComponent(jLabel14, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         jPanel10Layout.setVerticalGroup(
             jPanel10Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 23, Short.MAX_VALUE)
+            .addGroup(jPanel10Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jLabel14, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         jPanel11.setBackground(new java.awt.Color(51, 153, 255));
@@ -202,7 +289,7 @@ public class TelaFrenteDeCaixa extends javax.swing.JFrame {
             .addGroup(jPanel11Layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jLabel17)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(42, Short.MAX_VALUE))
         );
         jPanel11Layout.setVerticalGroup(
             jPanel11Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -262,7 +349,7 @@ public class TelaFrenteDeCaixa extends javax.swing.JFrame {
         );
         jPanel13Layout.setVerticalGroup(
             jPanel13Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 0, Short.MAX_VALUE)
+            .addGap(0, 87, Short.MAX_VALUE)
         );
 
         jPanel14.setBackground(new java.awt.Color(51, 153, 255));
@@ -271,21 +358,35 @@ public class TelaFrenteDeCaixa extends javax.swing.JFrame {
         jLabel22.setForeground(new java.awt.Color(255, 255, 255));
         jLabel22.setText("TOTAL RECEBIDO");
 
+        txt_valor_recebido.setFont(new java.awt.Font("Segoe UI", 1, 24)); // NOI18N
+        txt_valor_recebido.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
+        txt_valor_recebido.setText("0.00");
+        txt_valor_recebido.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
+        txt_valor_recebido.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txt_valor_recebidoActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel14Layout = new javax.swing.GroupLayout(jPanel14);
         jPanel14.setLayout(jPanel14Layout);
         jPanel14Layout.setHorizontalGroup(
             jPanel14Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel14Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jLabel22)
-                .addContainerGap(28, Short.MAX_VALUE))
+                .addGroup(jPanel14Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel22, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(txt_valor_recebido))
+                .addContainerGap())
         );
         jPanel14Layout.setVerticalGroup(
             jPanel14Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel14Layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jLabel22, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(40, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(txt_valor_recebido, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         jPanel15.setBackground(new java.awt.Color(51, 153, 255));
@@ -294,42 +395,40 @@ public class TelaFrenteDeCaixa extends javax.swing.JFrame {
         jLabel23.setForeground(new java.awt.Color(255, 255, 255));
         jLabel23.setText("TROCO");
 
+        txt_troco.setFont(new java.awt.Font("Segoe UI", 1, 48)); // NOI18N
+        txt_troco.setForeground(new java.awt.Color(255, 255, 255));
+        txt_troco.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+
         javax.swing.GroupLayout jPanel15Layout = new javax.swing.GroupLayout(jPanel15);
         jPanel15.setLayout(jPanel15Layout);
         jPanel15Layout.setHorizontalGroup(
             jPanel15Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel15Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jLabel23)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGroup(jPanel15Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel15Layout.createSequentialGroup()
+                        .addComponent(jLabel23)
+                        .addGap(0, 226, Short.MAX_VALUE))
+                    .addComponent(txt_troco, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap())
         );
         jPanel15Layout.setVerticalGroup(
             jPanel15Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel15Layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jLabel23, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(40, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(txt_troco, javax.swing.GroupLayout.DEFAULT_SIZE, 48, Short.MAX_VALUE)
+                .addContainerGap())
         );
-
-        jList1.setModel(new javax.swing.AbstractListModel() {
-            String[] strings = { "Item 1", "Item 2", "Item 3", "Item 4", "Item 5" };
-            public int getSize() { return strings.length; }
-            public Object getElementAt(int i) { return strings[i]; }
-        });
-        jScrollPane3.setViewportView(jList1);
-
-        jList2.setModel(new javax.swing.AbstractListModel() {
-            String[] strings = { "Item 1", "Item 2", "Item 3", "Item 4", "Item 5" };
-            public int getSize() { return strings.length; }
-            public Object getElementAt(int i) { return strings[i]; }
-        });
-        jScrollPane4.setViewportView(jList2);
 
         jPanel16.setBackground(new java.awt.Color(51, 153, 255));
 
         jLabel15.setFont(new java.awt.Font("Segoe UI", 1, 24)); // NOI18N
         jLabel15.setForeground(new java.awt.Color(255, 255, 255));
         jLabel15.setText("TOTAL DO ITEM");
+
+        txt_quantidade.setText("jLabel3");
 
         javax.swing.GroupLayout jPanel16Layout = new javax.swing.GroupLayout(jPanel16);
         jPanel16.setLayout(jPanel16Layout);
@@ -338,14 +437,20 @@ public class TelaFrenteDeCaixa extends javax.swing.JFrame {
             .addGroup(jPanel16Layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jLabel15)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(239, Short.MAX_VALUE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel16Layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(txt_quantidade, javax.swing.GroupLayout.PREFERRED_SIZE, 206, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap())
         );
         jPanel16Layout.setVerticalGroup(
             jPanel16Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel16Layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jLabel15, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(52, Short.MAX_VALUE))
+                .addGap(18, 18, 18)
+                .addComponent(txt_quantidade)
+                .addContainerGap(20, Short.MAX_VALUE))
         );
 
         jPanel17.setBackground(new java.awt.Color(51, 153, 255));
@@ -354,6 +459,8 @@ public class TelaFrenteDeCaixa extends javax.swing.JFrame {
         jLabel16.setForeground(new java.awt.Color(255, 255, 255));
         jLabel16.setText("VALOR UNITÁRIO");
 
+        txt_valor_unitario.setText("jLabel3");
+
         javax.swing.GroupLayout jPanel17Layout = new javax.swing.GroupLayout(jPanel17);
         jPanel17.setLayout(jPanel17Layout);
         jPanel17Layout.setHorizontalGroup(
@@ -361,14 +468,20 @@ public class TelaFrenteDeCaixa extends javax.swing.JFrame {
             .addGroup(jPanel17Layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jLabel16)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(219, Short.MAX_VALUE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel17Layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(txt_valor_unitario, javax.swing.GroupLayout.PREFERRED_SIZE, 206, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap())
         );
         jPanel17Layout.setVerticalGroup(
             jPanel17Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel17Layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jLabel16, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(52, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 27, Short.MAX_VALUE)
+                .addComponent(txt_valor_unitario)
+                .addContainerGap())
         );
 
         btn_sair_frente_de_caixa.setBackground(new java.awt.Color(51, 152, 219));
@@ -396,7 +509,38 @@ public class TelaFrenteDeCaixa extends javax.swing.JFrame {
         btn_sair_frente_de_caixa.add(jLabel35);
         jLabel35.setBounds(60, 0, 140, 40);
 
-        jLabel1.setText("F7 - pesquisa produto");
+        jLabel1.setText("F7 - Pesquisa Poduto");
+
+        jLabel2.setText("F8 - Vincular/Pesquisa/Cadastra Cliente");
+
+        btn_realizarVenda.setBackground(new java.awt.Color(102, 255, 102));
+        btn_realizarVenda.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                btn_realizarVendaMouseClicked(evt);
+            }
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                btn_realizarVendaMouseEntered(evt);
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                btn_realizarVendaMouseExited(evt);
+            }
+        });
+        btn_realizarVenda.setLayout(null);
+
+        jLabel36.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel36.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icones-ui/baseline_shopping_cart_white_18dp.png"))); // NOI18N
+        btn_realizarVenda.add(jLabel36);
+        jLabel36.setBounds(20, 0, 40, 40);
+
+        jLabel37.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        jLabel37.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel37.setText("Realizar Venda");
+        btn_realizarVenda.add(jLabel37);
+        jLabel37.setBounds(60, 0, 140, 40);
+
+        txt_sem_cliente.setFont(new java.awt.Font("Segoe UI", 1, 24)); // NOI18N
+        txt_sem_cliente.setForeground(new java.awt.Color(255, 0, 51));
+        txt_sem_cliente.setText("Vincule um cliente para vender");
 
         javax.swing.GroupLayout tela_frente_caixaLayout = new javax.swing.GroupLayout(tela_frente_caixa);
         tela_frente_caixa.setLayout(tela_frente_caixaLayout);
@@ -406,12 +550,6 @@ public class TelaFrenteDeCaixa extends javax.swing.JFrame {
                 .addGap(25, 25, 25)
                 .addGroup(tela_frente_caixaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(tela_frente_caixaLayout.createSequentialGroup()
-                        .addComponent(jLabel1)
-                        .addGap(145, 145, 145)
-                        .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
-                        .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(tela_frente_caixaLayout.createSequentialGroup()
                         .addGroup(tela_frente_caixaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(jPanel11, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
@@ -420,91 +558,97 @@ public class TelaFrenteDeCaixa extends javax.swing.JFrame {
                             .addComponent(jPanel13, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(jPanel6, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(jPanel17, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(jPanel16, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
-                .addGap(18, 18, 18)
-                .addGroup(tela_frente_caixaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jPanel16, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                     .addGroup(tela_frente_caixaLayout.createSequentialGroup()
-                        .addComponent(jPanel14, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGroup(tela_frente_caixaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel1)
+                            .addComponent(jLabel2))
+                        .addGap(0, 0, Short.MAX_VALUE)))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(tela_frente_caixaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jPanel10, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, tela_frente_caixaLayout.createSequentialGroup()
+                        .addGap(0, 136, Short.MAX_VALUE)
+                        .addComponent(btn_realizarVenda, javax.swing.GroupLayout.PREFERRED_SIZE, 210, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(btn_sair_frente_de_caixa, javax.swing.GroupLayout.PREFERRED_SIZE, 210, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(tela_frente_caixaLayout.createSequentialGroup()
+                        .addComponent(jPanel14, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addGap(18, 18, 18)
                         .addComponent(jPanel15, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                    .addGroup(tela_frente_caixaLayout.createSequentialGroup()
-                        .addGroup(tela_frente_caixaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                            .addComponent(jPanel12, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(jScrollPane2, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 481, Short.MAX_VALUE))
-                        .addGap(0, 0, Short.MAX_VALUE))
-                    .addComponent(jPanel10, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addGroup(tela_frente_caixaLayout.createSequentialGroup()
-                        .addGap(0, 0, Short.MAX_VALUE)
-                        .addComponent(btn_sair_frente_de_caixa, javax.swing.GroupLayout.PREFERRED_SIZE, 210, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addComponent(jScrollPane2)
+                    .addComponent(jPanel12, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addGap(41, 41, 41))
+            .addGroup(tela_frente_caixaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(tela_frente_caixaLayout.createSequentialGroup()
+                    .addGap(35, 35, 35)
+                    .addComponent(txt_sem_cliente, javax.swing.GroupLayout.PREFERRED_SIZE, 366, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addContainerGap(825, Short.MAX_VALUE)))
         );
         tela_frente_caixaLayout.setVerticalGroup(
             tela_frente_caixaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(tela_frente_caixaLayout.createSequentialGroup()
-                .addGap(38, 38, 38)
+                .addGap(20, 20, 20)
                 .addComponent(jPanel10, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGap(18, 18, 18)
                 .addGroup(tela_frente_caixaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(tela_frente_caixaLayout.createSequentialGroup()
-                        .addGroup(tela_frente_caixaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(tela_frente_caixaLayout.createSequentialGroup()
-                                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 339, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(18, 18, 18)
-                                .addComponent(jPanel12, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(tela_frente_caixaLayout.createSequentialGroup()
-                                .addGroup(tela_frente_caixaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                    .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addGroup(tela_frente_caixaLayout.createSequentialGroup()
-                                        .addComponent(jPanel6, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addGap(18, 18, 18)
-                                        .addComponent(jPanel17, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                        .addComponent(jPanel16, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                                .addGap(31, 31, 31)
-                                .addGroup(tela_frente_caixaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                    .addComponent(jPanel11, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                    .addComponent(jPanel13, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
-                        .addGroup(tela_frente_caixaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(tela_frente_caixaLayout.createSequentialGroup()
-                                .addGap(18, 18, 18)
-                                .addGroup(tela_frente_caixaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addGroup(tela_frente_caixaLayout.createSequentialGroup()
-                                        .addGap(0, 50, Short.MAX_VALUE)
-                                        .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                    .addGroup(tela_frente_caixaLayout.createSequentialGroup()
-                                        .addGroup(tela_frente_caixaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                            .addComponent(jPanel14, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                            .addComponent(jPanel15, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                        .addComponent(btn_sair_frente_de_caixa, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                            .addGroup(tela_frente_caixaLayout.createSequentialGroup()
-                                .addGap(60, 60, 60)
-                                .addComponent(jLabel1)
-                                .addGap(0, 0, Short.MAX_VALUE))))
+                        .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 339, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(jPanel12, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(tela_frente_caixaLayout.createSequentialGroup()
-                        .addGap(0, 0, Short.MAX_VALUE)
-                        .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(8, 8, 8)))
-                .addContainerGap())
+                        .addGroup(tela_frente_caixaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGroup(tela_frente_caixaLayout.createSequentialGroup()
+                                .addComponent(jPanel6, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(18, 18, 18)
+                                .addComponent(jPanel17, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(jPanel16, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGap(31, 31, 31)
+                        .addGroup(tela_frente_caixaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(jPanel11, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(jPanel13, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+                .addGroup(tela_frente_caixaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(tela_frente_caixaLayout.createSequentialGroup()
+                        .addGap(63, 63, 63)
+                        .addComponent(jLabel1)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jLabel2))
+                    .addGroup(tela_frente_caixaLayout.createSequentialGroup()
+                        .addGap(26, 26, 26)
+                        .addGroup(tela_frente_caixaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jPanel14, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jPanel15, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(18, 18, 18)
+                        .addGroup(tela_frente_caixaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(btn_sair_frente_de_caixa, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(btn_realizarVenda, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addGroup(tela_frente_caixaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(tela_frente_caixaLayout.createSequentialGroup()
+                    .addGap(21, 21, 21)
+                    .addComponent(txt_sem_cliente)
+                    .addContainerGap(675, Short.MAX_VALUE)))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 1133, Short.MAX_VALUE)
+            .addGap(0, 1226, Short.MAX_VALUE)
             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                     .addGap(0, 0, 0)
-                    .addComponent(tela_frente_caixa, javax.swing.GroupLayout.DEFAULT_SIZE, 1133, Short.MAX_VALUE)))
+                    .addComponent(tela_frente_caixa, javax.swing.GroupLayout.DEFAULT_SIZE, 1226, Short.MAX_VALUE)))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 720, Short.MAX_VALUE)
+            .addGap(0, 728, Short.MAX_VALUE)
             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                     .addGap(0, 0, 0)
-                    .addComponent(tela_frente_caixa, javax.swing.GroupLayout.DEFAULT_SIZE, 720, Short.MAX_VALUE)))
+                    .addComponent(tela_frente_caixa, javax.swing.GroupLayout.DEFAULT_SIZE, 728, Short.MAX_VALUE)))
         );
 
         pack();
@@ -512,6 +656,12 @@ public class TelaFrenteDeCaixa extends javax.swing.JFrame {
 
     private void btn_sair_frente_de_caixaMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btn_sair_frente_de_caixaMouseClicked
         // TODO add your handling code here:
+
+        //quando a frente de caixa é fechado, lista do repositorioCarrinho é zerada
+        daoCarrinho.limpaCarrinho();
+
+        //fecha tela de frente de caixa
+        //abre a tela de login
         dispose();
         new Login().setVisible(true);
     }//GEN-LAST:event_btn_sair_frente_de_caixaMouseClicked
@@ -525,6 +675,86 @@ public class TelaFrenteDeCaixa extends javax.swing.JFrame {
         // TODO add your handling code here:
         btn_sair_frente_de_caixa.setBackground(new Color(51, 152, 219));//cor quando sai do botton
     }//GEN-LAST:event_btn_sair_frente_de_caixaMouseExited
+
+    private void btn_realizarVendaMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btn_realizarVendaMouseClicked
+        // TODO add your handling code here:
+        Venda vendaRealizada = new Venda();
+        vendaRealizada.setCliente(clienteVinculado);
+        vendaRealizada.setVendedor(usuarioLogado);
+        vendaRealizada.setDiaDaCompra(Date.from(Instant.now()));
+        vendaRealizada.seCarrinho(new Carrinho(daoCarrinho.getAll()));
+        vendaRealizada.setTotal_pago(total);
+
+        colocaValorTotal();
+        if (realizaPagamento()) {
+            daoVendas.inserir(vendaRealizada);
+            if (!daoVendas.getAll().isEmpty()) {
+                JOptionPane.showMessageDialog(null, "Venda Realizada com sucesso", "Sucesso!", JOptionPane.INFORMATION_MESSAGE);
+                daoCarrinho.limpaCarrinho();
+                repositorioCarrinho.atualizaTabela(daoCarrinho.getAll());
+                this.clienteVinculado = null;
+                verificaTemCliente(clienteVinculado);
+                this.total = 0;
+                ValorTotal.setText("0.0");
+                txt_troco.setText("0.0");
+
+            }
+        } else {
+            this.total = 0;
+        }
+
+    }//GEN-LAST:event_btn_realizarVendaMouseClicked
+   
+    //metodo responsavel por realizar a venda
+    //recebe o valor do cliente
+    //verifica se o valor recebido do cliente cobre o valor total recebido,
+    //se sim, realiza o calculo responsavel por emitir o troco
+    //caso contratio não realiza o calculo e informa ao vendedor que falta dinheiro
+    public boolean realizaPagamento() {
+        
+        this.valorRecebido = Double.parseDouble(txt_valor_recebido.getText());
+        if(!daoCarrinho.getAll().isEmpty()){
+            if (this.valorRecebido >= this.total) {
+                double troco = this.total - this.valorRecebido;
+                txt_troco.setText(String.valueOf(Math.abs(troco)));
+
+                JOptionPane.showMessageDialog(null,
+                        "TROCO DO CLINETE: R$ " + String.valueOf(Math.abs(troco)),
+                        "ATENÇÃO",
+                        JOptionPane.WARNING_MESSAGE);
+
+                return true;
+            } else {
+                JOptionPane.showMessageDialog(null, "Falta Dinheiro", "Não é permitido", JOptionPane.INFORMATION_MESSAGE);
+                return false;
+            }
+        }else{
+            JOptionPane.showMessageDialog(null, "Carrinho esta vázio", "Não é permitido", JOptionPane.INFORMATION_MESSAGE);
+            return false;
+        }
+        
+    }
+    private void btn_realizarVendaMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btn_realizarVendaMouseEntered
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btn_realizarVendaMouseEntered
+
+    private void btn_realizarVendaMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btn_realizarVendaMouseExited
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btn_realizarVendaMouseExited
+
+    private void tabela_carrinhoMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tabela_carrinhoMouseClicked
+        // TODO add your handling code here:
+        int indexItem = tabela_carrinho.getSelectedRow();
+        Produtos produtoCliecado = daoCarrinho.getAll().get(indexItem);
+        txt_codigo_barra.setText(produtoCliecado.getCodigo());
+        txt_quantidade.setText(String.valueOf(produtoCliecado.getQuantidade()));
+        txt_valor_unitario.setText(String.valueOf(produtoCliecado.getPreco()));
+
+    }//GEN-LAST:event_tabela_carrinhoMouseClicked
+
+    private void txt_valor_recebidoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txt_valor_recebidoActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txt_valor_recebidoActionPerformed
 
     /**
      * @param args the command line arguments
@@ -556,27 +786,30 @@ public class TelaFrenteDeCaixa extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new TelaFrenteDeCaixa().setVisible(true);
+                new TelaFrenteDeCaixa(null).setVisible(true);
             }
         });
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel ValorTotal;
+    private javax.swing.JPanel btn_realizarVenda;
     private javax.swing.JPanel btn_sair_frente_de_caixa;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel13;
+    private javax.swing.JLabel jLabel14;
     private javax.swing.JLabel jLabel15;
     private javax.swing.JLabel jLabel16;
     private javax.swing.JLabel jLabel17;
+    private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel21;
     private javax.swing.JLabel jLabel22;
     private javax.swing.JLabel jLabel23;
     private javax.swing.JLabel jLabel25;
     private javax.swing.JLabel jLabel34;
     private javax.swing.JLabel jLabel35;
-    private javax.swing.JList jList1;
-    private javax.swing.JList jList2;
+    private javax.swing.JLabel jLabel36;
+    private javax.swing.JLabel jLabel37;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel10;
     private javax.swing.JPanel jPanel11;
@@ -587,10 +820,15 @@ public class TelaFrenteDeCaixa extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel16;
     private javax.swing.JPanel jPanel17;
     private javax.swing.JPanel jPanel6;
+    private javax.swing.JPanel jPanel7;
     private javax.swing.JScrollPane jScrollPane2;
-    private javax.swing.JScrollPane jScrollPane3;
-    private javax.swing.JScrollPane jScrollPane4;
     private javax.swing.JTable tabela_carrinho;
     private javax.swing.JPanel tela_frente_caixa;
+    private javax.swing.JLabel txt_codigo_barra;
+    private javax.swing.JLabel txt_quantidade;
+    private javax.swing.JLabel txt_sem_cliente;
+    private javax.swing.JLabel txt_troco;
+    private javax.swing.JTextField txt_valor_recebido;
+    private javax.swing.JLabel txt_valor_unitario;
     // End of variables declaration//GEN-END:variables
 }

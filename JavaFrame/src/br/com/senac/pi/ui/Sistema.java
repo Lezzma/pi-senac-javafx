@@ -5,7 +5,6 @@ import br.com.senac.pi.entidades.Produtos;
 import br.com.senac.pi.entidades.Setor;
 import br.com.senac.pi.entidades.Usuario;
 import br.com.senac.pi.repositorio.ProdutoRepositorio;
-import br.com.senac.repositorios.ColocaBotoesVenda;
 import br.com.senac.repositorios.PoliticaAcessoCliente;
 import br.com.senac.repositorios.PoliticaDeAcesso;
 import br.com.senac.repositorios.RepositorioTabela;
@@ -253,7 +252,7 @@ public class Sistema extends javax.swing.JFrame {
 
         jLabel29.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         jLabel29.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel29.setText("Novo Cliente");
+        jLabel29.setText("Novo Usuário");
         btn_novo_cliente.add(jLabel29);
         jLabel29.setBounds(60, 0, 140, 40);
 
@@ -793,7 +792,7 @@ public class Sistema extends javax.swing.JFrame {
         jLabel20.setFont(new java.awt.Font("Segoe UI", 0, 24)); // NOI18N
         jLabel20.setForeground(new java.awt.Color(255, 255, 255));
         jLabel20.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel20.setText("Novo Cliente");
+        jLabel20.setText("Novo Usuário");
 
         btn_cancelar_cliente.setBackground(new java.awt.Color(51, 152, 219));
         btn_cancelar_cliente.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -1175,7 +1174,7 @@ public class Sistema extends javax.swing.JFrame {
     private void btn_frente_caixaMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btn_frente_caixaMouseClicked
         // TODO add your handling code here:
         dispose();
-        new TelaFrenteDeCaixa().setVisible(true);
+        new TelaFrenteDeCaixa(usuarioLogado).setVisible(true);
     }//GEN-LAST:event_btn_frente_caixaMouseClicked
 
     private void btn_frente_caixaMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btn_frente_caixaMouseEntered

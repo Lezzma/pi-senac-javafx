@@ -180,7 +180,7 @@ public class Login extends javax.swing.JFrame {
               if(autUserControler.autUser(login.getText(), senha.getText())){
                   if(autUserControler.getUserLogado().getSetor().equals(Setor.vendas)){
                     dispose();
-                    new TelaFrenteDeCaixa().setVisible(true);
+                    new TelaFrenteDeCaixa(autUserControler.getUserLogado()).setVisible(true);
                   }else{
                   dispose();
                     new Sistema(autUserControler.getUserLogado()).setVisible(true);  

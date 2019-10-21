@@ -48,6 +48,7 @@ public class RepositorioTabelaProduto implements RepositorioTabela<Produtos>{
           new Thread(() -> {
             if (entidade.isEmpty()) {
             Produtos produtoTeste = new Produtos("123123","leite",20);
+            produtoTeste.setQuantidade(1);
             entidade.add(produtoTeste);
         }
         atualizaTabela(entidade);

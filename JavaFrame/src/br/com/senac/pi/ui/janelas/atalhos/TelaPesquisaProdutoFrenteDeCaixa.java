@@ -12,6 +12,8 @@ import br.com.senac.pi.repositorio.ProdutoRepositorio;
 import br.com.senac.repositorios.RepositorioTabela;
 import br.com.senac.repositorios.RepositorioTabelaProduto;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JTable;
@@ -23,19 +25,19 @@ import javax.swing.JTable;
 public class TelaPesquisaProdutoFrenteDeCaixa extends javax.swing.JFrame {
     private RepositorioTabela repoTabela;
     private RepositorioTabela repoTabelaCarrinho;
-    private DaoRepositorio dao;
+    private DaoRepositorio daoProduto;
     private List<Produtos> listaDeProdutos;
     private JLabel valorTotal;
     private double valor;
+    private DaoRepositorio daoCarrinho;
     /**
      * Creates new form TelaPesquisaProdutoFrenteDeCaixa
      */
     public TelaPesquisaProdutoFrenteDeCaixa() {
         initComponents();
         this.repoTabela = new RepositorioTabelaProduto(tab_pes_fdc);
-        
-        this.dao = new ProdutoRepositorio();
-        this.listaDeProdutos = dao.getAll();
+        this.daoProduto = new ProdutoRepositorio();
+        this.listaDeProdutos = daoProduto.getAll();
         configuraTabela(listaDeProdutos);
     }
     
@@ -46,8 +48,9 @@ public class TelaPesquisaProdutoFrenteDeCaixa extends javax.swing.JFrame {
         this.repoTabela = new RepositorioTabelaProduto(tab_pes_fdc);
         this.repoTabela = new RepositorioTabelaProduto(tab_pes_fdc);
         this.repoTabelaCarrinho = new RepositorioTabelaProduto(tabela);
-        this.dao = new ProdutoRepositorio();
-        this.listaDeProdutos = dao.getAll();
+        this.daoProduto = new ProdutoRepositorio();
+        this.listaDeProdutos = daoProduto.getAll();
+        this.daoCarrinho = new DaoCarrinho();
         configuraTabela(listaDeProdutos);
     }
 
@@ -180,20 +183,18 @@ public class TelaPesquisaProdutoFrenteDeCaixa extends javax.swing.JFrame {
     private void tab_pes_fdcMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tab_pes_fdcMouseClicked
         
         Produtos produtoClicado = pegaProdutoClicado();
-        
-        DaoRepositorio daoCarrinho = adicionaProdutoClicado(produtoClicado);
-        valor += produtoClicado.getPreco();
-        repoTabelaCarrinho.atualizaTabela(daoCarrinho.getAll());
-        valorTotal.setText(String.valueOf(valor));
-        dispose();
+        if(!daoCarrinho.getAll().contains(produtoClicado)){
+            daoCarrinho.inserir(produtoClicado);
+            valor += produtoClicado.getPreco();
+            valorTotal.setText(String.valueOf(valor));
+            repoTabelaCarrinho.atualizaTabela(daoCarrinho.getAll());
+            dispose();
+        }else{
+            JOptionPane.showMessageDialog(null,"Esse produto já está no carrinho","Ação não permitida!", JOptionPane.INFORMATION_MESSAGE);
+        }
+       
         
     }//GEN-LAST:event_tab_pes_fdcMouseClicked
-
-    private DaoRepositorio adicionaProdutoClicado(Produtos produtoClicado) {
-        DaoRepositorio daoCarrinho = new DaoCarrinho();
-        daoCarrinho.inserir(produtoClicado);
-        return daoCarrinho;
-    }
 
     private Produtos pegaProdutoClicado() {
         // TODO add your handling code here:

@@ -35,4 +35,8 @@ public class DaoCarrinho implements DaoRepositorio<Produtos>{
     public void deletar(Produtos entidade) {
        carrinhoDeCompras.remove(entidade);
     }
+    
+    public void limpaCarrinho(){
+        carrinhoDeCompras.removeAll(carrinhoDeCompras);
+    }
 }

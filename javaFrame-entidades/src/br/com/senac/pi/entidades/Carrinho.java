@@ -34,6 +34,9 @@ public class Carrinho {
     public void setQuantidadeDeItems(int quantidade){
         this.quantidadeDeItems += quantidade;
     }
+    public List<Produtos> getAll(){
+        return listaDeProdutos;
+    }
     
     public int getQuantidadeDeItems(){
         return quantidadeDeItems;
