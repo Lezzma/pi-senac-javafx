@@ -42,21 +42,25 @@ public class RepositorioroTabelaCliente implements RepositorioTabela<Cliente>{
 
     @Override
     public void inserirEntidadeTeste(List<Cliente> entidade) {
-//        new Thread(() -> {
-//            if (entidade.isEmpty()) {
-//            Cliente testeUsuario = new Cliente();
-//            testeUsuario.setNome("josé");
-//            testeUsuario.setCpf("33333333333");
-//            entidade.add(testeUsuario);
-//        }
-//        atualizaTabela(entidade);
-//        }).start();
-        
+        new Thread(() -> {
+            if (entidade.isEmpty()) {
+            Cliente testeUsuario = new Cliente();
+            testeUsuario.setNome("josé");
+            testeUsuario.setCpf("33333333333");
+            entidade.add(testeUsuario);
+        }
+        atualizaTabela(entidade);
+        }).start(); 
     }
 
     @Override
     public void retornaItemPesquisado(Cliente entidade) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+          model.setNumRows(0);
+             model.addRow(
+                     new Object[]{
+                         entidade.getNome(),
+                         entidade.getCpf()
+                     });
     }
 
     

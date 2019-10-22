@@ -37,7 +37,8 @@ public class RepositorioTabelaProduto implements RepositorioTabela<Produtos>{
                      new Object[]{
                          p.getCodigo(),
                          p.getNome(),
-                         p.getPreco()
+                         p.getPreco(),
+                         p.getQuantidade()
                      });
          });
           }).start();
@@ -63,7 +64,8 @@ public class RepositorioTabelaProduto implements RepositorioTabela<Produtos>{
                      new Object[]{
                          entidade.getCodigo(),
                          entidade.getNome(),
-                         entidade.getPreco()
+                         entidade.getPreco(),
+                         entidade.getQuantidade()
                      });
        
       

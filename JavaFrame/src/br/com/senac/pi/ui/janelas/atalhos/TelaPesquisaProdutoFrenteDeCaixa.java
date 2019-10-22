@@ -11,6 +11,8 @@ import br.com.senac.pi.repositorio.DaoRepositorio;
 import br.com.senac.pi.repositorio.ProdutoRepositorio;
 import br.com.senac.repositorios.RepositorioTabela;
 import br.com.senac.repositorios.RepositorioTabelaProduto;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -23,6 +25,7 @@ import javax.swing.JTable;
  * @author jrneto
  */
 public class TelaPesquisaProdutoFrenteDeCaixa extends javax.swing.JFrame {
+
     private RepositorioTabela repoTabela;
     private RepositorioTabela repoTabelaCarrinho;
     private DaoRepositorio daoProduto;
@@ -30,6 +33,8 @@ public class TelaPesquisaProdutoFrenteDeCaixa extends javax.swing.JFrame {
     private JLabel valorTotal;
     private double valor;
     private DaoRepositorio daoCarrinho;
+    private Produtos produtoClicado;
+
     /**
      * Creates new form TelaPesquisaProdutoFrenteDeCaixa
      */
@@ -40,8 +45,8 @@ public class TelaPesquisaProdutoFrenteDeCaixa extends javax.swing.JFrame {
         this.listaDeProdutos = daoProduto.getAll();
         configuraTabela(listaDeProdutos);
     }
-    
-    public TelaPesquisaProdutoFrenteDeCaixa(JTable tabela,JLabel valototal){
+
+    public TelaPesquisaProdutoFrenteDeCaixa(JTable tabela, JLabel valototal) {
         initComponents();
         this.valorTotal = valototal;
         this.valor = Double.parseDouble(valototal.getText());
@@ -73,22 +78,22 @@ public class TelaPesquisaProdutoFrenteDeCaixa extends javax.swing.JFrame {
         btn_pesquisa_fdc = new javax.swing.JButton();
         jComboBox_tipo_pesquisa = new javax.swing.JComboBox();
         jLabel1 = new javax.swing.JLabel();
+        jLabel2 = new javax.swing.JLabel();
+        item_quantidade = new javax.swing.JSpinner();
+        btn_set_qtd = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
         tab_pes_fdc.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null}
+
             },
             new String [] {
-                "Código", "Nome", "Preço", "Title 4"
+                "Código", "Nome", "Preço", "Quantidade"
             }
         ) {
             Class[] types = new Class [] {
-                java.lang.String.class, java.lang.String.class, java.lang.Double.class, java.lang.Object.class
+                java.lang.String.class, java.lang.String.class, java.lang.Double.class, java.lang.Integer.class
             };
             boolean[] canEdit = new boolean [] {
                 false, false, false, false
@@ -126,6 +131,20 @@ public class TelaPesquisaProdutoFrenteDeCaixa extends javax.swing.JFrame {
 
         jLabel1.setText("Pesquisar por :");
 
+        jLabel2.setText("Quantidade");
+
+        btn_set_qtd.setText("Quantificar");
+        btn_set_qtd.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                btn_set_qtdMouseClicked(evt);
+            }
+        });
+        btn_set_qtd.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btn_set_qtdActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -142,7 +161,15 @@ public class TelaPesquisaProdutoFrenteDeCaixa extends javax.swing.JFrame {
                         .addComponent(jLabel1)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jComboBox_tipo_pesquisa, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(79, 79, 79)))
+                        .addGap(79, 79, 79))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                                .addComponent(jLabel2)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(item_quantidade, javax.swing.GroupLayout.PREFERRED_SIZE, 96, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(btn_set_qtd, javax.swing.GroupLayout.Alignment.TRAILING))))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -160,8 +187,14 @@ public class TelaPesquisaProdutoFrenteDeCaixa extends javax.swing.JFrame {
                             .addComponent(jLabel1)
                             .addComponent(jComboBox_tipo_pesquisa, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
                 .addGap(18, 18, 18)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 275, Short.MAX_VALUE)
-                .addContainerGap())
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 134, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(item_quantidade, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
+                .addComponent(btn_set_qtd)
+                .addContainerGap(68, Short.MAX_VALUE))
         );
 
         pack();
@@ -173,46 +206,70 @@ public class TelaPesquisaProdutoFrenteDeCaixa extends javax.swing.JFrame {
 
     private void btn_pesquisa_fdcActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_pesquisa_fdcActionPerformed
         // TODO add your handling code here:
-        
+
         String itemPesquisado = searche_fdc.getText();
         String tipoDePesquisa = jComboBox_tipo_pesquisa.getSelectedItem().toString();
-        
+
         pesquisa(tipoDePesquisa, itemPesquisado);
     }//GEN-LAST:event_btn_pesquisa_fdcActionPerformed
 
     private void tab_pes_fdcMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tab_pes_fdcMouseClicked
-        
-        Produtos produtoClicado = pegaProdutoClicado();
-        if(!daoCarrinho.getAll().contains(produtoClicado)){
-            daoCarrinho.inserir(produtoClicado);
-            valor += produtoClicado.getPreco();
-            valorTotal.setText(String.valueOf(valor));
-            repoTabelaCarrinho.atualizaTabela(daoCarrinho.getAll());
-            dispose();
-        }else{
-            JOptionPane.showMessageDialog(null,"Esse produto já está no carrinho","Ação não permitida!", JOptionPane.INFORMATION_MESSAGE);
-        }
-       
-        
+        duploClickTabela(evt);
+        int indexItem = tab_pes_fdc.getSelectedRow();
+        this.produtoClicado = listaDeProdutos.get(indexItem);
+        item_quantidade.setValue(produtoClicado.getQuantidade());
+
     }//GEN-LAST:event_tab_pes_fdcMouseClicked
+    protected void duploClickTabela(java.awt.event.MouseEvent evt) {
+        if (evt.getClickCount() == 2) {
+            Produtos produtoClicado = pegaProdutoClicado();
+            if (!daoCarrinho.getAll().contains(produtoClicado)) {
+                daoCarrinho.inserir(produtoClicado);
+                valor += produtoClicado.getPreco() * produtoClicado.getQuantidade();
+                valorTotal.setText(String.valueOf(valor));
+                repoTabelaCarrinho.atualizaTabela(daoCarrinho.getAll());
+                dispose();
+
+            } else {
+                JOptionPane.showMessageDialog(null, "Esse produto já está no carrinho", "Ação não permitida!", JOptionPane.INFORMATION_MESSAGE);
+            }
+        }
+
+    }
+
+    private void btn_set_qtdActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_set_qtdActionPerformed
+        // TODO add your handling code here:
+        int quantidadeColocada = Integer.parseInt(item_quantidade.getValue().toString());
+        if (this.produtoClicado.getQuantidade() != quantidadeColocada) {
+            this.produtoClicado.setQuantidade(quantidadeColocada);
+            item_quantidade.setValue(0);
+            repoTabela.atualizaTabela(listaDeProdutos);
+        }
+    }//GEN-LAST:event_btn_set_qtdActionPerformed
+
+    private void btn_set_qtdMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btn_set_qtdMouseClicked
+        // TODO add your handling code here:
+
+    }//GEN-LAST:event_btn_set_qtdMouseClicked
 
     private Produtos pegaProdutoClicado() {
         // TODO add your handling code here:
-        
+
         int itemClicado = tab_pes_fdc.getSelectedRow();
         Produtos produtoClicado = listaDeProdutos.get(itemClicado);
+
         return produtoClicado;
     }
 
     private void pesquisa(String tipoDePesquisa, String itemPesquisado) {
-        switch(tipoDePesquisa){
+        switch (tipoDePesquisa) {
             case "Código":
 //                      Código
 //                        ID
 //                        Nome
 //                        Marca
-                listaDeProdutos.forEach(p->{
-                    if(p.getCodigo().equals(itemPesquisado)){
+                listaDeProdutos.forEach(p -> {
+                    if (p.getCodigo().equals(itemPesquisado)) {
                         repoTabela.retornaItemPesquisado(p);
                     }
                 });
@@ -220,15 +277,15 @@ public class TelaPesquisaProdutoFrenteDeCaixa extends javax.swing.JFrame {
             case "ID":
                 break;
             case "Nome":
-                listaDeProdutos.forEach(p->{
-                    if(p.getNome().equals(itemPesquisado)){
+                listaDeProdutos.forEach(p -> {
+                    if (p.getNome().equals(itemPesquisado)) {
                         repoTabela.retornaItemPesquisado(p);
                     }
                 });
                 break;
             case "Marca":
-                listaDeProdutos.forEach(p->{
-                    if(p.getMarca().equals(itemPesquisado)){
+                listaDeProdutos.forEach(p -> {
+                    if (p.getMarca().equals(itemPesquisado)) {
                         repoTabela.retornaItemPesquisado(p);
                     }
                 });
@@ -273,8 +330,11 @@ public class TelaPesquisaProdutoFrenteDeCaixa extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btn_pesquisa_fdc;
+    private javax.swing.JButton btn_set_qtd;
+    private javax.swing.JSpinner item_quantidade;
     private javax.swing.JComboBox jComboBox_tipo_pesquisa;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTextField searche_fdc;
     private javax.swing.JTable tab_pes_fdc;
