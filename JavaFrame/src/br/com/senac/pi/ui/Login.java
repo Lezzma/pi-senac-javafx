@@ -14,6 +14,10 @@ public class Login extends javax.swing.JFrame {
     public Login(){
         initComponents();
         this.usuarios = dao.getAll();
+        criaUsuarioTeste();
+    }
+
+    private void criaUsuarioTeste() {
         if(usuarios.isEmpty()){
             Usuario admin = new Usuario();
             admin.setNome("admin");
@@ -30,7 +34,7 @@ public class Login extends javax.swing.JFrame {
             cliente.setSetor(Setor.cliente);
             usuarios.add(cliente);
             
-             Usuario vendas = new Usuario();
+            Usuario vendas = new Usuario();
             vendas.setNome("vendas");
             vendas.setSenha("123");
             vendas.setSetor(Setor.vendas);

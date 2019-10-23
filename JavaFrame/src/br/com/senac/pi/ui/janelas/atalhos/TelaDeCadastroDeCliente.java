@@ -60,7 +60,7 @@ public class TelaDeCadastroDeCliente extends javax.swing.JDialog {
         jLabel20 = new javax.swing.JLabel();
         btn_salvar_cliente = new javax.swing.JPanel();
         jLabel46 = new javax.swing.JLabel();
-
+       
         jLabel48 = new javax.swing.JLabel();
         jLabel49 = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
@@ -68,7 +68,7 @@ public class TelaDeCadastroDeCliente extends javax.swing.JDialog {
         tabela_de_clientes = new javax.swing.JTable();
         btn_pesquisa = new javax.swing.JPanel();
         jLabel50 = new javax.swing.JLabel();
-
+      
         jLabel52 = new javax.swing.JLabel();
         jLabel53 = new javax.swing.JLabel();
         jLabel1 = new javax.swing.JLabel();
@@ -157,14 +157,9 @@ public class TelaDeCadastroDeCliente extends javax.swing.JDialog {
         });
         btn_salvar_cliente.setLayout(null);
 
-        jLabel46.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel46.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icones-ui/baseline_done_outline_white_18dp.png"))); // NOI18N
-        btn_salvar_cliente.add(jLabel46);
-        jLabel46.setBounds(10, 0, 40, 40);
+       
 
-        
 
-        
         jLabel4.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         jLabel4.setForeground(new java.awt.Color(255, 255, 255));
         jLabel4.setText("Salvar");
@@ -353,10 +348,10 @@ public class TelaDeCadastroDeCliente extends javax.swing.JDialog {
                 .addGroup(telaCadastraClienteLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(btn_pesquisa, javax.swing.GroupLayout.DEFAULT_SIZE, 32, Short.MAX_VALUE)
                     .addComponent(search_cpf)
-                    .addComponent(search_nome, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(btn_pesquisa_nome, javax.swing.GroupLayout.DEFAULT_SIZE, 32, Short.MAX_VALUE))
+                    .addComponent(btn_pesquisa_nome, javax.swing.GroupLayout.DEFAULT_SIZE, 32, Short.MAX_VALUE)
+                    .addComponent(search_nome))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jScrollPane6, javax.swing.GroupLayout.DEFAULT_SIZE, 176, Short.MAX_VALUE)
                 .addContainerGap())
@@ -514,6 +509,8 @@ public class TelaDeCadastroDeCliente extends javax.swing.JDialog {
     private javax.swing.JPanel btn_pesquisa;
     private javax.swing.JPanel btn_pesquisa_nome;
     private javax.swing.JPanel btn_salvar_cliente;
+  
+ 
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel20;

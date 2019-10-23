@@ -25,7 +25,7 @@ public class ClienteControler {
     public ClienteControler(RepositorioroTabelaCliente repositorioTabelaCliente) {
         this.repositorioTabelaCliente = repositorioTabelaCliente;
     }
-
+    
     public void atualizaTabelaCliente() {
         repositorioTabelaCliente.atualizaTabela(dao.getAll());
     }

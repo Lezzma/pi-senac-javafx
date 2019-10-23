@@ -6,9 +6,10 @@
 package br.com.senac.pi.ui;
 
 import br.com.senac.pi.entidades.Cliente;
-import br.com.senac.pi.entidades.Usuario;
-import br.com.senac.pi.repositorio.UsuarioRepositorio;
-import br.com.senac.repositorios.RepositorioTabelasUsuario;
+import br.com.senac.pi.entidades.Produtos;
+import br.com.senac.pi.repositorio.DaoRepositorio;
+import br.com.senac.pi.repositorio.ProdutoRepositorio;
+import br.com.senac.repositorios.RepositorioTabelaProduto;
 import java.awt.Color;
 import java.util.List;
 import javax.swing.JOptionPane;
@@ -18,44 +19,39 @@ import javax.swing.JTable;
  *
  * @author jose.rsneto10
  */
-public class TelaEditaUsuario extends javax.swing.JFrame {
+public class TelaEditaProdutos extends javax.swing.JFrame {
    
     private final JTable tabela;
     
-    private final Usuario usuario;
-    private final Usuario UsuarioAntesDeEditar;
-    
-    private List<Usuario> listaDeUsuario = new UsuarioRepositorio().getAll();
-    private final UsuarioRepositorio dao = new UsuarioRepositorio();
-    private RepositorioTabelasUsuario repositorioTabelasUsuario;
+    private final Produtos produto;
+    private final Produtos produtoAntesDeEditar;
+    private final DaoRepositorio dao = new ProdutoRepositorio();
+    private List<Produtos> listaDeProdutos = dao.getAll();
     private Cliente cliente;
+    private RepositorioTabelaProduto repositorioTabelaProduto;
     /**
      * Creates new form TelaEditaUsuario
      */
  
     /**
-     * Creates new form TelaEditaUsuario
-     * @param usuario
+     * Creates new form TelaEditaProduto
+     * @param produto
      * @param tabela
      */
-    public TelaEditaUsuario(Usuario usuario,JTable tabela){
+    public TelaEditaProdutos(Produtos produto,JTable tabela){
         initComponents();
-        this.repositorioTabelasUsuario = new RepositorioTabelasUsuario(tabela);
         this.tabela = tabela;
-        this.usuario = usuario;
-        this.UsuarioAntesDeEditar = listaDeUsuario.get(listaDeUsuario.indexOf(usuario));
-        
-        prencheDadosUsuario(usuario);
+        this.produto = produto;
+        this.produtoAntesDeEditar = produto;
+        this.repositorioTabelaProduto = new RepositorioTabelaProduto(tabela);
+        prencheDadosProdutos(produto);
     }
     
   
-    private void prencheDadosUsuario(Usuario usuario1) {
-        edit_txt_nome.setText(usuario1.getNome());
-        edit_txt_email.setText(usuario1.getEmail());
-        edit_txt_rg.setText(usuario1.getRg());
-        edit_txt_cpf.setText(usuario1.getCpf());
-        
-        
+    private void prencheDadosProdutos(Produtos produto) {
+        edit_txt_codigo.setText(produto.getCodigo());
+        edit_txt_nome_produto.setText(produto.getNome());
+        edit_txt_preco.setText(String.valueOf(produto.getPreco()));   
     }
 
     /**
@@ -71,30 +67,21 @@ public class TelaEditaUsuario extends javax.swing.JFrame {
         btn_salvar_cliente = new javax.swing.JPanel();
         jLabel46 = new javax.swing.JLabel();
         jLabel47 = new javax.swing.JLabel();
-        btn_cancelar_editar_user = new javax.swing.JPanel();
+        btn_cancelar = new javax.swing.JPanel();
         jLabel48 = new javax.swing.JLabel();
         jLabel49 = new javax.swing.JLabel();
-        edit_txt_nome = new javax.swing.JTextField();
-        edit_txt_email = new javax.swing.JTextField();
-        edit_txt_rg = new javax.swing.JTextField();
-        edit_txt_cpf = new javax.swing.JTextField();
+        edit_txt_codigo = new javax.swing.JTextField();
+        edit_txt_nome_produto = new javax.swing.JTextField();
+        edit_txt_preco = new javax.swing.JTextField();
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
-        jLabel4 = new javax.swing.JLabel();
         btn_deletar_produto = new javax.swing.JPanel();
         jLabel50 = new javax.swing.JLabel();
         jLabel51 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setUndecorated(true);
-        addWindowFocusListener(new java.awt.event.WindowFocusListener() {
-            public void windowGainedFocus(java.awt.event.WindowEvent evt) {
-            }
-            public void windowLostFocus(java.awt.event.WindowEvent evt) {
-                formWindowLostFocus(evt);
-            }
-        });
 
         jPanel1.setBackground(new java.awt.Color(255, 255, 255));
         jPanel1.setPreferredSize(new java.awt.Dimension(500, 400));
@@ -124,44 +111,42 @@ public class TelaEditaUsuario extends javax.swing.JFrame {
         btn_salvar_cliente.add(jLabel47);
         jLabel47.setBounds(50, 0, 60, 40);
 
-        btn_cancelar_editar_user.setBackground(new java.awt.Color(51, 152, 219));
-        btn_cancelar_editar_user.addMouseListener(new java.awt.event.MouseAdapter() {
+        btn_cancelar.setBackground(new java.awt.Color(51, 152, 219));
+        btn_cancelar.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
-                btn_cancelar_editar_userMouseClicked(evt);
+                btn_cancelarMouseClicked(evt);
             }
             public void mouseEntered(java.awt.event.MouseEvent evt) {
-                btn_cancelar_editar_userMouseEntered(evt);
+                btn_cancelarMouseEntered(evt);
             }
             public void mouseExited(java.awt.event.MouseEvent evt) {
-                btn_cancelar_editar_userMouseExited(evt);
+                btn_cancelarMouseExited(evt);
             }
         });
-        btn_cancelar_editar_user.setLayout(null);
+        btn_cancelar.setLayout(null);
 
         jLabel48.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel48.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icones-ui/baseline_done_outline_white_18dp.png"))); // NOI18N
-        btn_cancelar_editar_user.add(jLabel48);
+        btn_cancelar.add(jLabel48);
         jLabel48.setBounds(10, 0, 40, 40);
 
         jLabel49.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         jLabel49.setForeground(new java.awt.Color(255, 255, 255));
         jLabel49.setText("Cancelar");
-        btn_cancelar_editar_user.add(jLabel49);
+        btn_cancelar.add(jLabel49);
         jLabel49.setBounds(50, 0, 60, 40);
 
-        edit_txt_email.addActionListener(new java.awt.event.ActionListener() {
+        edit_txt_nome_produto.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                edit_txt_emailActionPerformed(evt);
+                edit_txt_nome_produtoActionPerformed(evt);
             }
         });
 
-        jLabel1.setText("Nome:");
+        jLabel1.setText("Codigo:");
 
-        jLabel2.setText("Email");
+        jLabel2.setText("Nome:");
 
-        jLabel3.setText("RG");
-
-        jLabel4.setText("CPF");
+        jLabel3.setText("Preço");
 
         btn_deletar_produto.setBackground(new java.awt.Color(51, 152, 219));
         btn_deletar_produto.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -196,56 +181,42 @@ public class TelaEditaUsuario extends javax.swing.JFrame {
                 .addContainerGap()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(btn_salvar_cliente, javax.swing.GroupLayout.PREFERRED_SIZE, 118, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel3)
+                            .addComponent(jLabel1)
+                            .addComponent(jLabel2))
+                        .addGap(0, 0, Short.MAX_VALUE))
+                    .addComponent(edit_txt_nome_produto, javax.swing.GroupLayout.DEFAULT_SIZE, 480, Short.MAX_VALUE)
+                    .addComponent(edit_txt_codigo)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                            .addComponent(edit_txt_preco, javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(btn_salvar_cliente, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 118, Short.MAX_VALUE))
                         .addGap(62, 62, 62)
                         .addComponent(btn_deletar_produto, javax.swing.GroupLayout.DEFAULT_SIZE, 118, Short.MAX_VALUE)
                         .addGap(64, 64, 64)
-                        .addComponent(btn_cancelar_editar_user, javax.swing.GroupLayout.PREFERRED_SIZE, 118, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(edit_txt_rg, javax.swing.GroupLayout.PREFERRED_SIZE, 237, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel3))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addComponent(jLabel4)
-                                .addGap(0, 0, Short.MAX_VALUE))
-                            .addComponent(edit_txt_cpf)))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(edit_txt_nome, javax.swing.GroupLayout.PREFERRED_SIZE, 237, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel1))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addComponent(jLabel2)
-                                .addGap(0, 213, Short.MAX_VALUE))
-                            .addComponent(edit_txt_email))))
+                        .addComponent(btn_cancelar, javax.swing.GroupLayout.PREFERRED_SIZE, 118, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap())
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                .addGap(51, 51, 51)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel1)
-                    .addComponent(jLabel2))
+                .addContainerGap()
+                .addComponent(jLabel1)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(edit_txt_nome, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(edit_txt_email, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 19, Short.MAX_VALUE)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel3)
-                    .addComponent(jLabel4))
+                .addComponent(edit_txt_codigo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(edit_txt_rg, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(edit_txt_cpf, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addComponent(jLabel2)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(edit_txt_nome_produto, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 13, Short.MAX_VALUE)
+                .addComponent(jLabel3)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(edit_txt_preco, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(btn_salvar_cliente, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btn_cancelar_editar_user, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btn_cancelar, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(btn_deletar_produto, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(87, 87, 87))
         );
@@ -264,29 +235,42 @@ public class TelaEditaUsuario extends javax.swing.JFrame {
         pack();
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
-
+    //edita o produto clicado
+    //coloca as alterações feitas
+    //verifica se realmente teve alguma alteraçãp
+    //pergunta se realmente quer editar
+    //Se a resposta for sim, att talela.
+    //chama o metodo 'setTelaEditaProdutos' da classe Sistema
+    //@produto
+    //@produtoAntesDeEditar
     private void btn_salvar_clienteMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btn_salvar_clienteMouseClicked
         // TODO add your handling code here:
-      // TODO add your handling code here:
-        usuario.setNome(edit_txt_nome.getText());
-        usuario.setEmail(edit_txt_email.getText());
-        usuario.setRg(edit_txt_rg.getText());
-        usuario.setCpf(edit_txt_cpf.getText());
+        produto.setCodigo(edit_txt_codigo.getText());
+        produto.setNome(edit_txt_nome_produto.getText());
+        produto.setPreco(Double.parseDouble(edit_txt_preco.getText()));
+            
+        if(!produtoAntesDeEditar.equals(produto)){
+            dao.deletar(produtoAntesDeEditar);
+            dao.inserir(produto);  
+        }
         
-        if(!UsuarioAntesDeEditar.equals(usuario)){
-            dao.deletar(UsuarioAntesDeEditar);
-            dao.inserir(usuario);
-
-        }
-         int reply = JOptionPane.showConfirmDialog(null,
-            "Deseja realmente editar esse usuário",
-            "Edita usuario",
-            JOptionPane.YES_NO_OPTION);
-
+        int reply = JOptionPane.showConfirmDialog(null,
+                "Deseja realmente editar esse produto",
+                "Editar produto",
+                JOptionPane.YES_NO_OPTION);
+        
         if (reply == JOptionPane.YES_OPTION) {
-            atualizaTabelaResetaContadorDaTelaEditar();
+           
+            atualizaTabelaEresetaContadorDaTelaEditar();
         }
+
     }//GEN-LAST:event_btn_salvar_clienteMouseClicked
+
+    public void atualizaTabelaEresetaContadorDaTelaEditar() {
+        repositorioTabelaProduto.atualizaTabela(dao.getAll());
+        Sistema.setTelaEditaProdutos(null);
+        dispose();
+    }
 
     private void btn_salvar_clienteMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btn_salvar_clienteMouseEntered
         // TODO add your handling code here:
@@ -298,60 +282,38 @@ public class TelaEditaUsuario extends javax.swing.JFrame {
         btn_salvar_cliente.setBackground(new Color(51, 152, 219));//cor quando sai do botton
     }//GEN-LAST:event_btn_salvar_clienteMouseExited
 
-    private void btn_cancelar_editar_userMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btn_cancelar_editar_userMouseClicked
+    private void btn_cancelarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btn_cancelarMouseClicked
         // TODO add your handling code here:
-        atualizaTabelaResetaContadorDaTelaEditar();
         dispose();
+        //reseta a variavel Tela Edita Produtos
+        Sistema.setTelaEditaProdutos(null);
         limpaCampos();
-    }//GEN-LAST:event_btn_cancelar_editar_userMouseClicked
+    }//GEN-LAST:event_btn_cancelarMouseClicked
 
     private void limpaCampos() {
-        edit_txt_cpf.setText("");
-        edit_txt_email.setText("");
-        edit_txt_nome.setText("");
-        edit_txt_rg.setText("");
+     
+        edit_txt_nome_produto.setText("");
+        edit_txt_codigo.setText("");
+        edit_txt_preco.setText("");
     }
 
-    private void btn_cancelar_editar_userMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btn_cancelar_editar_userMouseEntered
+    private void btn_cancelarMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btn_cancelarMouseEntered
         // TODO add your handling code here:
-        btn_cancelar_editar_user.setBackground(new Color(119, 183, 225));//Cor quando entra no botton
-    }//GEN-LAST:event_btn_cancelar_editar_userMouseEntered
+        btn_cancelar.setBackground(new Color(119, 183, 225));//Cor quando entra no botton
+    }//GEN-LAST:event_btn_cancelarMouseEntered
 
-    private void btn_cancelar_editar_userMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btn_cancelar_editar_userMouseExited
+    private void btn_cancelarMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btn_cancelarMouseExited
         // TODO add your handling code here:
-        btn_cancelar_editar_user.setBackground(new Color(51, 152, 219));//cor quando sai do botton
-    }//GEN-LAST:event_btn_cancelar_editar_userMouseExited
+        btn_cancelar.setBackground(new Color(51, 152, 219));//cor quando sai do botton
+    }//GEN-LAST:event_btn_cancelarMouseExited
 
-    private void edit_txt_emailActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_edit_txt_emailActionPerformed
+    private void edit_txt_nome_produtoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_edit_txt_nome_produtoActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_edit_txt_emailActionPerformed
+    }//GEN-LAST:event_edit_txt_nome_produtoActionPerformed
 
-    private void formWindowLostFocus(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowLostFocus
-        // TODO add your handling code here:
-      
-    }//GEN-LAST:event_formWindowLostFocus
-
-    private void btn_deletar_produtoMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btn_deletar_produtoMouseClicked
-        // TODO add your handling code here:
-        int reply = JOptionPane.showConfirmDialog(null,
-            "Deseja realmente remover este produto?",
-            "Remover produto",
-            JOptionPane.YES_NO_OPTION);
-
-        if (reply == JOptionPane.YES_OPTION) {
-            int itemClicado = tabela.getSelectedRow();
-            dao.deletar(dao.getAll().get(itemClicado));
-            atualizaTabelaResetaContadorDaTelaEditar();
-        }
-    }//GEN-LAST:event_btn_deletar_produtoMouseClicked
-    public void atualizaTabelaResetaContadorDaTelaEditar() {
-        repositorioTabelasUsuario.atualizaTabela(dao.getAll());
-        Sistema.setTelaEditaUsuario(null);
-        dispose();
-    }
     private void btn_deletar_produtoMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btn_deletar_produtoMouseEntered
         // TODO add your handling code here:
-        btn_deletar_produto.setBackground(new Color(119, 183, 225));//Cor quando entra no botton
+           btn_deletar_produto.setBackground(new Color(119, 183, 225));//Cor quando entra no botton
     }//GEN-LAST:event_btn_deletar_produtoMouseEntered
 
     private void btn_deletar_produtoMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btn_deletar_produtoMouseExited
@@ -359,23 +321,35 @@ public class TelaEditaUsuario extends javax.swing.JFrame {
         btn_deletar_produto.setBackground(new Color(51, 152, 219));//cor quando sai do botton
     }//GEN-LAST:event_btn_deletar_produtoMouseExited
 
+    private void btn_deletar_produtoMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btn_deletar_produtoMouseClicked
+        // TODO add your handling code here:
+        int reply = JOptionPane.showConfirmDialog(null,
+                "Deseja realmente remover este produto?",
+                "Remover produto",
+                JOptionPane.YES_NO_OPTION);
+        
+        if (reply == JOptionPane.YES_OPTION) {
+            int itemClicado = tabela.getSelectedRow();
+            dao.deletar(dao.getAll().get(itemClicado));
+            atualizaTabelaEresetaContadorDaTelaEditar();
+        }
+    }//GEN-LAST:event_btn_deletar_produtoMouseClicked
+
     /**
      * @param args the command line arguments
      */
     
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JPanel btn_cancelar_editar_user;
+    private javax.swing.JPanel btn_cancelar;
     private javax.swing.JPanel btn_deletar_produto;
     private javax.swing.JPanel btn_salvar_cliente;
-    private javax.swing.JTextField edit_txt_cpf;
-    private javax.swing.JTextField edit_txt_email;
-    private javax.swing.JTextField edit_txt_nome;
-    private javax.swing.JTextField edit_txt_rg;
+    private javax.swing.JTextField edit_txt_codigo;
+    private javax.swing.JTextField edit_txt_nome_produto;
+    private javax.swing.JTextField edit_txt_preco;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
-    private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel46;
     private javax.swing.JLabel jLabel47;
     private javax.swing.JLabel jLabel48;
