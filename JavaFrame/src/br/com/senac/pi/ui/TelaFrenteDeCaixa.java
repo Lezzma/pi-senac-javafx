@@ -21,6 +21,7 @@ import java.awt.Color;
 import java.awt.HeadlessException;
 import java.awt.KeyEventDispatcher;
 import java.awt.KeyboardFocusManager;
+import java.awt.Toolkit;
 import java.awt.event.KeyEvent;
 import java.time.Instant;
 import java.util.Date;
@@ -56,6 +57,7 @@ public class TelaFrenteDeCaixa extends javax.swing.JFrame {
         capturaClickDoteclado();
         ValorTotal.setText("0.0");
         verificaTemCliente(clienteVinculado);
+        setIcon();
     }
 
     private void colocaValorTotal() {
@@ -253,7 +255,7 @@ public class TelaFrenteDeCaixa extends javax.swing.JFrame {
         jLabel14.setFont(new java.awt.Font("Segoe UI", 1, 24)); // NOI18N
         jLabel14.setForeground(new java.awt.Color(255, 255, 255));
         jLabel14.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel14.setText("Lista De produtos");
+        jLabel14.setText("Lista de Produtos");
 
         javax.swing.GroupLayout jPanel10Layout = new javax.swing.GroupLayout(jPanel10);
         jPanel10.setLayout(jPanel10Layout);
@@ -793,4 +795,8 @@ public class TelaFrenteDeCaixa extends javax.swing.JFrame {
     private javax.swing.JTextField txt_valor_recebido;
     private javax.swing.JLabel txt_valor_unitario;
     // End of variables declaration//GEN-END:variables
+
+    private void setIcon() {
+         setIconImage(Toolkit.getDefaultToolkit().getImage(getClass().getResource("Icone.png")));
+    }
 }
