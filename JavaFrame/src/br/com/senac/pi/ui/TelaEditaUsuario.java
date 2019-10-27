@@ -10,6 +10,7 @@ import br.com.senac.pi.entidades.Usuario;
 import br.com.senac.pi.repositorio.UsuarioRepositorio;
 import br.com.senac.repositorios.RepositorioTabelasUsuario;
 import java.awt.Color;
+import java.awt.Toolkit;
 import java.util.List;
 import javax.swing.JOptionPane;
 import javax.swing.JTable;
@@ -46,6 +47,7 @@ public class TelaEditaUsuario extends javax.swing.JFrame {
         this.UsuarioAntesDeEditar = listaDeUsuario.get(listaDeUsuario.indexOf(usuario));
         
         prencheDadosUsuario(usuario);
+        setIcon();
     }
     
   
@@ -384,4 +386,8 @@ public class TelaEditaUsuario extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel51;
     private javax.swing.JPanel jPanel1;
     // End of variables declaration//GEN-END:variables
+
+    private void setIcon() {
+        setIconImage(Toolkit.getDefaultToolkit().getImage(getClass().getResource("Icone.png")));
+    }
 }

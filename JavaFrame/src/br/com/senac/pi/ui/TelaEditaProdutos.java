@@ -11,6 +11,7 @@ import br.com.senac.pi.repositorio.DaoRepositorio;
 import br.com.senac.pi.repositorio.ProdutoRepositorio;
 import br.com.senac.repositorios.RepositorioTabelaProduto;
 import java.awt.Color;
+import java.awt.Toolkit;
 import java.util.List;
 import javax.swing.JOptionPane;
 import javax.swing.JTable;
@@ -45,6 +46,7 @@ public class TelaEditaProdutos extends javax.swing.JFrame {
         this.produtoAntesDeEditar = produto;
         this.repositorioTabelaProduto = new RepositorioTabelaProduto(tabela);
         prencheDadosProdutos(produto);
+        setIcon();
     }
     
   
@@ -358,4 +360,8 @@ public class TelaEditaProdutos extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel51;
     private javax.swing.JPanel jPanel1;
     // End of variables declaration//GEN-END:variables
+
+    private void setIcon() {
+         setIconImage(Toolkit.getDefaultToolkit().getImage(getClass().getResource("Icone.png")));
+    }
 }

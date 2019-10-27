@@ -17,6 +17,7 @@ import br.com.senac.repositorios.RepositorioTabelasUsuario;
 import br.com.senac.repositorios.RepositorioroTabelaCliente;
 import java.awt.CardLayout;
 import java.awt.Color;
+import java.awt.Toolkit;
 import java.util.ArrayList;
 import java.util.List;
 import javax.swing.JOptionPane;
@@ -70,7 +71,7 @@ public class Sistema extends javax.swing.JFrame {
         this.clienteControler = new ClienteControler(this.repositorioroTabelaCliente);
         this.clienteControler.criaClienteTeste();
         this.clienteControler.atualizaTabelaCliente();
-        
+        setIcon();
     }
     
     static void setTelaEditaProdutos(TelaEditaProdutos telaEditaProdutos) {
@@ -148,6 +149,7 @@ public class Sistema extends javax.swing.JFrame {
         btn_gerarPeido1 = new javax.swing.JPanel();
         jLabel42 = new javax.swing.JLabel();
         jLabel43 = new javax.swing.JLabel();
+        jLabel12 = new javax.swing.JLabel();
         homeJpainel = new javax.swing.JPanel();
         jPainelHome = new javax.swing.JPanel();
         cadastrarProduto = new javax.swing.JPanel();
@@ -477,6 +479,9 @@ public class Sistema extends javax.swing.JFrame {
         jLabel43.setBounds(60, 0, 140, 40);
 
         sideBar.add(btn_gerarPeido1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 260, 210, 45));
+
+        jLabel12.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/com/senac/pi/ui/logo_branco.png"))); // NOI18N
+        sideBar.add(jLabel12, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 410, 190, 170));
 
         homeJpainel.setBackground(new java.awt.Color(255, 255, 255));
         homeJpainel.setLayout(new java.awt.CardLayout());
@@ -1861,6 +1866,7 @@ public class Sistema extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
+    private javax.swing.JLabel jLabel12;
     private javax.swing.JLabel jLabel13;
     private javax.swing.JLabel jLabel14;
     private javax.swing.JLabel jLabel15;
@@ -1963,4 +1969,8 @@ public class Sistema extends javax.swing.JFrame {
     private javax.swing.JTextField txt_rg_user;
     private javax.swing.JPasswordField txt_senha_user;
     // End of variables declaration//GEN-END:variables
+
+    private void setIcon() {
+        setIconImage(Toolkit.getDefaultToolkit().getImage(getClass().getResource("Icone.png")));
+    }
 }
