@@ -16,17 +16,17 @@ import java.util.List;
  */
 public class ProdutoRepositorio implements DaoRepositorio<Produtos> {
 
-    public static List<Produtos> listaProdutos = new ArrayList<>();
+    public static List<Produtos> LISTA_DE_PRODUTOS = new ArrayList<>();
 
     @Override
     public List<Produtos> getAll() {
-        return listaProdutos;
+        return LISTA_DE_PRODUTOS;
     }
 
     @Override
     public void inserir(Produtos entidade) {
        
-         listaProdutos.add(entidade);
+         LISTA_DE_PRODUTOS.add(entidade);
         
     }
 
@@ -40,7 +40,7 @@ public class ProdutoRepositorio implements DaoRepositorio<Produtos> {
 
     @Override
     public void deletar(Produtos entidade) {
-       listaProdutos.remove(entidade);
+       LISTA_DE_PRODUTOS.remove(entidade);
     }
 
 }

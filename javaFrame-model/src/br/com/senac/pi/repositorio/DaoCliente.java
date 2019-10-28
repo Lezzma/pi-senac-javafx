@@ -14,16 +14,16 @@ import java.util.List;
  * @author jrneto
  */
 public class DaoCliente implements DaoRepositorio<Cliente>{
-    private static List<Cliente> listaDeCliente = new ArrayList<>();
+    private static List<Cliente> LISTA_DE_CLIENTE = new ArrayList<>();
     
     @Override
     public List<Cliente> getAll() {
-        return listaDeCliente;
+        return LISTA_DE_CLIENTE;
     }
 
     @Override
     public void inserir(Cliente entidade) {
-        listaDeCliente.add(entidade);
+        LISTA_DE_CLIENTE.add(entidade);
     }
 
     @Override
@@ -33,7 +33,7 @@ public class DaoCliente implements DaoRepositorio<Cliente>{
 
     @Override
     public void deletar(Cliente entidade) {
-        listaDeCliente.remove(entidade);
+        LISTA_DE_CLIENTE.remove(entidade);
     }
     
 }

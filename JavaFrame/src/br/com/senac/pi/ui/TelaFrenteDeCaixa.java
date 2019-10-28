@@ -613,7 +613,7 @@ public class TelaFrenteDeCaixa extends javax.swing.JFrame {
 
         //quando a frente de caixa é fechado, lista do repositorioCarrinho é zerada
         daoCarrinho.limpaCarrinho();
-
+        reiniciaFrenteDeCaixa();
         //fecha tela de frente de caixa
         //abre a tela de login
         dispose();
@@ -637,7 +637,7 @@ public class TelaFrenteDeCaixa extends javax.swing.JFrame {
         vendaRealizada.setVendedor(usuarioLogado);
         vendaRealizada.setDiaDaCompra(Date.from(Instant.now()));
         vendaRealizada.seCarrinho(new Carrinho(daoCarrinho.getAll()));
-        vendaRealizada.setTotal_pago(total);
+        vendaRealizada.setTotal_pago(Double.parseDouble(ValorTotal.getText()));
 
         colocaValorTotal();
         finalizaVenda(vendaRealizada);
@@ -703,10 +703,12 @@ public class TelaFrenteDeCaixa extends javax.swing.JFrame {
     }
     private void btn_realizarVendaMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btn_realizarVendaMouseEntered
         // TODO add your handling code here:
+          btn_realizarVenda.setBackground(new Color(0,204,0));//Cor quando entra no botton
     }//GEN-LAST:event_btn_realizarVendaMouseEntered
 
     private void btn_realizarVendaMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btn_realizarVendaMouseExited
         // TODO add your handling code here:
+        btn_realizarVenda.setBackground(new Color(102,255,102));//cor quando sai do botton
     }//GEN-LAST:event_btn_realizarVendaMouseExited
 
     private void tabela_carrinhoMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tabela_carrinhoMouseClicked

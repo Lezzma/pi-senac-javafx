@@ -16,6 +16,8 @@ import java.util.List;
 public class DaoVendas implements DaoRepositorio<Venda>{
     private static List<Venda> listaDeVendas = new ArrayList<>();
 
+  
+
     @Override
     public List<Venda> getAll() {
         return listaDeVendas;

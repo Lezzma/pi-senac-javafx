@@ -14,16 +14,16 @@ import java.util.List;
  * @author jrneto
  */
 public class DaoCarrinho implements DaoRepositorio<Produtos>{
-    private static List<Produtos> carrinhoDeCompras = new ArrayList<>();
+    private static List<Produtos> LISTA_CARRINHO_DE_COMPRAS = new ArrayList<>();
     
     @Override
     public List<Produtos> getAll() {
-        return carrinhoDeCompras;
+        return LISTA_CARRINHO_DE_COMPRAS;
     }
 
     @Override
     public void inserir(Produtos entidade) {
-        carrinhoDeCompras.add(entidade);
+        LISTA_CARRINHO_DE_COMPRAS.add(entidade);
     }
 
     @Override
@@ -33,10 +33,10 @@ public class DaoCarrinho implements DaoRepositorio<Produtos>{
 
     @Override
     public void deletar(Produtos entidade) {
-       carrinhoDeCompras.remove(entidade);
+       LISTA_CARRINHO_DE_COMPRAS.remove(entidade);
     }
     
     public void limpaCarrinho(){
-        carrinhoDeCompras.removeAll(carrinhoDeCompras);
+        LISTA_CARRINHO_DE_COMPRAS.removeAll(LISTA_CARRINHO_DE_COMPRAS);
     }
 }

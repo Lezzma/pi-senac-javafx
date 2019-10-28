@@ -5,35 +5,33 @@
  */
 package br.com.senac.pi.repositorio;
 
-import br.com.senac.pi.entidades.Usuario;
+import br.com.senac.pi.entidades.Venda;
 import java.util.ArrayList;
 import java.util.List;
 
 /**
  *
- * @author netos
+ * @author jrneto
  */
-public class UsuarioRepositorio implements DaoRepositorio<Usuario>{
- 
-    public static List<Usuario> LISTA_DE_USUARIOS = new ArrayList<>();
+public class DaoRelatorio  implements DaoRepositorio<Venda>{
+    private static List<Venda> LISTA_DE_RELATORIO = new DaoVendas().getAll();
     @Override
-    public List<Usuario> getAll() {
-       return LISTA_DE_USUARIOS;
+    public List<Venda> getAll() {
+        return LISTA_DE_RELATORIO;
     }
 
     @Override
-    public void inserir(Usuario entidade) {
-       LISTA_DE_USUARIOS.add(entidade);
+    public void inserir(Venda entidade) {
+      LISTA_DE_RELATORIO.add(entidade);
     }
 
     @Override
-    public void att(Usuario entidade) {
+    public void att(Venda entidade) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public void deletar(Usuario entidade) {
-        LISTA_DE_USUARIOS.remove(entidade);
+    public void deletar(Venda entidade) {
+        LISTA_DE_RELATORIO.remove(entidade);
     }
-    
 }
