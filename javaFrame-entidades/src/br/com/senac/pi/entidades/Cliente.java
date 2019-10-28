@@ -15,12 +15,26 @@ public class Cliente {
     private int id;
     private String nome;
     private String cpf;
+    private String dataDeNascimento;
+    private String tell;
+    private String sexo;
+    private String estadoCivil;
+    private String email;
+    private Endereco endereco;
     
     public Cliente(){}
-    public Cliente(String nome,String cpf){
+
+    public Cliente(String nome, String cpf, String dataDeNascimento, String tell, String sexo, String estadoCivil, String email, Endereco endereco) {
         this.nome = nome;
         this.cpf = cpf;
+        this.dataDeNascimento = dataDeNascimento;
+        this.tell = tell;
+        this.sexo = sexo;
+        this.estadoCivil = estadoCivil;
+        this.email = email;
+        this.endereco = endereco;
     }
+   
     public String getNome() {
         return nome;
     }
@@ -41,6 +55,54 @@ public class Cliente {
         return id;
     }
 
+    public String getDataDeNascimento() {
+        return dataDeNascimento;
+    }
+
+    public void setDataDeNascimento(String dataDeNascimento) {
+        this.dataDeNascimento = dataDeNascimento;
+    }
+
+    public String getTell() {
+        return tell;
+    }
+
+    public void setTell(String tell) {
+        this.tell = tell;
+    }
+
+    public String getSexo() {
+        return sexo;
+    }
+
+    public void setSexo(String sexo) {
+        this.sexo = sexo;
+    }
+
+    public String getEstadoCivil() {
+        return estadoCivil;
+    }
+
+    public void setEstadoCivil(String estadoCivil) {
+        this.estadoCivil = estadoCivil;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public Endereco getEndereco() {
+        return endereco;
+    }
+
+    public void setEndereco(Endereco endereco) {
+        this.endereco = endereco;
+    }
+    
     @Override
     public int hashCode() {
         int hash = 3;

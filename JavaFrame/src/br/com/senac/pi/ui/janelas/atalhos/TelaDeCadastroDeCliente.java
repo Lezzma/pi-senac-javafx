@@ -388,8 +388,8 @@ public class TelaDeCadastroDeCliente extends javax.swing.JDialog {
 
     private void btn_salvar_clienteMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btn_salvar_clienteMouseClicked
         // TODO add your handling code here:
-        Cliente novoCliente = new Cliente(txt_nome_cliente.getText(), txt_cpf_cliente.getText());
-        clienteControler.criarNovoCliente(novoCliente);
+       // Cliente novoCliente = new Cliente(txt_nome_cliente.getText(), txt_cpf_cliente.getText());
+       // clienteControler.criarNovoCliente(novoCliente);
     }//GEN-LAST:event_btn_salvar_clienteMouseClicked
 
     private void btn_salvar_clienteMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btn_salvar_clienteMouseEntered

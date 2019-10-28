@@ -31,6 +31,12 @@ public class TelaEditarClientes extends javax.swing.JDialog {
 
     /**
      * Creates new form TelaEditarClientes
+     * @param parent
+     * @param modal
+     * @param cliente
+     * @param tabela
+     * @param caixa
+     * @param telaDeCadastroDeCliente
      */
     public TelaEditarClientes(
             java.awt.Frame parent,
@@ -49,6 +55,11 @@ public class TelaEditarClientes extends javax.swing.JDialog {
         this.tabela = tabela;
 
         prencheDadosCliente(cliente);
+    }
+    public TelaEditarClientes (java.awt.Frame parent,
+            boolean modal){
+        super(parent, modal);
+     initComponents();
     }
 
     /**

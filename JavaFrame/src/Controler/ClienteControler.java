@@ -7,6 +7,7 @@
 package Controler;
 
 import br.com.senac.pi.entidades.Cliente;
+import br.com.senac.pi.entidades.Endereco;
 import br.com.senac.pi.repositorio.DaoCliente;
 import br.com.senac.repositorios.RepositorioroTabelaCliente;
 import java.util.List;
@@ -49,7 +50,15 @@ public class ClienteControler {
     //cria um cliente teste 
     public void criaClienteTeste() {
         if (dao.getAll().isEmpty()) {
-            Cliente clieteTeste = new Cliente("Jabulani", "33333333333");
+            Cliente clieteTeste = new Cliente(
+                    "Jabulani",
+                    "33333333333",
+                    "05/01/1998",
+                    "55555555",
+                    "Masculino",
+                    "solteiro",
+                    "neto.silva101@outlook.com",
+                        new Endereco("04849160", "Cocaia", "Manuel pla", 'c', 0));
             dao.inserir(clieteTeste);
 
         }

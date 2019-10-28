@@ -34,7 +34,13 @@ public class RepositorioroTabelaCliente implements RepositorioTabela<Cliente>{
             model.addRow(
                     new Object[]{
                         p.getNome(),
-                        p.getCpf()
+                        p.getCpf(),
+                        p.getDataDeNascimento(),
+                        p.getTell(),
+                        p.getSexo(),
+                        p.getEstadoCivil(),
+                        p.getEmail(),
+                        p.getEndereco().getBairro()+" - Cep:"+p.getEndereco().getCep()
                     });
         });
          }).start();
