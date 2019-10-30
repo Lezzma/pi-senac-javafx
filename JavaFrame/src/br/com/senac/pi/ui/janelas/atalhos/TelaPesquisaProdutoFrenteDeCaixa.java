@@ -5,17 +5,14 @@
  */
 package br.com.senac.pi.ui.janelas.atalhos;
 
+import br.com.senac.factoryReposit.RepositoreCarrinho;
 import br.com.senac.pi.model.entidades.Produtos;
 import br.com.senac.pi.model.Dao.DaoCarrinho;
 import br.com.senac.pi.model.Dao.DaoRepositorio;
 import br.com.senac.pi.model.Dao.ProdutoRepositorio;
 import br.com.senac.factoryReposit.RepositorioTabela;
 import br.com.senac.factoryReposit.RepositorioTabelaProduto;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JTable;
@@ -28,8 +25,10 @@ public class TelaPesquisaProdutoFrenteDeCaixa extends javax.swing.JFrame {
 
     private RepositorioTabela repoTabela;
     private RepositorioTabela repoTabelaCarrinho;
-    private DaoRepositorio daoProduto;
-    private List<Produtos> listaDeProdutos;
+    
+    private final DaoRepositorio daoProduto;
+    private final List<Produtos> listaDeProdutos;
+    
     private JLabel valorTotal;
     private double valor;
     private DaoRepositorio daoCarrinho;
@@ -38,24 +37,34 @@ public class TelaPesquisaProdutoFrenteDeCaixa extends javax.swing.JFrame {
     /**
      * Creates new form TelaPesquisaProdutoFrenteDeCaixa
      */
-    public TelaPesquisaProdutoFrenteDeCaixa() {
-        initComponents();
-        this.repoTabela = new RepositorioTabelaProduto(tab_pes_fdc);
-        this.daoProduto = new ProdutoRepositorio();
-        this.listaDeProdutos = daoProduto.getAll();
-        configuraTabela(listaDeProdutos);
-    }
+   
 
     public TelaPesquisaProdutoFrenteDeCaixa(JTable tabela, JLabel valototal) {
         initComponents();
-        this.valorTotal = valototal;
-        this.valor = Double.parseDouble(valototal.getText());
-        this.repoTabela = new RepositorioTabelaProduto(tab_pes_fdc);
-        this.repoTabela = new RepositorioTabelaProduto(tab_pes_fdc);
-        this.repoTabelaCarrinho = new RepositorioTabelaProduto(tabela);
-        this.daoProduto = new ProdutoRepositorio();
-        this.listaDeProdutos = daoProduto.getAll();
-        this.daoCarrinho = new DaoCarrinho();
+        
+        //coloca valor total
+        valorTotal = valototal;
+        
+        //recebe o valor anterior
+        valor = Double.parseDouble(valototal.getText());
+        
+        //tabela de pesquisar produtos
+        repoTabela = new RepositorioTabelaProduto(tab_pes_fdc);
+       
+        //tabela da frente de caixa
+        repoTabelaCarrinho = new RepositoreCarrinho(tabela);
+        
+        //dao que busca todos produtos
+        daoProduto = new ProdutoRepositorio();
+        
+        //lista contendo todos os produtos
+        listaDeProdutos = daoProduto.getAll();
+        
+        //dao do carrinho de compras
+        //usado para adicionar o produto no carrinho
+        daoCarrinho = new DaoCarrinho();
+        
+        //metodo resposavel por configura a tabela de pesquisa
         configuraTabela(listaDeProdutos);
     }
 
@@ -214,26 +223,39 @@ public class TelaPesquisaProdutoFrenteDeCaixa extends javax.swing.JFrame {
     }//GEN-LAST:event_btn_pesquisa_fdcActionPerformed
 
     private void tab_pes_fdcMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tab_pes_fdcMouseClicked
-        duploClickTabela(evt);
-        int indexItem = tab_pes_fdc.getSelectedRow();
-        this.produtoClicado = listaDeProdutos.get(indexItem);
-        item_quantidade.setValue(produtoClicado.getQuantidade());
+        if(evt.getClickCount() == 2 ){
+            duploClickTabela();
+            
+            item_quantidade.setValue(pegaProdutoClicado().getQuantidade());
+        }
+        
 
     }//GEN-LAST:event_tab_pes_fdcMouseClicked
-    protected void duploClickTabela(java.awt.event.MouseEvent evt) {
-        if (evt.getClickCount() == 2) {
-            Produtos produtoClicado = pegaProdutoClicado();
-            if (!daoCarrinho.getAll().contains(produtoClicado)) {
-                daoCarrinho.inserir(produtoClicado);
-                valor += produtoClicado.getPreco() * produtoClicado.getQuantidade();
+    protected void duploClickTabela() {
+            Produtos itemClicado = pegaProdutoClicado();
+            
+            if (!daoCarrinho.getAll().contains(itemClicado)) {
+               
+                //coloca o item clicado no carrinho de comprass
+                daoCarrinho.inserir(itemClicado);
+                
+                //armazena o valor total
+                valor += itemClicado.getPreco() * itemClicado.getQuantidade();
+                
+                //coloca o valor total na tela de frente de caixa
                 valorTotal.setText(String.valueOf(valor));
+                
+                //atualiza a tabela da frente de caixa
                 repoTabelaCarrinho.atualizaTabela(daoCarrinho.getAll());
+                
+                //fecha a janela atual
                 dispose();
 
             } else {
                 JOptionPane.showMessageDialog(null, "Esse produto já está no carrinho", "Ação não permitida!", JOptionPane.INFORMATION_MESSAGE);
+                repoTabelaCarrinho.atualizaTabela(daoCarrinho.getAll());
             }
-        }
+        
 
     }
 
@@ -253,21 +275,15 @@ public class TelaPesquisaProdutoFrenteDeCaixa extends javax.swing.JFrame {
     }//GEN-LAST:event_btn_set_qtdMouseClicked
 
     private Produtos pegaProdutoClicado() {
-        // TODO add your handling code here:
-
         int itemClicado = tab_pes_fdc.getSelectedRow();
-        Produtos produtoClicado = listaDeProdutos.get(itemClicado);
+        Produtos pegaritemClicado = listaDeProdutos.get(itemClicado);
 
-        return produtoClicado;
+        return pegaritemClicado;
     }
 
     private void pesquisa(String tipoDePesquisa, String itemPesquisado) {
         switch (tipoDePesquisa) {
             case "Código":
-//                      Código
-//                        ID
-//                        Nome
-//                        Marca
                 listaDeProdutos.forEach(p -> {
                     if (p.getCodigo().equals(itemPesquisado)) {
                         repoTabela.retornaItemPesquisado(p);
@@ -323,7 +339,7 @@ public class TelaPesquisaProdutoFrenteDeCaixa extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new TelaPesquisaProdutoFrenteDeCaixa().setVisible(true);
+                new TelaPesquisaProdutoFrenteDeCaixa(null,null).setVisible(true);
             }
         });
     }

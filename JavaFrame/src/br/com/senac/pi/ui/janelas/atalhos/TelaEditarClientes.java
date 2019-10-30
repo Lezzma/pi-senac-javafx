@@ -40,8 +40,10 @@ public class TelaEditarClientes extends javax.swing.JDialog {
      */
     public TelaEditarClientes(
             java.awt.Frame parent,
-            boolean modal, Cliente cliente,
-            JTable tabela, TelaFrenteDeCaixa caixa,
+            boolean modal,
+            Cliente cliente,
+            JTable tabela,
+            TelaFrenteDeCaixa caixa,
             TelaDeCadastroDeCliente telaDeCadastroDeCliente) {
         
         super(parent, modal);
@@ -346,11 +348,8 @@ public class TelaEditarClientes extends javax.swing.JDialog {
 
     private void btn_vincula_cliente_paraCompraMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btn_vincula_cliente_paraCompraMouseClicked
         // TODO add your handling code here:
-
-        caixa.vinculaCliente(cliente);
-        cadastroDeCliente.dispose();
-        dispose();
-        
+       
+       
 
     }//GEN-LAST:event_btn_vincula_cliente_paraCompraMouseClicked
 

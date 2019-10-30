@@ -37,6 +37,16 @@ public class DaoCarrinho implements DaoRepositorio<Produtos>{
     }
     
     public void limpaCarrinho(){
-        LISTA_CARRINHO_DE_COMPRAS.removeAll(LISTA_CARRINHO_DE_COMPRAS);
+        try{
+            getAll().forEach(p -> {
+                if(getAll().size() >= 1){
+                 LISTA_CARRINHO_DE_COMPRAS.remove(p);
+                }
+               
+            });
+        }catch(RuntimeException e){
+            System.out.println("Erro ao limpar carrinho: "+e.getMessage());
+        }
+       
     }
 }

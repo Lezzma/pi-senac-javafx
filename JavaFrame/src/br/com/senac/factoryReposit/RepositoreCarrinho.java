@@ -14,59 +14,56 @@ import javax.swing.table.DefaultTableModel;
  *
  * @author jrneto
  */
-public class RepositoreCarrinho implements RepositorioTabela<Produtos>{
+public class RepositoreCarrinho implements RepositorioTabela<Produtos> {
 
     DefaultTableModel model;
-    
-    public RepositoreCarrinho(JTable tabela){
+
+    public RepositoreCarrinho(JTable tabela) {
         this.convertModelTabela(tabela);
     }
 
     @Override
     public void convertModelTabela(JTable tabela) {
-       this.model = (DefaultTableModel) tabela.getModel();
+        this.model = (DefaultTableModel) tabela.getModel();
     }
-     
-    
+
     @Override
     public void atualizaTabela(List<Produtos> entidade) {
         new Thread(() -> {
-             model.setNumRows(0);
-             entidade.forEach(p -> {
-             model.addRow(
-                     new Object[]{
-                         p.getCodigo(),
-                         p.getNome(),
-                         p.getPreco()
-                     });
-         });
-          }).start();
+            model.setNumRows(0);
+            entidade.forEach(p -> {
+                model.addRow(
+                        new Object[]{
+                            p.getCodigo(),
+                            p.getNome(),
+                            p.getPreco()
+                        });
+            });
+        }).start();
     }
 
     @Override
     public void inserirEntidadeTeste(List<Produtos> entidade) {
-          new Thread(() -> {
+        new Thread(() -> {
             if (entidade.isEmpty()) {
-            Produtos produtoTeste = new Produtos("123123","leite",20);
-            entidade.add(produtoTeste);
-        }
-        atualizaTabela(entidade);
+                Produtos produtoTeste = new Produtos("123123", "leite", 20);
+                entidade.add(produtoTeste);
+            }
+            atualizaTabela(entidade);
         }).start();
     }
 
     @Override
     public void retornaItemPesquisado(Produtos entidade) {
-         
-             model.setNumRows(0);
-             model.addRow(
-                     new Object[]{
-                         entidade.getCodigo(),
-                         entidade.getNome(),
-                         entidade.getPreco()
-                     });
-       
-      
+
+        model.setNumRows(0);
+        model.addRow(
+                new Object[]{
+                    entidade.getCodigo(),
+                    entidade.getNome(),
+                    entidade.getPreco()
+                });
+
     }
-    
-    
+
 }

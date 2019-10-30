@@ -18,7 +18,9 @@ public class Login extends javax.swing.JFrame {
         criaUsuarioTeste();
         setIcon();
     }
-
+    
+    //metodo reponsavel por criar usuarios teste
+    //usado somente para testar o sistema
     private void criaUsuarioTeste() {
         if(usuarios.isEmpty()){
             Usuario admin = new Usuario();
@@ -197,7 +199,8 @@ public class Login extends javax.swing.JFrame {
         pack();
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
-   
+   //verifica o tipo de usuario 
+    //inicia o sistema com base nas suas politicas de acesso
     private void entrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_entrarActionPerformed
            LoginControler autUserControler = new LoginControler();
            if(!(login.getText().equals("") || senha.getText().equals(""))){
@@ -224,18 +227,12 @@ public class Login extends javax.swing.JFrame {
                     "Campos invalidos",
                     JOptionPane.ERROR_MESSAGE);
            }
-        
-        
-        
-       
-
     }//GEN-LAST:event_entrarActionPerformed
     
-    
+    //fecha o sistema
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         // TODO add your handling code here:
-        System.exit(0);
-        
+        System.exit(0);  
     }//GEN-LAST:event_jButton2ActionPerformed
 
     private void loginActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_loginActionPerformed
@@ -245,7 +242,11 @@ public class Login extends javax.swing.JFrame {
     private void senhaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_senhaActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_senhaActionPerformed
-
+    
+    //coloca icone do sistema
+    private void setIcon() {
+        setIconImage(Toolkit.getDefaultToolkit().getImage(getClass().getResource("Icone.png")));
+    }
    
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton entrar;
@@ -260,8 +261,6 @@ public class Login extends javax.swing.JFrame {
     private javax.swing.JTextField login;
     private javax.swing.JPasswordField senha;
     // End of variables declaration//GEN-END:variables
+    
 
-    private void setIcon() {
-        setIconImage(Toolkit.getDefaultToolkit().getImage(getClass().getResource("Icone.png")));
-    }
 }

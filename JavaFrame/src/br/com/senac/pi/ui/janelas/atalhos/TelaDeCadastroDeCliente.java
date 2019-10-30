@@ -28,6 +28,7 @@ public class TelaDeCadastroDeCliente extends javax.swing.JDialog {
     public TelaDeCadastroDeCliente(java.awt.Frame parent, boolean modal, TelaFrenteDeCaixa telaPrincipal) {
         super(parent, modal);
         initComponents();
+        
         this.caixa = telaPrincipal;
 
         //controler da entidade cliente
@@ -416,7 +417,7 @@ public class TelaDeCadastroDeCliente extends javax.swing.JDialog {
 
     private void tabela_de_clientesMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tabela_de_clientesMouseClicked
         if (evt.getClickCount() == 2) {
-            if (this.caixa.getClienteVinculado() == null) {
+            if (null == null) {
                 int itemClicado = tabela_de_clientes.getSelectedRow();
                 // TODO add your handling code here:
                new TelaEditarClientes(null,

@@ -5,7 +5,6 @@
  */
 package br.com.senac.pi.ui;
 
-import br.com.senac.pi.ui.janelas.atalhos.TelaDeCadastroDeCliente;
 import br.com.senac.pi.model.entidades.Carrinho;
 import br.com.senac.pi.model.entidades.Cliente;
 import br.com.senac.pi.model.entidades.Produtos;
@@ -16,7 +15,6 @@ import br.com.senac.pi.model.Dao.DaoVendas;
 import br.com.senac.pi.ui.janelas.atalhos.TelaDeCadastroDeCliente;
 import br.com.senac.pi.ui.janelas.atalhos.TelaPesquisaProdutoFrenteDeCaixa;
 import br.com.senac.factoryReposit.RepositoreCarrinho;
-import br.com.senac.factoryReposit.RepositorioTabela;
 import java.awt.Color;
 import java.awt.HeadlessException;
 import java.awt.KeyEventDispatcher;
@@ -25,9 +23,7 @@ import java.awt.Toolkit;
 import java.awt.event.KeyEvent;
 import java.time.Instant;
 import java.util.Date;
-import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 
@@ -37,26 +33,50 @@ import javax.swing.JOptionPane;
  */
 public class TelaFrenteDeCaixa extends javax.swing.JFrame {
 
-    private DaoCarrinho daoCarrinho = new DaoCarrinho();
-    private DaoVendas daoVendas = new DaoVendas();
+    private DaoCarrinho daoCarrinho;
+    private DaoVendas daoVendas;
+
     private Cliente clienteVinculado;
+
     private Usuario usuarioLogado;
-    private RepositorioTabela repositorioCarrinho;
+    private RepositoreCarrinho repositorioCarrinho;
+    
     double total = 0;
     double valorRecebido = 0;
 
     /**
      * Creates new form TelaFrenteDeCaixa
+     * @param usuario
      */
     public TelaFrenteDeCaixa(Usuario usuario) {
         initComponents();
+
+        //inicia a tela de frente de caixa em tela cheia
         this.setExtendedState(JFrame.MAXIMIZED_BOTH);
-        this.usuarioLogado = usuario;
-        this.repositorioCarrinho = new RepositoreCarrinho(tabela_carrinho);
-        this.repositorioCarrinho.atualizaTabela(daoCarrinho.getAll());
+        clienteVinculado = new Cliente();
+        
+        //init daos
+        daoCarrinho = new DaoCarrinho();
+        daoVendas = new DaoVendas();
+        
+        //pega o usuáiro atual 
+        usuarioLogado = usuario;
+
+        //responsavel por atualizar a tabela de carrinho
+        repositorioCarrinho = new RepositoreCarrinho(tabela_carrinho);
+        repositorioCarrinho.atualizaTabela(daoCarrinho.getAll());
+
+        //captura ações dos botões de atalho 
+        //exemplo: f7,f8 e f9....
         capturaClickDoteclado();
+
+        //frente de caixa sempre inicia com valor zerado
         ValorTotal.setText("0.0");
-        verificaTemCliente(clienteVinculado);
+
+        //valida se tem cliente vinculado
+        verificaTemCliente(null);
+
+        //coloca o icone do sistema
         setIcon();
     }
 
@@ -67,26 +87,19 @@ public class TelaFrenteDeCaixa extends javax.swing.JFrame {
         ValorTotal.setText(String.valueOf(this.total));
 
     }
-
-    public Cliente getClienteVinculado() {
-        return clienteVinculado;
-    }
-
-    private void verificaTemCliente(Cliente cliente) {
-
-        if (this.clienteVinculado == null) {
-            btn_realizarVenda.setVisible(false);
+  
+    
+    public void verificaTemCliente(Cliente cliente) {
+        if (cliente == null) {
             txt_sem_cliente.setVisible(true);
+            btn_realizarVenda.setVisible(false);
         } else {
             txt_sem_cliente.setVisible(false);
             btn_realizarVenda.setVisible(true);
         }
     }
 
-    public void vinculaCliente(Cliente cliente) {
-        this.clienteVinculado = cliente;
-        verificaTemCliente(this.clienteVinculado);
-    }
+   
 
     private void capturaClickDoteclado() {
         KeyboardFocusManager
@@ -106,8 +119,8 @@ public class TelaFrenteDeCaixa extends javax.swing.JFrame {
 
                         if (ke.getID() == ke.KEY_RELEASED && ke.getKeyCode() == KeyEvent.VK_F9) {
                             String senha = JOptionPane.showInputDialog("Digite a senha de administrador");
-                            if(senha.equals("admin")){
-                             reiniciaFrenteDeCaixa();
+                            if (senha.equals("admin")) {
+                                reiniciaFrenteDeCaixa();
                             }
                             return true;
                         }
@@ -160,6 +173,7 @@ public class TelaFrenteDeCaixa extends javax.swing.JFrame {
         jLabel37 = new javax.swing.JLabel();
         txt_sem_cliente = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
+        jButton1 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setUndecorated(true);
@@ -506,6 +520,13 @@ public class TelaFrenteDeCaixa extends javax.swing.JFrame {
 
         jLabel3.setText("F9 - Cancelar Caixa");
 
+        jButton1.setText("jButton1");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout tela_frente_caixaLayout = new javax.swing.GroupLayout(tela_frente_caixa);
         tela_frente_caixa.setLayout(tela_frente_caixaLayout);
         tela_frente_caixaLayout.setHorizontalGroup(
@@ -513,16 +534,22 @@ public class TelaFrenteDeCaixa extends javax.swing.JFrame {
             .addGroup(tela_frente_caixaLayout.createSequentialGroup()
                 .addGap(25, 25, 25)
                 .addGroup(tela_frente_caixaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jPanel6, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jPanel17, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jPanel16, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(tela_frente_caixaLayout.createSequentialGroup()
                         .addGroup(tela_frente_caixaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel1)
-                            .addComponent(jLabel2)
-                            .addComponent(jLabel3))
-                        .addGap(0, 0, Short.MAX_VALUE)))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                            .addComponent(jPanel6, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(jPanel17, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(jPanel16, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addGroup(tela_frente_caixaLayout.createSequentialGroup()
+                                .addGroup(tela_frente_caixaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jLabel2)
+                                    .addComponent(jLabel3))
+                                .addGap(0, 0, Short.MAX_VALUE)))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED))
+                    .addGroup(tela_frente_caixaLayout.createSequentialGroup()
+                        .addComponent(jLabel1)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(jButton1)
+                        .addGap(130, 130, 130)))
                 .addGroup(tela_frente_caixaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jPanel10, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, tela_frente_caixaLayout.createSequentialGroup()
@@ -563,8 +590,10 @@ public class TelaFrenteDeCaixa extends javax.swing.JFrame {
                         .addGap(96, 96, 96)))
                 .addGroup(tela_frente_caixaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(tela_frente_caixaLayout.createSequentialGroup()
-                        .addGap(63, 63, 63)
-                        .addComponent(jLabel1)
+                        .addGap(59, 59, 59)
+                        .addGroup(tela_frente_caixaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel1)
+                            .addComponent(jButton1))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jLabel2)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -609,11 +638,9 @@ public class TelaFrenteDeCaixa extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btn_sair_frente_de_caixaMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btn_sair_frente_de_caixaMouseClicked
-        // TODO add your handling code here:
-
         //quando a frente de caixa é fechado, lista do repositorioCarrinho é zerada
-        daoCarrinho.limpaCarrinho();
-        reiniciaFrenteDeCaixa();
+        
+
         //fecha tela de frente de caixa
         //abre a tela de login
         dispose();
@@ -656,11 +683,18 @@ public class TelaFrenteDeCaixa extends javax.swing.JFrame {
     }
 
     private void reiniciaFrenteDeCaixa() {
+        //limpa o carrinho de compras
         daoCarrinho.limpaCarrinho();
         repositorioCarrinho.atualizaTabela(daoCarrinho.getAll());
-        this.clienteVinculado = null;
-        this.total = 0;
+        
+        //zera o total
+        total = 0;
+        
+        //tirando o ultimo cliente 
+        //tirando os campos invalidos
+        clienteVinculado = null;
         verificaTemCliente(clienteVinculado);
+        
         limpaCampos();
     }
 
@@ -679,10 +713,10 @@ public class TelaFrenteDeCaixa extends javax.swing.JFrame {
     //caso contratio não realiza o calculo e informa ao vendedor que falta dinheiro
     public boolean realizaPagamento() {
 
-        this.valorRecebido = Double.parseDouble(txt_valor_recebido.getText());
+        valorRecebido = Double.parseDouble(txt_valor_recebido.getText());
         if (!daoCarrinho.getAll().isEmpty()) {
-            if (this.valorRecebido >= this.total) {
-                double troco = this.total - this.valorRecebido;
+            if (valorRecebido >= total) {
+                double troco = total - valorRecebido;
                 txt_troco.setText(String.valueOf(Math.abs(troco)));
 
                 JOptionPane.showMessageDialog(null,
@@ -703,12 +737,12 @@ public class TelaFrenteDeCaixa extends javax.swing.JFrame {
     }
     private void btn_realizarVendaMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btn_realizarVendaMouseEntered
         // TODO add your handling code here:
-          btn_realizarVenda.setBackground(new Color(0,204,0));//Cor quando entra no botton
+        btn_realizarVenda.setBackground(new Color(0, 204, 0));//Cor quando entra no botton
     }//GEN-LAST:event_btn_realizarVendaMouseEntered
 
     private void btn_realizarVendaMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btn_realizarVendaMouseExited
         // TODO add your handling code here:
-        btn_realizarVenda.setBackground(new Color(102,255,102));//cor quando sai do botton
+        btn_realizarVenda.setBackground(new Color(102, 255, 102));//cor quando sai do botton
     }//GEN-LAST:event_btn_realizarVendaMouseExited
 
     private void tabela_carrinhoMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tabela_carrinhoMouseClicked
@@ -724,6 +758,12 @@ public class TelaFrenteDeCaixa extends javax.swing.JFrame {
     private void txt_valor_recebidoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txt_valor_recebidoActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_txt_valor_recebidoActionPerformed
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        // TODO add your handling code here:
+        
+        verificaTemCliente(clienteVinculado);
+    }//GEN-LAST:event_jButton1ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -759,11 +799,11 @@ public class TelaFrenteDeCaixa extends javax.swing.JFrame {
             }
         });
     }
-
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel ValorTotal;
     private javax.swing.JPanel btn_realizarVenda;
     private javax.swing.JPanel btn_sair_frente_de_caixa;
+    private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel13;
     private javax.swing.JLabel jLabel14;
@@ -799,6 +839,6 @@ public class TelaFrenteDeCaixa extends javax.swing.JFrame {
     // End of variables declaration//GEN-END:variables
 
     private void setIcon() {
-         setIconImage(Toolkit.getDefaultToolkit().getImage(getClass().getResource("Icone.png")));
+        setIconImage(Toolkit.getDefaultToolkit().getImage(getClass().getResource("Icone.png")));
     }
 }
