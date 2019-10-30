@@ -6,17 +6,17 @@
 package br.com.senac.pi.ui;
 
 import br.com.senac.pi.ui.janelas.atalhos.TelaDeCadastroDeCliente;
-import br.com.senac.pi.entidades.Carrinho;
-import br.com.senac.pi.entidades.Cliente;
-import br.com.senac.pi.entidades.Produtos;
-import br.com.senac.pi.entidades.Usuario;
-import br.com.senac.pi.entidades.Venda;
-import br.com.senac.pi.repositorio.DaoCarrinho;
-import br.com.senac.pi.repositorio.DaoVendas;
+import br.com.senac.pi.model.entidades.Carrinho;
+import br.com.senac.pi.model.entidades.Cliente;
+import br.com.senac.pi.model.entidades.Produtos;
+import br.com.senac.pi.model.entidades.Usuario;
+import br.com.senac.pi.model.entidades.Venda;
+import br.com.senac.pi.model.Dao.DaoCarrinho;
+import br.com.senac.pi.model.Dao.DaoVendas;
 import br.com.senac.pi.ui.janelas.atalhos.TelaDeCadastroDeCliente;
 import br.com.senac.pi.ui.janelas.atalhos.TelaPesquisaProdutoFrenteDeCaixa;
-import br.com.senac.repositorios.RepositoreCarrinho;
-import br.com.senac.repositorios.RepositorioTabela;
+import br.com.senac.factoryReposit.RepositoreCarrinho;
+import br.com.senac.factoryReposit.RepositorioTabela;
 import java.awt.Color;
 import java.awt.HeadlessException;
 import java.awt.KeyEventDispatcher;

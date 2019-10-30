@@ -1,9 +1,9 @@
 package br.com.senac.pi.ui;
 
-import Controler.LoginControler;
-import br.com.senac.pi.entidades.Setor;
-import br.com.senac.pi.entidades.Usuario;
-import br.com.senac.pi.repositorio.UsuarioRepositorio;
+import br.com.senac.pi.controlers.LoginControler;
+import br.com.senac.pi.model.entidades.Setor;
+import br.com.senac.pi.model.entidades.Usuario;
+import br.com.senac.pi.model.Dao.UsuarioRepositorio;
 import java.awt.Toolkit;
 import java.util.List;
 import javax.swing.JOptionPane;

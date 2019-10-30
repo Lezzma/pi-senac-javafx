@@ -5,10 +5,10 @@
  */
 package br.com.senac.pi.ui;
 
-import br.com.senac.pi.entidades.Cliente;
-import br.com.senac.pi.entidades.Usuario;
-import br.com.senac.pi.repositorio.UsuarioRepositorio;
-import br.com.senac.repositorios.RepositorioTabelasUsuario;
+import br.com.senac.pi.model.entidades.Cliente;
+import br.com.senac.pi.model.entidades.Usuario;
+import br.com.senac.pi.model.Dao.UsuarioRepositorio;
+import br.com.senac.factoryReposit.RepositorioTabelasUsuario;
 import java.awt.Color;
 import java.awt.Toolkit;
 import java.util.List;

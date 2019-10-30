@@ -5,12 +5,12 @@
  */
 package br.com.senac.pi.ui.janelas.atalhos;
 
-import br.com.senac.pi.entidades.Produtos;
-import br.com.senac.pi.repositorio.DaoCarrinho;
-import br.com.senac.pi.repositorio.DaoRepositorio;
-import br.com.senac.pi.repositorio.ProdutoRepositorio;
-import br.com.senac.repositorios.RepositorioTabela;
-import br.com.senac.repositorios.RepositorioTabelaProduto;
+import br.com.senac.pi.model.entidades.Produtos;
+import br.com.senac.pi.model.Dao.DaoCarrinho;
+import br.com.senac.pi.model.Dao.DaoRepositorio;
+import br.com.senac.pi.model.Dao.ProdutoRepositorio;
+import br.com.senac.factoryReposit.RepositorioTabela;
+import br.com.senac.factoryReposit.RepositorioTabelaProduto;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.List;

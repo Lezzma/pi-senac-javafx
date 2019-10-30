@@ -5,10 +5,10 @@ package br.com.senac.pi.ui.janelas.atalhos;
 
 
 
-import Controler.ClienteControler;
-import br.com.senac.pi.entidades.Cliente;
+import br.com.senac.pi.controlers.ClienteControler;
+import br.com.senac.pi.model.entidades.Cliente;
 import br.com.senac.pi.ui.TelaFrenteDeCaixa;
-import br.com.senac.repositorios.RepositorioroTabelaCliente;
+import br.com.senac.factoryReposit.RepositorioroTabelaCliente;
 import java.awt.Color;
 import java.util.List;
 import javax.swing.JOptionPane;

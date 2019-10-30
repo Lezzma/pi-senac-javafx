@@ -5,11 +5,11 @@
  */
 package br.com.senac.pi.ui;
 
-import br.com.senac.pi.entidades.Cliente;
-import br.com.senac.pi.entidades.Produtos;
-import br.com.senac.pi.repositorio.DaoRepositorio;
-import br.com.senac.pi.repositorio.ProdutoRepositorio;
-import br.com.senac.repositorios.RepositorioTabelaProduto;
+import br.com.senac.pi.model.entidades.Cliente;
+import br.com.senac.pi.model.entidades.Produtos;
+import br.com.senac.pi.model.Dao.DaoRepositorio;
+import br.com.senac.pi.model.Dao.ProdutoRepositorio;
+import br.com.senac.factoryReposit.RepositorioTabelaProduto;
 import java.awt.Color;
 import java.awt.Toolkit;
 import java.util.List;
