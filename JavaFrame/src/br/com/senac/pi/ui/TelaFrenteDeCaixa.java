@@ -15,6 +15,8 @@ import br.com.senac.pi.model.Dao.DaoVendas;
 import br.com.senac.pi.ui.janelas.atalhos.TelaDeCadastroDeCliente;
 import br.com.senac.pi.ui.janelas.atalhos.TelaPesquisaProdutoFrenteDeCaixa;
 import br.com.senac.factoryReposit.RepositoreCarrinho;
+import br.com.senac.factoryReposit.RepositorioroTabelaCliente;
+import br.com.senac.pi.controlers.ClienteControler;
 import java.awt.Color;
 import java.awt.HeadlessException;
 import java.awt.KeyEventDispatcher;
@@ -80,6 +82,14 @@ public class TelaFrenteDeCaixa extends javax.swing.JFrame {
         setIcon();
     }
 
+    public Cliente getClienteVinculado() {
+        return clienteVinculado;
+    }
+
+    public void setClienteVinculado(Cliente clienteVinculado) {
+        this.clienteVinculado = clienteVinculado;
+    }
+    
     private void colocaValorTotal() {
         for (Produtos p : daoCarrinho.getAll()) {
             this.total += p.getPreco() * p.getQuantidade();
@@ -173,7 +183,6 @@ public class TelaFrenteDeCaixa extends javax.swing.JFrame {
         jLabel37 = new javax.swing.JLabel();
         txt_sem_cliente = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
-        jButton1 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setUndecorated(true);
@@ -520,13 +529,6 @@ public class TelaFrenteDeCaixa extends javax.swing.JFrame {
 
         jLabel3.setText("F9 - Cancelar Caixa");
 
-        jButton1.setText("jButton1");
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
-            }
-        });
-
         javax.swing.GroupLayout tela_frente_caixaLayout = new javax.swing.GroupLayout(tela_frente_caixa);
         tela_frente_caixa.setLayout(tela_frente_caixaLayout);
         tela_frente_caixaLayout.setHorizontalGroup(
@@ -547,9 +549,7 @@ public class TelaFrenteDeCaixa extends javax.swing.JFrame {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED))
                     .addGroup(tela_frente_caixaLayout.createSequentialGroup()
                         .addComponent(jLabel1)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(jButton1)
-                        .addGap(130, 130, 130)))
+                        .addGap(130, 493, Short.MAX_VALUE)))
                 .addGroup(tela_frente_caixaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jPanel10, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, tela_frente_caixaLayout.createSequentialGroup()
@@ -590,10 +590,8 @@ public class TelaFrenteDeCaixa extends javax.swing.JFrame {
                         .addGap(96, 96, 96)))
                 .addGroup(tela_frente_caixaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(tela_frente_caixaLayout.createSequentialGroup()
-                        .addGap(59, 59, 59)
-                        .addGroup(tela_frente_caixaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jLabel1)
-                            .addComponent(jButton1))
+                        .addGap(63, 63, 63)
+                        .addComponent(jLabel1)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jLabel2)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -640,11 +638,17 @@ public class TelaFrenteDeCaixa extends javax.swing.JFrame {
     private void btn_sair_frente_de_caixaMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btn_sair_frente_de_caixaMouseClicked
         //quando a frente de caixa é fechado, lista do repositorioCarrinho é zerada
         
+        int reply = JOptionPane.showConfirmDialog(null,
+                "Deseja realmente sair do sistema",
+                "Fechar sistema",
+                JOptionPane.YES_NO_OPTION);
 
+        if (reply == JOptionPane.YES_OPTION) {
+            System.exit(0);
+        }
         //fecha tela de frente de caixa
         //abre a tela de login
-        dispose();
-        new Login().setVisible(true);
+        
     }//GEN-LAST:event_btn_sair_frente_de_caixaMouseClicked
 
     private void btn_sair_frente_de_caixaMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btn_sair_frente_de_caixaMouseEntered
@@ -660,7 +664,7 @@ public class TelaFrenteDeCaixa extends javax.swing.JFrame {
     private void btn_realizarVendaMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btn_realizarVendaMouseClicked
         // TODO add your handling code here:
         Venda vendaRealizada = new Venda();
-        vendaRealizada.setCliente(clienteVinculado);
+        vendaRealizada.setCliente(getClienteVinculado());
         vendaRealizada.setVendedor(usuarioLogado);
         vendaRealizada.setDiaDaCompra(Date.from(Instant.now()));
         vendaRealizada.seCarrinho(new Carrinho(daoCarrinho.getAll()));
@@ -759,12 +763,6 @@ public class TelaFrenteDeCaixa extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_txt_valor_recebidoActionPerformed
 
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        // TODO add your handling code here:
-        
-        verificaTemCliente(clienteVinculado);
-    }//GEN-LAST:event_jButton1ActionPerformed
-
     /**
      * @param args the command line arguments
      */
@@ -803,7 +801,6 @@ public class TelaFrenteDeCaixa extends javax.swing.JFrame {
     private javax.swing.JLabel ValorTotal;
     private javax.swing.JPanel btn_realizarVenda;
     private javax.swing.JPanel btn_sair_frente_de_caixa;
-    private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel13;
     private javax.swing.JLabel jLabel14;

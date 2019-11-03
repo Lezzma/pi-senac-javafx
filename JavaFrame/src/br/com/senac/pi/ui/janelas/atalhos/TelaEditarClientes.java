@@ -348,7 +348,10 @@ public class TelaEditarClientes extends javax.swing.JDialog {
 
     private void btn_vincula_cliente_paraCompraMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btn_vincula_cliente_paraCompraMouseClicked
         // TODO add your handling code here:
-       
+       caixa.setClienteVinculado(cliente);
+       caixa.verificaTemCliente(caixa.getClienteVinculado());
+       cadastroDeCliente.dispose();
+       dispose();
        
 
     }//GEN-LAST:event_btn_vincula_cliente_paraCompraMouseClicked

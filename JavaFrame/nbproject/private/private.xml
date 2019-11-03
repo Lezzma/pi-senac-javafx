@@ -25,18 +25,7 @@
     </editor-bookmarks>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/C:/Users/jrneto/Documents/NetBeansProjects/pi-senac-javafx/JavaFrame/src/br/com/senac/pi/ui/TelaFrenteDeCaixa.java</file>
-            <file>file:/C:/Users/jrneto/Documents/NetBeansProjects/pi-senac-javafx/JavaFrame/src/br/com/senac/pi/model/entidades/Endereco.java</file>
-            <file>file:/C:/Users/jrneto/Documents/NetBeansProjects/pi-senac-javafx/JavaFrame/src/br/com/senac/factoryReposit/RepositoreCarrinho.java</file>
-            <file>file:/C:/Users/jrneto/Documents/NetBeansProjects/pi-senac-javafx/JavaFrame/src/br/com/senac/factoryReposit/RepositorioTabelaRelatorio.java</file>
-            <file>file:/C:/Users/jrneto/Documents/NetBeansProjects/pi-senac-javafx/JavaFrame/src/br/com/senac/pi/ui/janelas/atalhos/TelaPesquisaProdutoFrenteDeCaixa.java</file>
-            <file>file:/C:/Users/jrneto/Documents/NetBeansProjects/pi-senac-javafx/JavaFrame/src/br/com/senac/pi/ui/janelas/atalhos/TelaDeCadastroDeCliente.java</file>
-            <file>file:/C:/Users/jrneto/Documents/NetBeansProjects/pi-senac-javafx/JavaFrame/src/br/com/senac/pi/ui/TelaEditaProdutos.java</file>
-            <file>file:/C:/Users/jrneto/Documents/NetBeansProjects/pi-senac-javafx/JavaFrame/src/br/com/senac/pi/controlers/RelatorioControler.java</file>
-            <file>file:/C:/Users/jrneto/Documents/NetBeansProjects/pi-senac-javafx/JavaFrame/src/br/com/senac/pi/ui/Login.java</file>
-            <file>file:/C:/Users/jrneto/Documents/NetBeansProjects/pi-senac-javafx/JavaFrame/src/br/com/senac/pi/ui/janelas/atalhos/TelaEditarClientes.java</file>
-            <file>file:/C:/Users/jrneto/Documents/NetBeansProjects/pi-senac-javafx/JavaFrame/src/br/com/senac/pi/model/Dao/DaoRelatorio.java</file>
-            <file>file:/C:/Users/jrneto/Documents/NetBeansProjects/pi-senac-javafx/JavaFrame/src/br/com/senac/pi/model/Dao/DaoCarrinho.java</file>
+            <file>file:/D:/Users/netos/NetBeansProjects/pi-senac-javafx/JavaFrame/src/br/com/senac/pi/ui/Sistema.java</file>
         </group>
     </open-files>
 </project-private>
