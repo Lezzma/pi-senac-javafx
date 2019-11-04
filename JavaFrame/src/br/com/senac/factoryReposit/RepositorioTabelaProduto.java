@@ -6,7 +6,7 @@
 package br.com.senac.factoryReposit;
 
 import br.com.senac.pi.model.entidades.Produtos;
-import br.com.senac.pi.model.entidades.Usuario;
+
 import java.util.List;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
@@ -38,7 +38,8 @@ public class RepositorioTabelaProduto implements RepositorioTabela<Produtos>{
                          p.getCodigo(),
                          p.getNome(),
                          p.getPreco(),
-                         p.getQuantidade()
+                         p.getQuantidadeEstoque(),
+                         p.getQuantidadeVenda()
                      });
          });
           }).start();
@@ -48,8 +49,7 @@ public class RepositorioTabelaProduto implements RepositorioTabela<Produtos>{
     public void inserirEntidadeTeste(List<Produtos> entidade) {
           new Thread(() -> {
             if (entidade.isEmpty()) {
-            Produtos produtoTeste = new Produtos("123123","leite",20);
-            produtoTeste.setQuantidade(1);
+            Produtos produtoTeste = new Produtos("123123","leite","leve leite","leite top",20,12.0);
             entidade.add(produtoTeste);
         }
         atualizaTabela(entidade);
@@ -65,7 +65,7 @@ public class RepositorioTabelaProduto implements RepositorioTabela<Produtos>{
                          entidade.getCodigo(),
                          entidade.getNome(),
                          entidade.getPreco(),
-                         entidade.getQuantidade()
+                         entidade.getQuantidadeEstoque()
                      });
        
       

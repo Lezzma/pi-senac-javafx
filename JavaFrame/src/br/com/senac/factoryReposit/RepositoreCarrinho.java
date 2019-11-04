@@ -36,7 +36,8 @@ public class RepositoreCarrinho implements RepositorioTabela<Produtos> {
                         new Object[]{
                             p.getCodigo(),
                             p.getNome(),
-                            p.getPreco()
+                            p.getPreco(),
+                            p.getQuantidadeVenda()
                         });
             });
         }).start();
@@ -44,13 +45,7 @@ public class RepositoreCarrinho implements RepositorioTabela<Produtos> {
 
     @Override
     public void inserirEntidadeTeste(List<Produtos> entidade) {
-        new Thread(() -> {
-            if (entidade.isEmpty()) {
-                Produtos produtoTeste = new Produtos("123123", "leite", 20);
-                entidade.add(produtoTeste);
-            }
-            atualizaTabela(entidade);
-        }).start();
+       
     }
 
     @Override

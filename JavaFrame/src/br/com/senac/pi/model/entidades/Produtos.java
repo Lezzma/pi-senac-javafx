@@ -11,17 +11,30 @@ package br.com.senac.pi.model.entidades;
  */
 public class Produtos {
 
-    private String codigo, nome, disponivel,marca;
+    private String codigo, nome,marca,descricao;
     private double preco;
-    private int quantidade, quantidadeMin;
+    private int quantidadeVenda, quantidadeEstoque;
     
     public Produtos(){}
-    public Produtos(String codigo, String nome, double preco) {
+    
+    public Produtos(String codigo, String nome,String marca,String descricao,int quantidadeEstoque,double preco) {
         this.codigo = codigo;
         this.nome = nome;
+        this.marca = marca;
+        this.descricao = descricao;
+        this.quantidadeEstoque = quantidadeEstoque;
         this.preco = preco;
+        
     }
 
+    public String getDescricao() {
+        return descricao;
+    }
+
+    public void setDescricao(String descricao) {
+        this.descricao = descricao;
+    }
+    
     public String getMarca() {
         return marca;
     }
@@ -29,30 +42,26 @@ public class Produtos {
     public void setMarca(String marca) {
         this.marca = marca;
     }
+
+    public int getQuantidadeVenda() {
+        return quantidadeVenda;
+    }
+
+    public void setQuantidadeVenda(int quantidadeVenda) {
+        this.quantidadeVenda = quantidadeVenda;
+    }
     
-    public String getDisponivel() {
-        return disponivel;
+    
+
+    public int getQuantidadeEstoque() {
+        return quantidadeEstoque;
     }
 
-    public void setDisponivel(String disponivel) {
-        this.disponivel = disponivel;
+    public void setQuantidadeEstoque(int quantidadeEstoque) {
+        this.quantidadeEstoque = quantidadeEstoque;
     }
 
-    public int getQuantidade() {
-        return quantidade;
-    }
-
-    public void setQuantidade(int quantidade) {
-        this.quantidade = quantidade;
-    }
-
-    public int getQuantidadeMin() {
-        return quantidadeMin;
-    }
-
-    public void setQuantidadeMin(int quantidadeMin) {
-        this.quantidadeMin = quantidadeMin;
-    }
+    
 
     public String getCodigo() {
         return codigo;
@@ -76,6 +85,11 @@ public class Produtos {
 
     public void setPreco(double preco) {
         this.preco = preco;
+    }
+
+    @Override
+    public String toString() {
+        return  "|codigo=" + codigo + "| nome=" + nome + "| marca=" + marca + "| descricao=" + descricao + "| preco=" + preco + "| quantidadeVenda=" + quantidadeVenda + '|';
     }
 
 

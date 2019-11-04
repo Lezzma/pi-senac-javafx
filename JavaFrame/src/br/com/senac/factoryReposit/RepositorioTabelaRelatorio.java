@@ -8,16 +8,14 @@ package br.com.senac.factoryReposit;
 import br.com.senac.pi.model.entidades.Cliente;
 import br.com.senac.pi.model.entidades.Usuario;
 import br.com.senac.pi.model.entidades.Venda;
-import static com.sun.org.apache.xalan.internal.lib.ExsltDatetime.time;
+
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.time.Instant;
-import java.util.Calendar;
+
 import java.util.Date;
 import java.util.List;
-import java.util.Locale;
-import javafx.scene.input.DataFormat;
-import static javax.print.attribute.Size2DSyntax.MM;
+
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 

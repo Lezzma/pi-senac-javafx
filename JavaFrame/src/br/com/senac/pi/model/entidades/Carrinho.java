@@ -15,8 +15,7 @@ public class Carrinho {
     
     private int id;
     private int quantidadeDeItems = 0;
-    private double precoTotal = 0;
-    private List<Produtos> listaDeProdutos;
+    private static List<Produtos> listaDeProdutos;
     
     
     public Carrinho(List<Produtos> lista) {
@@ -41,6 +40,9 @@ public class Carrinho {
     public int getQuantidadeDeItems(){
         return quantidadeDeItems;
     }
+
+    
+   
     
     
 }

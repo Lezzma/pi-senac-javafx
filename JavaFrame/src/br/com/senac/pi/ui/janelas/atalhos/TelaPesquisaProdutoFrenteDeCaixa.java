@@ -49,7 +49,7 @@ public class TelaPesquisaProdutoFrenteDeCaixa extends javax.swing.JFrame {
         valor = Double.parseDouble(valototal.getText());
         
         //tabela de pesquisar produtos
-        repoTabela = new RepositorioTabelaProduto(tab_pes_fdc);
+        repoTabela = new RepositorioTabelaProduto(tabela_frenteDeCaixa_produtos);
        
         //tabela da frente de caixa
         repoTabelaCarrinho = new RepositoreCarrinho(tabela);
@@ -82,7 +82,7 @@ public class TelaPesquisaProdutoFrenteDeCaixa extends javax.swing.JFrame {
     private void initComponents() {
 
         jScrollPane1 = new javax.swing.JScrollPane();
-        tab_pes_fdc = new javax.swing.JTable();
+        tabela_frenteDeCaixa_produtos = new javax.swing.JTable();
         searche_fdc = new javax.swing.JTextField();
         btn_pesquisa_fdc = new javax.swing.JButton();
         jComboBox_tipo_pesquisa = new javax.swing.JComboBox();
@@ -93,19 +93,19 @@ public class TelaPesquisaProdutoFrenteDeCaixa extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
-        tab_pes_fdc.setModel(new javax.swing.table.DefaultTableModel(
+        tabela_frenteDeCaixa_produtos.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
             },
             new String [] {
-                "Código", "Nome", "Preço", "Quantidade"
+                "Código", "Nome", "Preço", "Qtd estoque", "Qtd venda"
             }
         ) {
             Class[] types = new Class [] {
-                java.lang.String.class, java.lang.String.class, java.lang.Double.class, java.lang.Integer.class
+                java.lang.String.class, java.lang.String.class, java.lang.Double.class, java.lang.Integer.class, java.lang.Integer.class
             };
             boolean[] canEdit = new boolean [] {
-                false, false, false, false
+                false, false, false, false, false
             };
 
             public Class getColumnClass(int columnIndex) {
@@ -116,12 +116,12 @@ public class TelaPesquisaProdutoFrenteDeCaixa extends javax.swing.JFrame {
                 return canEdit [columnIndex];
             }
         });
-        tab_pes_fdc.addMouseListener(new java.awt.event.MouseAdapter() {
+        tabela_frenteDeCaixa_produtos.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
-                tab_pes_fdcMouseClicked(evt);
+                tabela_frenteDeCaixa_produtosMouseClicked(evt);
             }
         });
-        jScrollPane1.setViewportView(tab_pes_fdc);
+        jScrollPane1.setViewportView(tabela_frenteDeCaixa_produtos);
 
         searche_fdc.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -222,25 +222,28 @@ public class TelaPesquisaProdutoFrenteDeCaixa extends javax.swing.JFrame {
         pesquisa(tipoDePesquisa, itemPesquisado);
     }//GEN-LAST:event_btn_pesquisa_fdcActionPerformed
 
-    private void tab_pes_fdcMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tab_pes_fdcMouseClicked
+    private void tabela_frenteDeCaixa_produtosMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tabela_frenteDeCaixa_produtosMouseClicked
+       
         if(evt.getClickCount() == 2 ){
             duploClickTabela();
-            
-            item_quantidade.setValue(pegaProdutoClicado().getQuantidade());
+            item_quantidade.setValue(pegaProdutoClicado().getQuantidadeVenda());
+        }else{
+        int idexProduto = tabela_frenteDeCaixa_produtos.getSelectedRow();
+        produtoClicado = listaDeProdutos.get(idexProduto);
         }
         
-
-    }//GEN-LAST:event_tab_pes_fdcMouseClicked
+        
+    }//GEN-LAST:event_tabela_frenteDeCaixa_produtosMouseClicked
     protected void duploClickTabela() {
             Produtos itemClicado = pegaProdutoClicado();
             
-            if (!daoCarrinho.getAll().contains(itemClicado)) {
+            if (!daoCarrinho.getAll().contains(itemClicado) && itemClicado.getQuantidadeEstoque() > 0) {
                
                 //coloca o item clicado no carrinho de comprass
                 daoCarrinho.inserir(itemClicado);
                 
                 //armazena o valor total
-                valor += itemClicado.getPreco() * itemClicado.getQuantidade();
+                valor += itemClicado.getPreco() * itemClicado.getQuantidadeVenda();
                 
                 //coloca o valor total na tela de frente de caixa
                 valorTotal.setText(String.valueOf(valor));
@@ -252,6 +255,7 @@ public class TelaPesquisaProdutoFrenteDeCaixa extends javax.swing.JFrame {
                 dispose();
 
             } else {
+                
                 JOptionPane.showMessageDialog(null, "Esse produto já está no carrinho", "Ação não permitida!", JOptionPane.INFORMATION_MESSAGE);
                 repoTabelaCarrinho.atualizaTabela(daoCarrinho.getAll());
             }
@@ -262,11 +266,15 @@ public class TelaPesquisaProdutoFrenteDeCaixa extends javax.swing.JFrame {
     private void btn_set_qtdActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_set_qtdActionPerformed
         // TODO add your handling code here:
         int quantidadeColocada = Integer.parseInt(item_quantidade.getValue().toString());
-        if (this.produtoClicado.getQuantidade() != quantidadeColocada) {
-            this.produtoClicado.setQuantidade(quantidadeColocada);
+        if(quantidadeColocada <= produtoClicado.getQuantidadeEstoque() ){
+            produtoClicado.setQuantidadeVenda(quantidadeColocada);
             item_quantidade.setValue(0);
             repoTabela.atualizaTabela(listaDeProdutos);
+        }else{
+        JOptionPane.showMessageDialog(null, "A quantidade coloca essede a quantidade em estoque", "Ação não permitida!", JOptionPane.INFORMATION_MESSAGE);
         }
+           
+        
     }//GEN-LAST:event_btn_set_qtdActionPerformed
 
     private void btn_set_qtdMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btn_set_qtdMouseClicked
@@ -275,7 +283,7 @@ public class TelaPesquisaProdutoFrenteDeCaixa extends javax.swing.JFrame {
     }//GEN-LAST:event_btn_set_qtdMouseClicked
 
     private Produtos pegaProdutoClicado() {
-        int itemClicado = tab_pes_fdc.getSelectedRow();
+        int itemClicado = tabela_frenteDeCaixa_produtos.getSelectedRow();
         Produtos pegaritemClicado = listaDeProdutos.get(itemClicado);
 
         return pegaritemClicado;
@@ -353,6 +361,6 @@ public class TelaPesquisaProdutoFrenteDeCaixa extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel2;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTextField searche_fdc;
-    private javax.swing.JTable tab_pes_fdc;
+    private javax.swing.JTable tabela_frenteDeCaixa_produtos;
     // End of variables declaration//GEN-END:variables
 }

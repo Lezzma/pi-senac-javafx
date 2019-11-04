@@ -15,8 +15,6 @@ import br.com.senac.pi.model.Dao.DaoVendas;
 import br.com.senac.pi.ui.janelas.atalhos.TelaDeCadastroDeCliente;
 import br.com.senac.pi.ui.janelas.atalhos.TelaPesquisaProdutoFrenteDeCaixa;
 import br.com.senac.factoryReposit.RepositoreCarrinho;
-import br.com.senac.factoryReposit.RepositorioroTabelaCliente;
-import br.com.senac.pi.controlers.ClienteControler;
 import java.awt.Color;
 import java.awt.HeadlessException;
 import java.awt.KeyEventDispatcher;
@@ -92,7 +90,7 @@ public class TelaFrenteDeCaixa extends javax.swing.JFrame {
     
     private void colocaValorTotal() {
         for (Produtos p : daoCarrinho.getAll()) {
-            this.total += p.getPreco() * p.getQuantidade();
+            this.total += p.getPreco() * p.getQuantidadeVenda();
         }
         ValorTotal.setText(String.valueOf(this.total));
 
@@ -412,6 +410,7 @@ public class TelaFrenteDeCaixa extends javax.swing.JFrame {
 
         txt_quantidade.setFont(new java.awt.Font("Segoe UI", 1, 48)); // NOI18N
         txt_quantidade.setForeground(new java.awt.Color(255, 255, 255));
+        txt_quantidade.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
 
         javax.swing.GroupLayout jPanel16Layout = new javax.swing.GroupLayout(jPanel16);
         jPanel16.setLayout(jPanel16Layout);
@@ -637,15 +636,16 @@ public class TelaFrenteDeCaixa extends javax.swing.JFrame {
 
     private void btn_sair_frente_de_caixaMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btn_sair_frente_de_caixaMouseClicked
         //quando a frente de caixa é fechado, lista do repositorioCarrinho é zerada
-        
-        int reply = JOptionPane.showConfirmDialog(null,
-                "Deseja realmente sair do sistema",
-                "Fechar sistema",
-                JOptionPane.YES_NO_OPTION);
-
-        if (reply == JOptionPane.YES_OPTION) {
-            System.exit(0);
-        }
+        dispose();
+        new Login().setVisible(true);
+//        int reply = JOptionPane.showConfirmDialog(null,
+//                "Deseja realmente sair do sistema",
+//                "Fechar sistema",
+//                JOptionPane.YES_NO_OPTION);
+//
+//        if (reply == JOptionPane.YES_OPTION) {
+//            System.exit(0);
+//        }
         //fecha tela de frente de caixa
         //abre a tela de login
         
@@ -664,10 +664,16 @@ public class TelaFrenteDeCaixa extends javax.swing.JFrame {
     private void btn_realizarVendaMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btn_realizarVendaMouseClicked
         // TODO add your handling code here:
         Venda vendaRealizada = new Venda();
+        Carrinho carrinho = new Carrinho(daoCarrinho.getAll());
+        //tira a quantidade de produtos do estoque quando a venda é realizada
+        for(Produtos p: carrinho.getAll()){
+            p.setQuantidadeEstoque(p.getQuantidadeEstoque()-p.getQuantidadeVenda());
+        }
+        
         vendaRealizada.setCliente(getClienteVinculado());
         vendaRealizada.setVendedor(usuarioLogado);
         vendaRealizada.setDiaDaCompra(Date.from(Instant.now()));
-        vendaRealizada.seCarrinho(new Carrinho(daoCarrinho.getAll()));
+        vendaRealizada.setCarrinho(carrinho);
         vendaRealizada.setTotal_pago(Double.parseDouble(ValorTotal.getText()));
 
         colocaValorTotal();
@@ -754,7 +760,7 @@ public class TelaFrenteDeCaixa extends javax.swing.JFrame {
         int indexItem = tabela_carrinho.getSelectedRow();
         Produtos produtoCliecado = daoCarrinho.getAll().get(indexItem);
         txt_codigo_barra.setText(produtoCliecado.getCodigo());
-        txt_quantidade.setText(String.valueOf(produtoCliecado.getQuantidade()));
+        txt_quantidade.setText(String.valueOf(produtoCliecado.getQuantidadeVenda()));
         txt_valor_unitario.setText(String.valueOf(produtoCliecado.getPreco()));
 
     }//GEN-LAST:event_tabela_carrinhoMouseClicked
