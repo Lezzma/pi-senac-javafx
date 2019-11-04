@@ -17,8 +17,10 @@ import br.com.senac.factoryReposit.RepositorioTabelasUsuario;
 import br.com.senac.factoryReposit.RepositorioroTabelaCliente;
 import br.com.senac.pi.model.Dao.DaoVendas;
 import br.com.senac.pi.model.entidades.Venda;
+import br.com.senac.utils.ValidaTexto;
 import java.awt.CardLayout;
 import java.awt.Color;
+import java.awt.HeadlessException;
 import java.awt.Toolkit;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -32,7 +34,7 @@ public class Sistema extends javax.swing.JFrame {
 
     private final DefaultTableModel model;
     private final DefaultTableModel modelTabelaProduto;
-    
+
     //static public Sistema telaPrincipal;
     CardLayout cardLayout;
     ControlerUsuarios controlerUsuarios = new ControlerUsuarios();
@@ -41,7 +43,7 @@ public class Sistema extends javax.swing.JFrame {
     private final RepositorioTabela repositorioTabelaProduto;
     private final RepositorioroTabelaCliente repositorioroTabelaCliente;
     private final RepositorioTabelaRelatorio repositorioTabelaRelatorio;
-    
+    private final ValidaTexto valida = new ValidaTexto();
     private final ProdutoRepositorio daoProduto;
     private final Usuario usuarioLogado;
     private final ClienteControler clienteControler;
@@ -49,7 +51,7 @@ public class Sistema extends javax.swing.JFrame {
     private static TelaEditaUsuario telaEditaUsuario;
     private ClienteControler clienteControler1;
     private final RelatorioControler relatorioControler;
-    
+
     public Sistema(Usuario user) {
         initComponents();
         this.setExtendedState(JFrame.MAXIMIZED_BOTH);
@@ -58,7 +60,7 @@ public class Sistema extends javax.swing.JFrame {
         repositorioTabelaUsuario = new RepositorioTabelasUsuario(tabela_de_usuarios);
         repositorioTabelaProduto = new RepositorioTabelaProduto(tabela_de_produtos);
         repositorioTabelaRelatorio = new RepositorioTabelaRelatorio(tabela_relatorio_venda);
-        
+
         cardLayout = (CardLayout) homeJpainel.getLayout();
         cardLayout.show(homeJpainel, "jpainelHome");
 
@@ -66,7 +68,7 @@ public class Sistema extends javax.swing.JFrame {
         model = (DefaultTableModel) tabela_de_usuarios.getModel();
 
         //realizar cria usuarios de teste
-         repositorioTabelaUsuario.inserirEntidadeTeste(listaDeUsuarios);
+        repositorioTabelaUsuario.inserirEntidadeTeste(listaDeUsuarios);
         //inicializa controler de produtos 
         daoProduto = new ProdutoRepositorio();
         //inicializa o model da tabela produto para manipulas dentro do sitema
@@ -82,18 +84,20 @@ public class Sistema extends javax.swing.JFrame {
         this.clienteControler.criaClienteTeste();
         this.clienteControler.atualizaTabelaCliente();
         setIcon();
-        
+
         this.relatorioControler = new RelatorioControler(repositorioTabelaRelatorio);
         relatorioControler.inserirVendaTeste();
-        
+
         //tela De relatório prop
         txt_relatorio_total_mes.setEnabled(false);
     }
+
     //coloca o icone so sistema
+
     private void setIcon() {
         setIconImage(Toolkit.getDefaultToolkit().getImage(getClass().getResource("Icone.png")));
     }
-    
+
     static void setTelaEditaProdutos(TelaEditaProdutos telaEditaProdutos) {
         Sistema.telaEditaProdutos = telaEditaProdutos;
     }
@@ -105,9 +109,6 @@ public class Sistema extends javax.swing.JFrame {
     //=====================================================================
     //Esse metodos ira sair pois para iniciar o sistema somente com usuario
     //=====================================================================
-
-    
-
     private void colocaSetoresEmTipoUsuario() {
         comboBox_tipo_usuario.addItem(Setor.admin);
         comboBox_tipo_usuario.addItem(Setor.gerente);
@@ -115,7 +116,7 @@ public class Sistema extends javax.swing.JFrame {
         comboBox_tipo_usuario.addItem(Setor.cliente);
         comboBox_tipo_usuario.remove(1);
     }
-    
+
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -530,7 +531,7 @@ public class Sistema extends javax.swing.JFrame {
         jPanel4.setName("Cadastro de Produto"); // NOI18N
 
         jLabel1.setFont(new java.awt.Font("Segoe UI", 0, 12)); // NOI18N
-        jLabel1.setText("*Descrição:");
+        jLabel1.setText("Descrição:");
 
         jLabel2.setFont(new java.awt.Font("Segoe UI", 0, 12)); // NOI18N
         jLabel2.setText("*Código:");
@@ -572,8 +573,8 @@ public class Sistema extends javax.swing.JFrame {
                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(txt_nome_produto)
                     .addComponent(txt_codigo_produto)
-                    .addComponent(txt_marca_produto, javax.swing.GroupLayout.DEFAULT_SIZE, 269, Short.MAX_VALUE)
-                    .addComponent(txt_descricao_produto, javax.swing.GroupLayout.DEFAULT_SIZE, 269, Short.MAX_VALUE))
+                    .addComponent(txt_marca_produto, javax.swing.GroupLayout.DEFAULT_SIZE, 274, Short.MAX_VALUE)
+                    .addComponent(txt_descricao_produto, javax.swing.GroupLayout.DEFAULT_SIZE, 274, Short.MAX_VALUE))
                 .addGap(18, 18, 18)
                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel4Layout.createSequentialGroup()
@@ -1670,7 +1671,7 @@ public class Sistema extends javax.swing.JFrame {
 
     private void btn_gerar_relatorioMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btn_gerar_relatorioMouseClicked
         // TODO add your handling code here:
-       
+
         cardLayout.show(homeJpainel, "telaDeRelatorio");
     }//GEN-LAST:event_btn_gerar_relatorioMouseClicked
 
@@ -1738,21 +1739,67 @@ public class Sistema extends javax.swing.JFrame {
 
     private void btn_salvar_produtoMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btn_salvar_produtoMouseClicked
         // TODO add your handling code here:
+        
+        List<String> erros = new ArrayList<>();
+        StringBuilder string = new StringBuilder();
+
         ProdutoRepositorio daoProduto = new ProdutoRepositorio();
         RepositorioTabela repositorioTabelaProduto = new RepositorioTabelaProduto(tabela_de_produtos);
         
+        validaCampos(valida, erros);
+        
+        if (!erros.isEmpty()) {
+            for (String s : erros) {
+                string.append(s + "\n");
+            }
+            JOptionPane.showMessageDialog(null, string.toString(), "Erro", JOptionPane.WARNING_MESSAGE);
+
+        } else {
+            salvaNovoProduto(daoProduto, repositorioTabelaProduto);
+        }
+    }//GEN-LAST:event_btn_salvar_produtoMouseClicked
+
+    private void salvaNovoProduto(ProdutoRepositorio daoProduto1, RepositorioTabela repositorioTabelaProduto1) throws NumberFormatException, HeadlessException {
         Produtos produtoNovo = new Produtos(
                 txt_codigo_produto.getText(),
                 txt_nome_produto.getText(),
                 txt_marca_produto.getText(),
                 txt_descricao_produto.getText(), (int) txt_quantidade_produto_estoque.getValue(),
                 Double.parseDouble(txt_preco_produto.getText()));
-        
-        daoProduto.inserir(produtoNovo);
+        daoProduto1.inserir(produtoNovo);
         DefaultTableModel modelTabelaProduto = (DefaultTableModel) tabela_de_produtos.getModel();
-        repositorioTabelaProduto.atualizaTabela(daoProduto.getAll());
-        JOptionPane.showMessageDialog(null, "Sucesso!", "Produto inserido",JOptionPane.INFORMATION_MESSAGE);
-    }//GEN-LAST:event_btn_salvar_produtoMouseClicked
+        repositorioTabelaProduto1.atualizaTabela(daoProduto1.getAll());
+        JOptionPane.showMessageDialog(null, "Sucesso!", "Produto inserido", JOptionPane.INFORMATION_MESSAGE);
+    }
+
+    private void validaCampos(ValidaTexto valida, List<String> erros) {
+        //verifica se no preço do produto contem letra
+        //torna true se ambas as condições forem iguais
+        if (!valida.verificaNumero(txt_preco_produto.getText()) && !txt_preco_produto.getText().equals("")) {
+            erros.add("-Preço do produto não pode conter letras");
+        }
+        
+        if (txt_preco_produto.getText().equals("")) {
+            erros.add("-Preço do produto não pode esta vazio");
+        }
+
+        if (txt_nome_produto.getText().equals("")) {
+            erros.add("-Nome é obrigarótio");
+        }
+        if(!valida.verificaNumero(txt_quantidade_produto_estoque.getValue().toString()) && !txt_quantidade_produto_estoque.getValue().equals(0)){
+           
+                erros.add("-Na quantidade de produtos Digite somente numeros");
+             
+        }
+        
+        if(txt_quantidade_produto_estoque.getValue().equals(0) ){
+            erros.add("-Não é possivel adicionar a quantidade informada do produto: "+txt_quantidade_produto_estoque.getValue().toString());
+        }
+        
+        if(txt_codigo_produto.getText().equals("")){
+            erros.add("-Código do produto é obrigarótio");
+        }
+    }
 
     private void btn_salvar_produtoMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btn_salvar_produtoMouseEntered
         // TODO add your handling code here:
@@ -1787,8 +1834,7 @@ public class Sistema extends javax.swing.JFrame {
                 txt_rg_user.getText(),
                 txt_cpf_user.getText(),
                 txt_senha_user.getText(),
-                (Setor) comboBox_tipo_usuario.getSelectedItem())) 
-        {
+                (Setor) comboBox_tipo_usuario.getSelectedItem())) {
             JOptionPane.showMessageDialog(null, "Usuario inserido com sucesso");
             repositorioTabelaUsuario.atualizaTabela(listaDeUsuarios);
         }
@@ -1828,28 +1874,28 @@ public class Sistema extends javax.swing.JFrame {
 
     private void tabela_de_usuariosMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tabela_de_usuariosMouseClicked
         // TODO add your handling code here:
-     
-         int userClicado = tabela_de_usuarios.getSelectedRow();
-         if(telaEditaUsuario == null){
-            if(evt.getClickCount() == 2){
+
+        int userClicado = tabela_de_usuarios.getSelectedRow();
+        if (telaEditaUsuario == null) {
+            if (evt.getClickCount() == 2) {
                 int produtoClicado = tabela_de_produtos.getSelectedRow();
                 this.telaEditaUsuario = new TelaEditaUsuario(controlerUsuarios.pegarUsuarios().get(userClicado), tabela_de_usuarios);
                 this.telaEditaUsuario.setVisible(true);
             }
-           }  
-               
+        }
+
     }//GEN-LAST:event_tabela_de_usuariosMouseClicked
 
     private void tabela_de_produtosMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tabela_de_produtosMouseClicked
         // TODO add your handling code here:
-        
-           if(telaEditaProdutos == null){
-            if(evt.getClickCount() == 2){
+
+        if (telaEditaProdutos == null) {
+            if (evt.getClickCount() == 2) {
                 int produtoClicado = tabela_de_produtos.getSelectedRow();
                 telaEditaProdutos = new TelaEditaProdutos(daoProduto.getAll().get(produtoClicado), tabela_de_produtos);
                 telaEditaProdutos.setVisible(true);
             }
-           }
+        }
 
     }//GEN-LAST:event_tabela_de_produtosMouseClicked
 
@@ -1867,7 +1913,7 @@ public class Sistema extends javax.swing.JFrame {
 
     private void btn_consulta_clientesMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btn_consulta_clientesMouseClicked
         // TODO add your handling code here:
-       cardLayout.show(homeJpainel, "telaDeCleintes");
+        cardLayout.show(homeJpainel, "telaDeCleintes");
     }//GEN-LAST:event_btn_consulta_clientesMouseClicked
 
     private void btn_consulta_clientesMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btn_consulta_clientesMouseEntered
@@ -1877,7 +1923,7 @@ public class Sistema extends javax.swing.JFrame {
 
     private void btn_consulta_clientesMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btn_consulta_clientesMouseExited
         // TODO add your handling code here:
-         btn_consulta_clientes.setBackground(new Color(51, 152, 219));//cor quando sai do botton
+        btn_consulta_clientes.setBackground(new Color(51, 152, 219));//cor quando sai do botton
     }//GEN-LAST:event_btn_consulta_clientesMouseExited
 
     private void btn_salvar_cliente1MouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btn_salvar_cliente1MouseExited
@@ -1906,9 +1952,9 @@ public class Sistema extends javax.swing.JFrame {
                         txt_rua_novo_cliente.getText(),
                         txt_complemento_novo_cliente.getText().charAt(0),
                         Integer.parseInt(txt_num_novo_cliente.getText())));
-        
+
         clienteControler.criarNovoCliente(novoCliente);
-        JOptionPane.showMessageDialog(null,"Cliente criado com sucesso!");
+        JOptionPane.showMessageDialog(null, "Cliente criado com sucesso!");
     }//GEN-LAST:event_btn_salvar_cliente1MouseClicked
 
     private void btn_pesquisa_nomeMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btn_pesquisa_nomeMouseExited
@@ -1994,18 +2040,18 @@ public class Sistema extends javax.swing.JFrame {
 
     private void btn_homeMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btn_homeMouseEntered
         // TODO add your handling code here:
-        
-        btn_home.setBackground(new Color(0,153,255));
+
+        btn_home.setBackground(new Color(0, 153, 255));
     }//GEN-LAST:event_btn_homeMouseEntered
 
     private void btn_homeMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btn_homeMouseExited
         // TODO add your handling code here:
-        btn_home.setBackground(new Color(119,183,225));
+        btn_home.setBackground(new Color(119, 183, 225));
     }//GEN-LAST:event_btn_homeMouseExited
 
     private void btn_homeMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btn_homeMouseClicked
         // TODO add your handling code here:
-         cardLayout.show(homeJpainel, "jpainelHome");
+        cardLayout.show(homeJpainel, "jpainelHome");
     }//GEN-LAST:event_btn_homeMouseClicked
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
@@ -2014,39 +2060,39 @@ public class Sistema extends javax.swing.JFrame {
         Calendar dia = Calendar.getInstance();
         List<Venda> listaDeVenda = new ArrayList<>();
         int totalDoMes = 0;
-        
+
         int mes = mesChooser_relatorio.getMonth();
-        
+
         DaoVendas vendas = new DaoVendas();
         //percorre a lista procurando items com o mês correspondente
-        for(Venda v: vendas.getAll()){
-            dia.setTime(date); 
+        for (Venda v : vendas.getAll()) {
+            dia.setTime(date);
             //coloca na lista os produtos vendidos no mês
-            if(dia.get(Calendar.MONTH) == mes){
+            if (dia.get(Calendar.MONTH) == mes) {
                 listaDeVenda.add(v);
-                totalDoMes+= v.getTotal_pago();
-            }  
+                totalDoMes += v.getTotal_pago();
+            }
         }
         //atualiza a tabela com os intens encontrados
         repositorioTabelaRelatorio.atualizaTabela(listaDeVenda);
-        txt_relatorio_total_mes.setText("R$ "+String.valueOf(totalDoMes));
-        
-        
+        txt_relatorio_total_mes.setText("R$ " + String.valueOf(totalDoMes));
+
+
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void tabela_relatorio_vendaMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tabela_relatorio_vendaMouseClicked
         // TODO add your handling code here:
-        
+
         int idexItem = tabela_relatorio_venda.getSelectedRow();
         Venda vendaClicada = new DaoVendas().getAll().get(idexItem);
         new TelaRelatorioAnalitico(vendaClicada).setVisible(true);
     }//GEN-LAST:event_tabela_relatorio_vendaMouseClicked
-    
-   public static void main(String[] args){
-         java.awt.EventQueue.invokeLater(() -> {
+
+    public static void main(String[] args) {
+        java.awt.EventQueue.invokeLater(() -> {
             new Sistema(null).setVisible(true);
         });
-   }
+    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel btn_cancelar_cliente;
@@ -2194,5 +2240,4 @@ public class Sistema extends javax.swing.JFrame {
     private javax.swing.JTextField txt_tell_novo_cliente;
     // End of variables declaration//GEN-END:variables
 
-   
 }
