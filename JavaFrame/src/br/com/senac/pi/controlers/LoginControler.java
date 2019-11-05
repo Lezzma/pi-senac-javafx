@@ -8,7 +8,6 @@ package br.com.senac.pi.controlers;
 import br.com.senac.pi.model.entidades.Setor;
 import br.com.senac.pi.model.entidades.Usuario;
 import br.com.senac.pi.model.Dao.UsuarioRepositorio;
-import br.com.senac.pi.ui.Sistema;
 import java.util.List;
 
 /**
@@ -18,7 +17,7 @@ import java.util.List;
 public class LoginControler {
     private UsuarioRepositorio dao = new UsuarioRepositorio();
     private List<Usuario> listaDeUsuario = dao.getAll();
-    private Usuario userLogado = new Usuario();
+    private Usuario userLogado;
     private boolean token = false;
   
     

@@ -11,6 +11,7 @@ import br.com.senac.pi.model.Dao.DaoRepositorio;
 import br.com.senac.pi.model.Dao.ProdutoRepositorio;
 import br.com.senac.factoryReposit.RepositorioTabelaProduto;
 import java.awt.Color;
+import java.awt.HeadlessException;
 import java.awt.Toolkit;
 import java.util.List;
 import javax.swing.JOptionPane;
@@ -52,8 +53,11 @@ public class TelaEditaProdutos extends javax.swing.JFrame {
   
     private void prencheDadosProdutos(Produtos produto) {
         edit_txt_codigo.setText(produto.getCodigo());
+        edit_txt_codigo.setEditable(true);
         edit_txt_nome_produto.setText(produto.getNome());
-        edit_txt_preco.setText(String.valueOf(produto.getPreco()));   
+        edit_txt_preco.setText(String.valueOf(produto.getPreco()));  
+        edit_txt_marca_produto.setText(produto.getMarca());
+        edit_txt_quantidade_produto.setValue(produto.getQuantidadeEstoque());
     }
 
     /**
@@ -81,6 +85,10 @@ public class TelaEditaProdutos extends javax.swing.JFrame {
         btn_deletar_produto = new javax.swing.JPanel();
         jLabel50 = new javax.swing.JLabel();
         jLabel51 = new javax.swing.JLabel();
+        jLabel4 = new javax.swing.JLabel();
+        edit_txt_quantidade_produto = new javax.swing.JSpinner();
+        jLabel5 = new javax.swing.JLabel();
+        edit_txt_marca_produto = new javax.swing.JTextField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setUndecorated(true);
@@ -175,6 +183,10 @@ public class TelaEditaProdutos extends javax.swing.JFrame {
         btn_deletar_produto.add(jLabel51);
         jLabel51.setBounds(50, 0, 60, 40);
 
+        jLabel4.setText("Quantidade");
+
+        jLabel5.setText("Marca:");
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -182,22 +194,33 @@ public class TelaEditaProdutos extends javax.swing.JFrame {
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel3)
-                            .addComponent(jLabel1)
-                            .addComponent(jLabel2))
-                        .addGap(0, 0, Short.MAX_VALUE))
                     .addComponent(edit_txt_nome_produto, javax.swing.GroupLayout.DEFAULT_SIZE, 480, Short.MAX_VALUE)
                     .addComponent(edit_txt_codigo)
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                            .addComponent(edit_txt_preco, javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(btn_salvar_cliente, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 118, Short.MAX_VALUE))
-                        .addGap(62, 62, 62)
-                        .addComponent(btn_deletar_produto, javax.swing.GroupLayout.DEFAULT_SIZE, 118, Short.MAX_VALUE)
-                        .addGap(64, 64, 64)
-                        .addComponent(btn_cancelar, javax.swing.GroupLayout.PREFERRED_SIZE, 118, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(btn_salvar_cliente, javax.swing.GroupLayout.PREFERRED_SIZE, 118, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(btn_deletar_produto, javax.swing.GroupLayout.PREFERRED_SIZE, 126, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(51, 51, 51)
+                        .addComponent(btn_cancelar, javax.swing.GroupLayout.PREFERRED_SIZE, 118, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel1)
+                            .addComponent(jLabel2))
+                        .addGap(0, 0, Short.MAX_VALUE))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addComponent(jLabel5)
+                                .addGap(0, 0, Short.MAX_VALUE))
+                            .addComponent(edit_txt_marca_produto))
+                        .addGap(18, 18, 18)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel3)
+                            .addComponent(edit_txt_preco, javax.swing.GroupLayout.PREFERRED_SIZE, 118, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(40, 40, 40)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(jLabel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(edit_txt_quantidade_produto, javax.swing.GroupLayout.PREFERRED_SIZE, 56, javax.swing.GroupLayout.PREFERRED_SIZE))))
                 .addContainerGap())
         );
         jPanel1Layout.setVerticalGroup(
@@ -211,16 +234,22 @@ public class TelaEditaProdutos extends javax.swing.JFrame {
                 .addComponent(jLabel2)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(edit_txt_nome_produto, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 13, Short.MAX_VALUE)
-                .addComponent(jLabel3)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel3)
+                    .addComponent(jLabel4)
+                    .addComponent(jLabel5))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(edit_txt_preco, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(edit_txt_preco, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(edit_txt_quantidade_produto, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(edit_txt_marca_produto, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 96, Short.MAX_VALUE)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(btn_salvar_cliente, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btn_cancelar, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btn_deletar_produto, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(87, 87, 87))
+                    .addComponent(btn_salvar_cliente, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btn_deletar_produto, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btn_cancelar, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap())
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -247,24 +276,32 @@ public class TelaEditaProdutos extends javax.swing.JFrame {
     //@produtoAntesDeEditar
     private void btn_salvar_clienteMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btn_salvar_clienteMouseClicked
         // TODO add your handling code here:
-        produto.setCodigo(edit_txt_codigo.getText());
-        produto.setNome(edit_txt_nome_produto.getText());
-        produto.setPreco(Double.parseDouble(edit_txt_preco.getText()));
+        try {
+            produto.setCodigo(edit_txt_codigo.getText());
+            produto.setNome(edit_txt_nome_produto.getText());
+            produto.setPreco(Double.parseDouble(edit_txt_preco.getText()));
+            produto.setMarca(edit_txt_marca_produto.getText());
+            produto.setQuantidadeEstoque(Integer.parseInt(edit_txt_quantidade_produto.getValue().toString()));
+
+            if(!produtoAntesDeEditar.equals(produto)){
+                dao.deletar(produtoAntesDeEditar);
+                dao.inserir(produto);  
+            }
+
+            int reply = JOptionPane.showConfirmDialog(null,
+                    "Deseja realmente editar esse produto",
+                    "Editar produto",
+                    JOptionPane.YES_NO_OPTION);
+
+            if (reply == JOptionPane.YES_OPTION) {
+                atualizaTabelaEresetaContadorDaTelaEditar();
+            }
             
-        if(!produtoAntesDeEditar.equals(produto)){
-            dao.deletar(produtoAntesDeEditar);
-            dao.inserir(produto);  
+        } catch (NumberFormatException | HeadlessException e) { 
+            //Mostra o possivel erro
+            e.printStackTrace(); 
         }
-        
-        int reply = JOptionPane.showConfirmDialog(null,
-                "Deseja realmente editar esse produto",
-                "Editar produto",
-                JOptionPane.YES_NO_OPTION);
-        
-        if (reply == JOptionPane.YES_OPTION) {
-           
-            atualizaTabelaEresetaContadorDaTelaEditar();
-        }
+      
 
     }//GEN-LAST:event_btn_salvar_clienteMouseClicked
 
@@ -347,15 +384,19 @@ public class TelaEditaProdutos extends javax.swing.JFrame {
     private javax.swing.JPanel btn_deletar_produto;
     private javax.swing.JPanel btn_salvar_cliente;
     private javax.swing.JTextField edit_txt_codigo;
+    private javax.swing.JTextField edit_txt_marca_produto;
     private javax.swing.JTextField edit_txt_nome_produto;
     private javax.swing.JTextField edit_txt_preco;
+    private javax.swing.JSpinner edit_txt_quantidade_produto;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel46;
     private javax.swing.JLabel jLabel47;
     private javax.swing.JLabel jLabel48;
     private javax.swing.JLabel jLabel49;
+    private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel50;
     private javax.swing.JLabel jLabel51;
     private javax.swing.JPanel jPanel1;

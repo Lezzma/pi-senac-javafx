@@ -56,6 +56,7 @@ public class TelaEditaUsuario extends javax.swing.JFrame {
         edit_txt_email.setText(usuario1.getEmail());
         edit_txt_rg.setText(usuario1.getRg());
         edit_txt_cpf.setText(usuario1.getCpf());
+        edit_txt_user_senha.setText(usuario1.getSenha());
         
         
     }
@@ -78,8 +79,6 @@ public class TelaEditaUsuario extends javax.swing.JFrame {
         jLabel49 = new javax.swing.JLabel();
         edit_txt_nome = new javax.swing.JTextField();
         edit_txt_email = new javax.swing.JTextField();
-        edit_txt_rg = new javax.swing.JTextField();
-        edit_txt_cpf = new javax.swing.JTextField();
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
@@ -87,6 +86,10 @@ public class TelaEditaUsuario extends javax.swing.JFrame {
         btn_deletar_produto = new javax.swing.JPanel();
         jLabel50 = new javax.swing.JLabel();
         jLabel51 = new javax.swing.JLabel();
+        jLabel5 = new javax.swing.JLabel();
+        edit_txt_user_senha = new javax.swing.JTextField();
+        edit_txt_rg = new javax.swing.JFormattedTextField();
+        edit_txt_cpf = new javax.swing.JFormattedTextField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setUndecorated(true);
@@ -190,6 +193,26 @@ public class TelaEditaUsuario extends javax.swing.JFrame {
         btn_deletar_produto.add(jLabel51);
         jLabel51.setBounds(50, 0, 60, 40);
 
+        jLabel5.setText("Senha atual");
+
+        edit_txt_user_senha.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                edit_txt_user_senhaActionPerformed(evt);
+            }
+        });
+
+        try {
+            edit_txt_rg.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.MaskFormatter("##.###.###-#")));
+        } catch (java.text.ParseException ex) {
+            ex.printStackTrace();
+        }
+
+        try {
+            edit_txt_cpf.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.MaskFormatter("###.###.###-##")));
+        } catch (java.text.ParseException ex) {
+            ex.printStackTrace();
+        }
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -205,16 +228,6 @@ public class TelaEditaUsuario extends javax.swing.JFrame {
                         .addComponent(btn_cancelar_editar_user, javax.swing.GroupLayout.PREFERRED_SIZE, 118, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(edit_txt_rg, javax.swing.GroupLayout.PREFERRED_SIZE, 237, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel3))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addComponent(jLabel4)
-                                .addGap(0, 0, Short.MAX_VALUE))
-                            .addComponent(edit_txt_cpf)))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(edit_txt_nome, javax.swing.GroupLayout.PREFERRED_SIZE, 237, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jLabel1))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -222,7 +235,21 @@ public class TelaEditaUsuario extends javax.swing.JFrame {
                             .addGroup(jPanel1Layout.createSequentialGroup()
                                 .addComponent(jLabel2)
                                 .addGap(0, 213, Short.MAX_VALUE))
-                            .addComponent(edit_txt_email))))
+                            .addComponent(edit_txt_email)))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addComponent(jLabel5)
+                        .addGap(0, 0, Short.MAX_VALUE))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                            .addComponent(edit_txt_user_senha, javax.swing.GroupLayout.PREFERRED_SIZE, 237, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel3, javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(edit_txt_rg))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addComponent(jLabel4)
+                                .addGap(0, 0, Short.MAX_VALUE))
+                            .addComponent(edit_txt_cpf))))
                 .addContainerGap())
         );
         jPanel1Layout.setVerticalGroup(
@@ -236,7 +263,7 @@ public class TelaEditaUsuario extends javax.swing.JFrame {
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(edit_txt_nome, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(edit_txt_email, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 19, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel3)
                     .addComponent(jLabel4))
@@ -244,12 +271,16 @@ public class TelaEditaUsuario extends javax.swing.JFrame {
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(edit_txt_rg, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(edit_txt_cpf, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
+                .addGap(32, 32, 32)
+                .addComponent(jLabel5)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(edit_txt_user_senha, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(31, 31, 31)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(btn_salvar_cliente, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(btn_cancelar_editar_user, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(btn_deletar_produto, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(87, 87, 87))
+                .addContainerGap())
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -260,7 +291,7 @@ public class TelaEditaUsuario extends javax.swing.JFrame {
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, 300, Short.MAX_VALUE)
+            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, 301, Short.MAX_VALUE)
         );
 
         pack();
@@ -270,24 +301,29 @@ public class TelaEditaUsuario extends javax.swing.JFrame {
     private void btn_salvar_clienteMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btn_salvar_clienteMouseClicked
         // TODO add your handling code here:
       // TODO add your handling code here:
-        usuario.setNome(edit_txt_nome.getText());
-        usuario.setEmail(edit_txt_email.getText());
-        usuario.setRg(edit_txt_rg.getText());
-        usuario.setCpf(edit_txt_cpf.getText());
+        try {
+            usuario.setNome(edit_txt_nome.getText());
+            usuario.setEmail(edit_txt_email.getText());
+            usuario.setRg(edit_txt_rg.getText());
+            usuario.setCpf(edit_txt_cpf.getText());
+            usuario.setSenha(edit_txt_user_senha.getText());
+            if(!UsuarioAntesDeEditar.equals(usuario)){
+                dao.deletar(UsuarioAntesDeEditar);
+                dao.inserir(usuario);
+
+            }
+            int reply = JOptionPane.showConfirmDialog(null,
+               "Deseja realmente editar esse usuário",
+               "Edita usuario",
+               JOptionPane.YES_NO_OPTION);
+
+           if (reply == JOptionPane.YES_OPTION) {
+               atualizaTabelaResetaContadorDaTelaEditar();
+           }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         
-        if(!UsuarioAntesDeEditar.equals(usuario)){
-            dao.deletar(UsuarioAntesDeEditar);
-            dao.inserir(usuario);
-
-        }
-         int reply = JOptionPane.showConfirmDialog(null,
-            "Deseja realmente editar esse usuário",
-            "Edita usuario",
-            JOptionPane.YES_NO_OPTION);
-
-        if (reply == JOptionPane.YES_OPTION) {
-            atualizaTabelaResetaContadorDaTelaEditar();
-        }
     }//GEN-LAST:event_btn_salvar_clienteMouseClicked
 
     private void btn_salvar_clienteMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btn_salvar_clienteMouseEntered
@@ -361,6 +397,10 @@ public class TelaEditaUsuario extends javax.swing.JFrame {
         btn_deletar_produto.setBackground(new Color(51, 152, 219));//cor quando sai do botton
     }//GEN-LAST:event_btn_deletar_produtoMouseExited
 
+    private void edit_txt_user_senhaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_edit_txt_user_senhaActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_edit_txt_user_senhaActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -370,10 +410,11 @@ public class TelaEditaUsuario extends javax.swing.JFrame {
     private javax.swing.JPanel btn_cancelar_editar_user;
     private javax.swing.JPanel btn_deletar_produto;
     private javax.swing.JPanel btn_salvar_cliente;
-    private javax.swing.JTextField edit_txt_cpf;
+    private javax.swing.JFormattedTextField edit_txt_cpf;
     private javax.swing.JTextField edit_txt_email;
     private javax.swing.JTextField edit_txt_nome;
-    private javax.swing.JTextField edit_txt_rg;
+    private javax.swing.JFormattedTextField edit_txt_rg;
+    private javax.swing.JTextField edit_txt_user_senha;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
@@ -382,6 +423,7 @@ public class TelaEditaUsuario extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel47;
     private javax.swing.JLabel jLabel48;
     private javax.swing.JLabel jLabel49;
+    private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel50;
     private javax.swing.JLabel jLabel51;
     private javax.swing.JPanel jPanel1;

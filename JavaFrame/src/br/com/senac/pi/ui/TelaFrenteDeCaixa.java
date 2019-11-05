@@ -79,7 +79,9 @@ public class TelaFrenteDeCaixa extends javax.swing.JFrame {
         //coloca o icone do sistema
         setIcon();
     }
-
+    public Usuario getUsuarioLogado(){
+        return usuarioLogado;
+    }
     public Cliente getClienteVinculado() {
         return clienteVinculado;
     }
