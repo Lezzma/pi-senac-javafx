@@ -58,7 +58,7 @@ public class ClienteControler {
                     "Masculino",
                     "solteiro",
                     "neto.silva101@outlook.com",
-                        new Endereco("04849160", "Cocaia", "Manuel pla", 'c', 0));
+                        new Endereco("04849160", "Cocaia", "Manuel pla", "casa 5", "123"));
             dao.inserir(clieteTeste);
 
         }
