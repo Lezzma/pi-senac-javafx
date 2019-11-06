@@ -10,10 +10,14 @@ import br.com.senac.pi.model.entidades.Cliente;
 import br.com.senac.pi.model.Dao.DaoCliente;
 import br.com.senac.pi.ui.TelaFrenteDeCaixa;
 import br.com.senac.factoryReposit.RepositorioroTabelaCliente;
+import br.com.senac.pi.model.entidades.Endereco;
 import br.com.senac.pi.model.entidades.Setor;
 import br.com.senac.pi.model.entidades.Usuario;
+import br.com.senac.utils.Validacao;
 import java.awt.Color;
 import java.awt.Frame;
+import java.util.ArrayList;
+import java.util.List;
 import javax.swing.JOptionPane;
 import javax.swing.JTable;
 
@@ -418,23 +422,42 @@ public class TelaEditarClientes extends javax.swing.JDialog {
     private void btn_salvar_clienteMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btn_salvar_clienteMouseClicked
         // TODO add your handling code here:
         // TODO add your handling code here:
+        Validacao valida = new Validacao();
+        List<String> erros = new ArrayList<>();
+        StringBuilder todosErros =  new StringBuilder();
+        
         cliente.setNome(edit_txt_nome.getText());
         cliente.setCpf(edit_txt_cpf.getText());
+        cliente.setEmail(edit_txt_email_cliente.getText());
+        cliente.setEndereco(new Endereco(
+                edit_txt_cep_cliente.getText(),
+                edit_txt_bairro_Cliente.getText(), 
+                edit_txt_rua_cliente.getText(), 
+                edit_txt_comple_cliente.getText(), 
+                edit_txt_num_cliente.getText()));
+        cliente.setDataDeNascimento(edit_txt_nascimento_cliente.getText());
+        erros = valida.validaCliente(cliente);
+        
+        if(!erros.isEmpty()){
+            erros.forEach(erro -> {
+                todosErros.append(erro+"\n");
+            });
+            JOptionPane.showMessageDialog(null, todosErros.toString(),"Dados Invalidos!",JOptionPane.WARNING_MESSAGE);
+        }else{
+            if (!clienteAntesDeEditar.equals(cliente)) {
+                dao.deletar(clienteAntesDeEditar);
+                dao.inserir(cliente);
+            }
+            int reply = JOptionPane.showConfirmDialog(null,
+                    "Deseja realmente editar esse cliente",
+                    "Editar cliente",
+                    JOptionPane.YES_NO_OPTION);
 
-        if (!clienteAntesDeEditar.equals(cliente)) {
-            dao.deletar(clienteAntesDeEditar);
-            dao.inserir(cliente);
+            if (reply == JOptionPane.YES_OPTION) {
+                new RepositorioroTabelaCliente(tabela).atualizaTabela(dao.getAll());
+                dispose();
+            }
         }
-        int reply = JOptionPane.showConfirmDialog(null,
-                "Deseja realmente editar esse cliente",
-                "Editar cliente",
-                JOptionPane.YES_NO_OPTION);
-
-        if (reply == JOptionPane.YES_OPTION) {
-            new RepositorioroTabelaCliente(tabela).atualizaTabela(dao.getAll());
-            dispose();
-        }
-
 
     }//GEN-LAST:event_btn_salvar_clienteMouseClicked
     private void prencheDadosCliente(Cliente cliente) {

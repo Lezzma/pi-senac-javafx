@@ -9,7 +9,7 @@ import br.com.senac.factoryReposit.RepositoreCarrinho;
 import br.com.senac.pi.model.entidades.Produtos;
 import br.com.senac.pi.model.Dao.DaoCarrinho;
 import br.com.senac.pi.model.Dao.DaoRepositorio;
-import br.com.senac.pi.model.Dao.ProdutoRepositorio;
+import br.com.senac.pi.model.Dao.DaoProduto;
 import br.com.senac.factoryReposit.RepositorioTabela;
 import br.com.senac.factoryReposit.RepositorioTabelaProduto;
 import java.util.List;
@@ -55,7 +55,7 @@ public class TelaPesquisaProdutoFrenteDeCaixa extends javax.swing.JFrame {
         repoTabelaCarrinho = new RepositoreCarrinho(tabela);
         
         //dao que busca todos produtos
-        daoProduto = new ProdutoRepositorio();
+        daoProduto = new DaoProduto();
         
         //lista contendo todos os produtos
         listaDeProdutos = daoProduto.getAll();
@@ -85,7 +85,6 @@ public class TelaPesquisaProdutoFrenteDeCaixa extends javax.swing.JFrame {
         tabela_frenteDeCaixa_produtos = new javax.swing.JTable();
         searche_fdc = new javax.swing.JTextField();
         btn_pesquisa_fdc = new javax.swing.JButton();
-        jComboBox_tipo_pesquisa = new javax.swing.JComboBox();
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
         item_quantidade = new javax.swing.JSpinner();
@@ -136,9 +135,7 @@ public class TelaPesquisaProdutoFrenteDeCaixa extends javax.swing.JFrame {
             }
         });
 
-        jComboBox_tipo_pesquisa.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Código", "ID", "Nome", "Marca" }));
-
-        jLabel1.setText("Pesquisar por :");
+        jLabel1.setText("Pesquisar por Código");
 
         jLabel2.setText("Quantidade");
 
@@ -163,38 +160,34 @@ public class TelaPesquisaProdutoFrenteDeCaixa extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 551, Short.MAX_VALUE)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addComponent(btn_pesquisa_fdc)
-                        .addGap(18, 18, 18)
-                        .addComponent(searche_fdc)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jLabel1)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jComboBox_tipo_pesquisa, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(79, 79, 79))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addGap(0, 0, Short.MAX_VALUE)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                                 .addComponent(jLabel2)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(item_quantidade, javax.swing.GroupLayout.PREFERRED_SIZE, 96, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addComponent(btn_set_qtd, javax.swing.GroupLayout.Alignment.TRAILING))))
+                            .addComponent(btn_set_qtd, javax.swing.GroupLayout.Alignment.TRAILING)))
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(btn_pesquisa_fdc)
+                        .addGap(18, 18, 18)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(jLabel1)
+                                .addGap(0, 0, Short.MAX_VALUE))
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(searche_fdc)
+                                .addGap(223, 223, 223)))))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(39, 39, 39)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(searche_fdc, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(btn_pesquisa_fdc)))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jLabel1)
-                            .addComponent(jComboBox_tipo_pesquisa, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                .addGap(19, 19, 19)
+                .addComponent(jLabel1)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(searche_fdc, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btn_pesquisa_fdc))
                 .addGap(18, 18, 18)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 134, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
@@ -217,9 +210,8 @@ public class TelaPesquisaProdutoFrenteDeCaixa extends javax.swing.JFrame {
         // TODO add your handling code here:
 
         String itemPesquisado = searche_fdc.getText();
-        String tipoDePesquisa = jComboBox_tipo_pesquisa.getSelectedItem().toString();
 
-        pesquisa(tipoDePesquisa, itemPesquisado);
+        pesquisa(itemPesquisado);
     }//GEN-LAST:event_btn_pesquisa_fdcActionPerformed
 
     private void tabela_frenteDeCaixa_produtosMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tabela_frenteDeCaixa_produtosMouseClicked
@@ -228,8 +220,8 @@ public class TelaPesquisaProdutoFrenteDeCaixa extends javax.swing.JFrame {
             duploClickTabela();
             item_quantidade.setValue(pegaProdutoClicado().getQuantidadeVenda());
         }else{
-        int idexProduto = tabela_frenteDeCaixa_produtos.getSelectedRow();
-        produtoClicado = listaDeProdutos.get(idexProduto);
+                int idexProduto = tabela_frenteDeCaixa_produtos.getSelectedRow();
+                produtoClicado = listaDeProdutos.get(idexProduto);
         }
         
         
@@ -254,6 +246,8 @@ public class TelaPesquisaProdutoFrenteDeCaixa extends javax.swing.JFrame {
                 //fecha a janela atual
                 dispose();
 
+            }else if(itemClicado.getQuantidadeEstoque() == 0){
+                JOptionPane.showMessageDialog(null, "Esse produto não tem em estoque", "Ação não permitida!", JOptionPane.INFORMATION_MESSAGE);
             } else {
                 
                 JOptionPane.showMessageDialog(null, "Esse produto já está no carrinho", "Ação não permitida!", JOptionPane.INFORMATION_MESSAGE);
@@ -289,32 +283,15 @@ public class TelaPesquisaProdutoFrenteDeCaixa extends javax.swing.JFrame {
         return pegaritemClicado;
     }
 
-    private void pesquisa(String tipoDePesquisa, String itemPesquisado) {
-        switch (tipoDePesquisa) {
-            case "Código":
+    private void pesquisa(String itemPesquisado) {
+      
                 listaDeProdutos.forEach(p -> {
                     if (p.getCodigo().equals(itemPesquisado)) {
                         repoTabela.retornaItemPesquisado(p);
                     }
                 });
-                break;
-            case "ID":
-                break;
-            case "Nome":
-                listaDeProdutos.forEach(p -> {
-                    if (p.getNome().equals(itemPesquisado)) {
-                        repoTabela.retornaItemPesquisado(p);
-                    }
-                });
-                break;
-            case "Marca":
-                listaDeProdutos.forEach(p -> {
-                    if (p.getMarca().equals(itemPesquisado)) {
-                        repoTabela.retornaItemPesquisado(p);
-                    }
-                });
-                break;
-        }
+             
+        
     }
 
     /**
@@ -356,7 +333,6 @@ public class TelaPesquisaProdutoFrenteDeCaixa extends javax.swing.JFrame {
     private javax.swing.JButton btn_pesquisa_fdc;
     private javax.swing.JButton btn_set_qtd;
     private javax.swing.JSpinner item_quantidade;
-    private javax.swing.JComboBox jComboBox_tipo_pesquisa;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JScrollPane jScrollPane1;

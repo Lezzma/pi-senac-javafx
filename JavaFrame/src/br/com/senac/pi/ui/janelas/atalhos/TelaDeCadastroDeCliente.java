@@ -5,7 +5,7 @@ import br.com.senac.pi.ui.TelaFrenteDeCaixa;
 import br.com.senac.factoryReposit.RepositorioroTabelaCliente;
 import br.com.senac.pi.model.entidades.Cliente;
 import br.com.senac.pi.model.entidades.Endereco;
-import br.com.senac.utils.ValidaTexto;
+import br.com.senac.utils.Validacao;
 import java.awt.Color;
 import java.awt.HeadlessException;
 import java.util.ArrayList;
@@ -20,7 +20,7 @@ public class TelaDeCadastroDeCliente extends javax.swing.JDialog {
 
     private ClienteControler clienteControler;
     private TelaFrenteDeCaixa caixa;
-    private ValidaTexto valida;
+    private Validacao valida;
     /**
      * Creates new form TelaDeCadastroDeCliente
      */
@@ -38,7 +38,7 @@ public class TelaDeCadastroDeCliente extends javax.swing.JDialog {
         //criando um cliente teste, somente para prenchimento da tabela
         clienteControler.criaClienteTeste();
         clienteControler.atualizaTabelaCliente();
-        valida = new ValidaTexto();
+        valida = new Validacao();
     }
 
     /**

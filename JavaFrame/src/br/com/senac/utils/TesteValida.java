@@ -13,7 +13,7 @@ public class TesteValida {
     
     public static void main(String[]a){
         
-        ValidaTexto valida = new ValidaTexto();
+        Validacao valida = new Validacao();
         
         //TESTE CPF
         boolean cpf = valida.verificaCpf("388.791.698-07");

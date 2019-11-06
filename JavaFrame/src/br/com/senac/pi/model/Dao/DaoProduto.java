@@ -14,7 +14,7 @@ import java.util.List;
  *
  * @author jose.rsneto10
  */
-public class ProdutoRepositorio implements DaoRepositorio<Produtos> {
+public class DaoProduto implements DaoRepositorio<Produtos> {
 
     public static List<Produtos> LISTA_DE_PRODUTOS = new ArrayList<>();
 
@@ -32,10 +32,7 @@ public class ProdutoRepositorio implements DaoRepositorio<Produtos> {
 
     @Override
     public void att(Produtos entidade) {
-        
-           
-     
-         
+  
     }
 
     @Override

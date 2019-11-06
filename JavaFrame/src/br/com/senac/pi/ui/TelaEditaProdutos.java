@@ -8,11 +8,13 @@ package br.com.senac.pi.ui;
 import br.com.senac.pi.model.entidades.Cliente;
 import br.com.senac.pi.model.entidades.Produtos;
 import br.com.senac.pi.model.Dao.DaoRepositorio;
-import br.com.senac.pi.model.Dao.ProdutoRepositorio;
+import br.com.senac.pi.model.Dao.DaoProduto;
 import br.com.senac.factoryReposit.RepositorioTabelaProduto;
+import br.com.senac.utils.Validacao;
 import java.awt.Color;
 import java.awt.HeadlessException;
 import java.awt.Toolkit;
+import java.util.ArrayList;
 import java.util.List;
 import javax.swing.JOptionPane;
 import javax.swing.JTable;
@@ -27,7 +29,7 @@ public class TelaEditaProdutos extends javax.swing.JFrame {
     
     private final Produtos produto;
     private final Produtos produtoAntesDeEditar;
-    private final DaoRepositorio dao = new ProdutoRepositorio();
+    private final DaoRepositorio dao = new DaoProduto();
     private List<Produtos> listaDeProdutos = dao.getAll();
     private Cliente cliente;
     private RepositorioTabelaProduto repositorioTabelaProduto;
@@ -152,11 +154,11 @@ public class TelaEditaProdutos extends javax.swing.JFrame {
             }
         });
 
-        jLabel1.setText("Codigo:");
+        jLabel1.setText("*Codigo:");
 
-        jLabel2.setText("Nome:");
+        jLabel2.setText("*Nome:");
 
-        jLabel3.setText("Preço");
+        jLabel3.setText("*Preço");
 
         btn_deletar_produto.setBackground(new java.awt.Color(51, 152, 219));
         btn_deletar_produto.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -183,7 +185,7 @@ public class TelaEditaProdutos extends javax.swing.JFrame {
         btn_deletar_produto.add(jLabel51);
         jLabel51.setBounds(50, 0, 60, 40);
 
-        jLabel4.setText("Quantidade");
+        jLabel4.setText("*Quantidade");
 
         jLabel5.setText("Marca:");
 
@@ -276,31 +278,48 @@ public class TelaEditaProdutos extends javax.swing.JFrame {
     //@produtoAntesDeEditar
     private void btn_salvar_clienteMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btn_salvar_clienteMouseClicked
         // TODO add your handling code here:
-        try {
+            Validacao valida =  new Validacao();
+            List<String> erros = new ArrayList<>();
+            StringBuilder errosTotal = new StringBuilder();
+            
             produto.setCodigo(edit_txt_codigo.getText());
             produto.setNome(edit_txt_nome_produto.getText());
-            produto.setPreco(Double.parseDouble(edit_txt_preco.getText()));
             produto.setMarca(edit_txt_marca_produto.getText());
             produto.setQuantidadeEstoque(Integer.parseInt(edit_txt_quantidade_produto.getValue().toString()));
-
-            if(!produtoAntesDeEditar.equals(produto)){
-                dao.deletar(produtoAntesDeEditar);
-                dao.inserir(produto);  
+            erros = valida.validaProdutos(produto);
+             
+            try {
+                produto.setPreco(Double.parseDouble(edit_txt_preco.getText()));
+            } catch (Exception e) {
+                erros.add("Preço do produto não pode está vazio!");
             }
+            
+            if(!erros.isEmpty()){
+                
+                erros.forEach(erro -> {
+                    errosTotal.append(erro+"\n");
+                });
+                JOptionPane.showMessageDialog(null, errosTotal.toString());
+                
+            }else{
+                
+                if(!produtoAntesDeEditar.equals(produto)){
+                    dao.deletar(produtoAntesDeEditar);
+                    dao.inserir(produto);  
+                }
 
-            int reply = JOptionPane.showConfirmDialog(null,
+                int reply = JOptionPane.showConfirmDialog(null,
                     "Deseja realmente editar esse produto",
                     "Editar produto",
                     JOptionPane.YES_NO_OPTION);
 
-            if (reply == JOptionPane.YES_OPTION) {
-                atualizaTabelaEresetaContadorDaTelaEditar();
+                if (reply == JOptionPane.YES_OPTION) {
+                    atualizaTabelaEresetaContadorDaTelaEditar();
+                }
             }
             
-        } catch (NumberFormatException | HeadlessException e) { 
-            //Mostra o possivel erro
-            e.printStackTrace(); 
-        }
+            
+       
       
 
     }//GEN-LAST:event_btn_salvar_clienteMouseClicked
