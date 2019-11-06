@@ -28,7 +28,11 @@ public class Validacao {
         String cepValido = "\\d\\d\\d\\d\\d-\\d\\d\\d";
         return cep.matches(cepValido);
     }
-
+    
+    public boolean validaRg(String rg){
+        String rgValido = "\\d\\d.\\d\\d\\d.\\d\\d\\d-\\d";
+        return rg.matches(rgValido);
+    }
     public boolean validaTell(String telefone) {
         String telefoneValido = "\\d\\d\\d\\d\\d\\d\\d\\d-\\d\\d\\d\\d";
         return telefone.matches(telefoneValido);
@@ -115,6 +119,28 @@ public class Validacao {
 
     public List<String> validaUsuarios(Usuario usuario) {
         List<String> erros = new ArrayList<>();
-        return null;
+        //nome
+        if(usuario.getNome().equals("")){
+            erros.add("Nome do usuário é obrigado!");
+        }
+        
+        //rg
+        if(!validaRg(usuario.getRg()) && !usuario.getRg().equals("")){
+            erros.add("RG invalido!");
+        }
+        //cpf
+        
+        if(!verificaCpf(usuario.getCpf()) && !usuario.getCpf().equals("")){
+            erros.add("CPF invalido!");
+        }
+        //email
+        if(!verificaEmail(usuario.getEmail()) && !usuario.getEmail().equals("")){
+            erros.add("Email invalido!");
+        }else if(usuario.getEmail().equals("")){
+            erros.add("Email do usuário é obrigado!");
+        }
+        //senha
+        
+        return erros;
     }
 }

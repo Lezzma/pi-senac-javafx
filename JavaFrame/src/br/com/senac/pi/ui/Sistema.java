@@ -180,7 +180,6 @@ public class Sistema extends javax.swing.JFrame {
         lbl_nome_user = new javax.swing.JLabel();
         txt_nome_user = new javax.swing.JTextField();
         lbl_rg_user = new javax.swing.JLabel();
-        txt_rg_user = new javax.swing.JTextField();
         lbl_cpf_user = new javax.swing.JLabel();
         txt_cpf_user = new javax.swing.JFormattedTextField();
         lbl_email_user = new javax.swing.JLabel();
@@ -191,6 +190,7 @@ public class Sistema extends javax.swing.JFrame {
         txt_confirm_senha_user = new javax.swing.JPasswordField();
         lbl_confirm_senha_user1 = new javax.swing.JLabel();
         comboBox_tipo_usuario = new javax.swing.JComboBox();
+        txt_rg_user = new javax.swing.JFormattedTextField();
         pane_titulo_user = new javax.swing.JPanel();
         jLabel20 = new javax.swing.JLabel();
         btn_cancelar_cliente = new javax.swing.JPanel();
@@ -535,13 +535,11 @@ public class Sistema extends javax.swing.JFrame {
         jPanel4Layout.setHorizontalGroup(
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel4Layout.createSequentialGroup()
-                .addComponent(jLabel10)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel4Layout.createSequentialGroup()
                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(jPanel4Layout.createSequentialGroup()
+                        .addGap(8, 8, 8)
                         .addComponent(jLabel1)
-                        .addGap(18, 18, 18)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(txt_descricao_produto, javax.swing.GroupLayout.DEFAULT_SIZE, 453, Short.MAX_VALUE))
                     .addGroup(jPanel4Layout.createSequentialGroup()
                         .addGap(7, 7, 7)
@@ -554,20 +552,24 @@ public class Sistema extends javax.swing.JFrame {
                             .addComponent(txt_codigo_produto))))
                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel4Layout.createSequentialGroup()
+                        .addGap(43, 43, 43)
+                        .addComponent(jLabel3)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(txt_quantidade_produto_estoque, javax.swing.GroupLayout.PREFERRED_SIZE, 48, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jPanel4Layout.createSequentialGroup()
                         .addGap(102, 102, 102)
                         .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                             .addComponent(jLabel19)
                             .addComponent(jLabel50))
                         .addGap(34, 34, 34)
-                        .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(txt_marca_produto)
-                            .addComponent(txt_preco_produto)))
-                    .addGroup(jPanel4Layout.createSequentialGroup()
-                        .addGap(43, 43, 43)
-                        .addComponent(jLabel3)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(txt_quantidade_produto_estoque, javax.swing.GroupLayout.PREFERRED_SIZE, 48, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addGap(351, 351, 351))
+                        .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(txt_marca_produto, javax.swing.GroupLayout.PREFERRED_SIZE, 394, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(txt_preco_produto, javax.swing.GroupLayout.PREFERRED_SIZE, 103, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                .addContainerGap())
+            .addGroup(jPanel4Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jLabel10)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel4Layout.setVerticalGroup(
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -582,7 +584,7 @@ public class Sistema extends javax.swing.JFrame {
                             .addComponent(txt_codigo_produto, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jLabel24)
+                            .addComponent(jLabel24, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(txt_nome_produto, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                     .addGroup(jPanel4Layout.createSequentialGroup()
                         .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
@@ -750,7 +752,7 @@ public class Sistema extends javax.swing.JFrame {
                     .addComponent(jButton3)
                     .addComponent(jTextField3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane7, javax.swing.GroupLayout.DEFAULT_SIZE, 385, Short.MAX_VALUE)
+                .addComponent(jScrollPane7, javax.swing.GroupLayout.DEFAULT_SIZE, 384, Short.MAX_VALUE)
                 .addContainerGap())
         );
 
@@ -771,12 +773,6 @@ public class Sistema extends javax.swing.JFrame {
         });
 
         lbl_rg_user.setText("*RG:");
-
-        txt_rg_user.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                txt_rg_userActionPerformed(evt);
-            }
-        });
 
         lbl_cpf_user.setText("*CPF:");
 
@@ -806,6 +802,12 @@ public class Sistema extends javax.swing.JFrame {
 
         comboBox_tipo_usuario.setToolTipText("Selecione\n");
 
+        try {
+            txt_rg_user.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.MaskFormatter("##.###.###-#")));
+        } catch (java.text.ParseException ex) {
+            ex.printStackTrace();
+        }
+
         javax.swing.GroupLayout jPanel7Layout = new javax.swing.GroupLayout(jPanel7);
         jPanel7.setLayout(jPanel7Layout);
         jPanel7Layout.setHorizontalGroup(
@@ -825,9 +827,9 @@ public class Sistema extends javax.swing.JFrame {
                 .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel7Layout.createSequentialGroup()
                         .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                            .addComponent(txt_rg_user)
                             .addComponent(txt_nome_user)
-                            .addComponent(txt_cpf_user, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 173, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(txt_cpf_user, javax.swing.GroupLayout.DEFAULT_SIZE, 173, Short.MAX_VALUE)
+                            .addComponent(txt_rg_user))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(jPanel7Layout.createSequentialGroup()
@@ -839,10 +841,10 @@ public class Sistema extends javax.swing.JFrame {
                                 .addComponent(lbl_confirm_senha_user, javax.swing.GroupLayout.PREFERRED_SIZE, 89, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                    .addComponent(txt_email_user)
-                                    .addComponent(txt_senha_user, javax.swing.GroupLayout.Alignment.TRAILING)
-                                    .addComponent(txt_confirm_senha_user, javax.swing.GroupLayout.Alignment.TRAILING))))
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                                    .addComponent(txt_email_user, javax.swing.GroupLayout.DEFAULT_SIZE, 360, Short.MAX_VALUE)
+                                    .addComponent(txt_senha_user)
+                                    .addComponent(txt_confirm_senha_user))))
+                        .addContainerGap(321, Short.MAX_VALUE))
                     .addGroup(jPanel7Layout.createSequentialGroup()
                         .addComponent(comboBox_tipo_usuario, javax.swing.GroupLayout.PREFERRED_SIZE, 78, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
@@ -857,10 +859,10 @@ public class Sistema extends javax.swing.JFrame {
                             .addComponent(txt_nome_user, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(lbl_nome_user))
                         .addGap(18, 18, 18)
-                        .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(lbl_rg_user)
                             .addComponent(txt_rg_user, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(18, 18, 18)
+                        .addGap(21, 21, 21)
                         .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(lbl_cpf_user)
                             .addComponent(txt_cpf_user, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
@@ -1030,7 +1032,7 @@ public class Sistema extends javax.swing.JFrame {
                     .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jComboBox2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane6, javax.swing.GroupLayout.DEFAULT_SIZE, 392, Short.MAX_VALUE)
+                .addComponent(jScrollPane6, javax.swing.GroupLayout.DEFAULT_SIZE, 389, Short.MAX_VALUE)
                 .addContainerGap())
         );
 
@@ -1395,7 +1397,6 @@ public class Sistema extends javax.swing.JFrame {
             .addGroup(telaCadastraCliente1Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(telaCadastraCliente1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane8, javax.swing.GroupLayout.DEFAULT_SIZE, 1117, Short.MAX_VALUE)
                     .addGroup(telaCadastraCliente1Layout.createSequentialGroup()
                         .addComponent(jLabel9, javax.swing.GroupLayout.PREFERRED_SIZE, 42, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
@@ -1408,17 +1409,19 @@ public class Sistema extends javax.swing.JFrame {
                         .addComponent(search_cpf, javax.swing.GroupLayout.PREFERRED_SIZE, 147, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(btn_pesquisa, javax.swing.GroupLayout.PREFERRED_SIZE, 102, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(0, 0, Short.MAX_VALUE))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, telaCadastraCliente1Layout.createSequentialGroup()
-                        .addComponent(jPanel8, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addContainerGap(251, Short.MAX_VALUE))))
+                        .addGap(0, 364, Short.MAX_VALUE))
+                    .addGroup(telaCadastraCliente1Layout.createSequentialGroup()
+                        .addGroup(telaCadastraCliente1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jScrollPane8)
+                            .addComponent(jPanel8, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addContainerGap())))
         );
         telaCadastraCliente1Layout.setVerticalGroup(
             telaCadastraCliente1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(telaCadastraCliente1Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jPanel8, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
+                .addComponent(jPanel8, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(telaCadastraCliente1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(btn_pesquisa_nome, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(telaCadastraCliente1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
@@ -1430,7 +1433,7 @@ public class Sistema extends javax.swing.JFrame {
                             .addComponent(jLabel8, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addComponent(btn_pesquisa, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addGap(18, 18, 18)
-                .addComponent(jScrollPane8, javax.swing.GroupLayout.DEFAULT_SIZE, 265, Short.MAX_VALUE))
+                .addComponent(jScrollPane8))
         );
 
         pane_titulo_user1.setBackground(new java.awt.Color(44, 62, 80));
@@ -1650,10 +1653,6 @@ public class Sistema extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_txt_confirm_senha_userFocusLost
 
-    private void txt_rg_userActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txt_rg_userActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_txt_rg_userActionPerformed
-
     private void btn_novo_produtoMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btn_novo_produtoMouseClicked
         // TODO add your handling code here:
         cardLayout.show(homeJpainel, "telaCadastrarProdutos");
@@ -1819,16 +1818,30 @@ public class Sistema extends javax.swing.JFrame {
 
     private void btn_salvar_clienteMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btn_salvar_clienteMouseClicked
         // TODO add your handling code here:
-        if (ControlerUsuarios.criarUsuario(0,
-                txt_nome_user.getText(),
-                txt_email_user.getText(),
-                txt_rg_user.getText(),
-                txt_cpf_user.getText(),
-                txt_senha_user.getText(),
-                (Setor) comboBox_tipo_usuario.getSelectedItem())) {
-            JOptionPane.showMessageDialog(null, "Usuario inserido com sucesso");
-            repositorioTabelaUsuario.atualizaTabela(listaDeUsuarios);
-        }
+      List<String> erros = new ArrayList<>();
+      StringBuilder todosErros = new StringBuilder();
+        Usuario novoUsuario = new Usuario();
+                 
+            novoUsuario.setNome(txt_nome_user.getText());
+            novoUsuario.setEmail(txt_email_user.getText());
+            novoUsuario.setRg(txt_rg_user.getText());
+            novoUsuario.setCpf(txt_cpf_user.getText());
+            novoUsuario.setSenha(txt_senha_user.getText());
+            novoUsuario.setSetor((Setor) comboBox_tipo_usuario.getSelectedItem());
+           erros = valida.validaUsuarios(novoUsuario);
+           if(!erros.isEmpty()){
+               erros.forEach(erro -> {
+                   todosErros.append(erro+"\n");
+               });
+               
+               JOptionPane.showMessageDialog(null, todosErros.toString(), "Campos invalidos", JOptionPane.WARNING_MESSAGE);
+           }else{
+                if (ControlerUsuarios.criarUsuario(novoUsuario)) {
+                    JOptionPane.showMessageDialog(null, "Usuario inserido com sucesso");
+                    repositorioTabelaUsuario.atualizaTabela(listaDeUsuarios);
+                }
+           }
+       
     }//GEN-LAST:event_btn_salvar_clienteMouseClicked
 
     private void btn_salvar_clienteMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btn_salvar_clienteMouseEntered
@@ -2236,7 +2249,7 @@ public class Sistema extends javax.swing.JFrame {
     private javax.swing.JTextField txt_preco_produto;
     private javax.swing.JSpinner txt_quantidade_produto_estoque;
     private javax.swing.JLabel txt_relatorio_total_mes;
-    private javax.swing.JTextField txt_rg_user;
+    private javax.swing.JFormattedTextField txt_rg_user;
     private javax.swing.JTextField txt_rua_novo_cliente;
     private javax.swing.JPasswordField txt_senha_user;
     private javax.swing.JFormattedTextField txt_tell_novo_cliente;
