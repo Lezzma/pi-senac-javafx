@@ -113,6 +113,10 @@ public class Validacao {
         if (produto.getCodigo().equals("")) {
             erros.add("Código do produto é obrigatório");
         }
+        
+        if(produto.getQuantidadeEstoque() == 0 ){
+             erros.add("Quantidade do produto é obrigatório");
+        }
 
         return erros;
     }

@@ -21,8 +21,11 @@ import java.awt.KeyEventDispatcher;
 import java.awt.KeyboardFocusManager;
 import java.awt.Toolkit;
 import java.awt.event.KeyEvent;
+import java.sql.SQLException;
 import java.time.Instant;
 import java.util.Date;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
@@ -119,8 +122,13 @@ public class TelaFrenteDeCaixa extends javax.swing.JFrame {
                     @Override
                     public boolean dispatchKeyEvent(KeyEvent ke) {
                         if (ke.getID() == ke.KEY_RELEASED && ke.getKeyCode() == KeyEvent.VK_F7) {
-                            new TelaPesquisaProdutoFrenteDeCaixa(tabela_carrinho, ValorTotal).setVisible(true);
-                            return true;
+                            try {
+                                new TelaPesquisaProdutoFrenteDeCaixa(tabela_carrinho, ValorTotal).setVisible(true);
+                                return true;
+                            } catch (SQLException ex) {
+                               throw new RuntimeException(ex);
+                            }
+                            
                         }
                         if (ke.getID() == ke.KEY_RELEASED && ke.getKeyCode() == KeyEvent.VK_F8) {
                             new TelaDeCadastroDeCliente(TelaFrenteDeCaixa.this, true, TelaFrenteDeCaixa.this).setVisible(true);
@@ -638,8 +646,9 @@ public class TelaFrenteDeCaixa extends javax.swing.JFrame {
 
     private void btn_sair_frente_de_caixaMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btn_sair_frente_de_caixaMouseClicked
         //quando a frente de caixa é fechado, lista do repositorioCarrinho é zerada
-        dispose();
-        new Login().setVisible(true);
+       // dispose();
+        System.exit(0);
+        //new Login().setVisible(true);
 //        int reply = JOptionPane.showConfirmDialog(null,
 //                "Deseja realmente sair do sistema",
 //                "Fechar sistema",

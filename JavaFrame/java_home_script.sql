@@ -36,7 +36,8 @@ cep_cli int(8) not null
 );
 
 create table produto (
-id_prod int auto_increment primary key not null,
+id_prod int auto_increment primary key not NULL,
+codigo_pro varchar(100) null,
 nome_prod varchar(50) not null,
 descr_prod varchar(100),
 preco_prod double(50, 2) not null,

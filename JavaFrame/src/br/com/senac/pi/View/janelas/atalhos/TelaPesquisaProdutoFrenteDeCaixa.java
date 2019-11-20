@@ -8,7 +8,6 @@ package br.com.senac.pi.View.janelas.atalhos;
 import br.com.senac.pi.controllers.ControllerTabelaCarrinho;
 import br.com.senac.pi.model.entidades.Produtos;
 import br.com.senac.pi.model.Dao.DaoCarrinho;
-import br.com.senac.pi.model.Dao.DaoRepositorio;
 import br.com.senac.pi.model.Dao.DaoProduto;
 import br.com.senac.pi.controllers.ControllerTabelaProduto;
 import java.util.List;
@@ -16,6 +15,9 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JTable;
 import br.com.senac.pi.controllers.FactoryTabela;
+import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -26,12 +28,12 @@ public class TelaPesquisaProdutoFrenteDeCaixa extends javax.swing.JFrame {
     private FactoryTabela repoTabela;
     private FactoryTabela repoTabelaCarrinho;
     
-    private final DaoRepositorio daoProduto;
+    private final DaoProduto daoProduto;
     private final List<Produtos> listaDeProdutos;
     
     private JLabel valorTotal;
     private double valor;
-    private DaoRepositorio daoCarrinho;
+    private DaoCarrinho daoCarrinho;
     private Produtos produtoClicado;
 
     /**
@@ -39,7 +41,7 @@ public class TelaPesquisaProdutoFrenteDeCaixa extends javax.swing.JFrame {
      */
    
 
-    public TelaPesquisaProdutoFrenteDeCaixa(JTable tabela, JLabel valototal) {
+    public TelaPesquisaProdutoFrenteDeCaixa(JTable tabela, JLabel valototal) throws SQLException {
         initComponents();
         
         //coloca valor total
@@ -324,7 +326,11 @@ public class TelaPesquisaProdutoFrenteDeCaixa extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new TelaPesquisaProdutoFrenteDeCaixa(null,null).setVisible(true);
+                try {
+                    new TelaPesquisaProdutoFrenteDeCaixa(null,null).setVisible(true);
+                } catch (SQLException ex) {
+                    Logger.getLogger(TelaPesquisaProdutoFrenteDeCaixa.class.getName()).log(Level.SEVERE, null, ex);
+                }
             }
         });
     }

@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package br.com.senac.pi.controllers;
 
 import br.com.senac.pi.model.entidades.Usuario;
@@ -10,10 +5,6 @@ import java.util.List;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 
-/**
- *
- * @author jose.rsneto10
- */
 public class ControllerTabelasUsuario implements FactoryTabela<Usuario> {
     DefaultTableModel model;
     
@@ -62,6 +53,11 @@ public class ControllerTabelasUsuario implements FactoryTabela<Usuario> {
 
     @Override
     public void retornaItemPesquisado(Usuario entidade) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public void buscaEntidades() {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
      

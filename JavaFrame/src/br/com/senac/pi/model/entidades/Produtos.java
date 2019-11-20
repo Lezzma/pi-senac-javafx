@@ -10,7 +10,7 @@ package br.com.senac.pi.model.entidades;
  * @author jose.rsneto10
  */
 public class Produtos {
-
+    int id;
     private String codigo, nome,marca,descricao;
     private double preco;
     private int quantidadeVenda, quantidadeEstoque;
@@ -18,6 +18,7 @@ public class Produtos {
     public Produtos(){}
     
     public Produtos(String codigo, String nome,String marca,String descricao,int quantidadeEstoque,double preco) {
+       
         this.codigo = codigo;
         this.nome = nome;
         this.marca = marca;
@@ -26,7 +27,22 @@ public class Produtos {
         this.preco = preco;
         
     }
-
+    
+     public Produtos(int id, String nome,String marca,String descricao,int quantidadeEstoque,double preco) {
+        this.id = id;
+        this.codigo = codigo;
+        this.nome = nome;
+        this.marca = marca;
+        this.descricao = descricao;
+        this.quantidadeEstoque = quantidadeEstoque;
+        this.preco = preco;
+        
+    }
+    
+    public int getId(){
+        return id;
+    }
+    
     public String getDescricao() {
         return descricao;
     }
@@ -88,8 +104,33 @@ public class Produtos {
     }
 
     @Override
+    public int hashCode() {
+        int hash = 3;
+        hash = 37 * hash + this.id;
+        return hash;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final Produtos other = (Produtos) obj;
+        if (this.id != other.id) {
+            return false;
+        }
+        return true;
+    }
+
+    @Override
     public String toString() {
-        return  "|codigo=" + codigo + "| nome=" + nome + "| marca=" + marca + "| descricao=" + descricao + "| preco=" + preco + "| quantidadeVenda=" + quantidadeVenda + '|';
+        return  "id=" + id +" |codigo=" + codigo + "| nome=" + nome + "| marca=" + marca + "| descrição=" + descricao + "| preco=" + preco + "| qtd_estoque=" + quantidadeEstoque + '|';
     }
 
 

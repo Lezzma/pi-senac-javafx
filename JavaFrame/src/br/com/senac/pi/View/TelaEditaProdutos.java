@@ -14,8 +14,11 @@ import br.com.senac.pi.utils.Validacao;
 import java.awt.Color;
 import java.awt.HeadlessException;
 import java.awt.Toolkit;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import javax.swing.JTable;
 
@@ -30,7 +33,7 @@ public class TelaEditaProdutos extends javax.swing.JFrame {
     private final Produtos produto;
     private final Produtos produtoAntesDeEditar;
     private final DaoRepositorio dao = new DaoProduto();
-    private List<Produtos> listaDeProdutos = dao.getAll();
+    private final List<Produtos> listaDeProdutos;
     private Cliente cliente;
     private ControllerTabelaProduto repositorioTabelaProduto;
     /**
@@ -42,8 +45,9 @@ public class TelaEditaProdutos extends javax.swing.JFrame {
      * @param produto
      * @param tabela
      */
-    public TelaEditaProdutos(Produtos produto,JTable tabela){
+    public TelaEditaProdutos(Produtos produto,JTable tabela) throws SQLException{
         initComponents();
+        listaDeProdutos = dao.getAll();
         this.tabela = tabela;
         this.produto = produto;
         this.produtoAntesDeEditar = produto;
@@ -305,7 +309,11 @@ public class TelaEditaProdutos extends javax.swing.JFrame {
                 
                 if(!produtoAntesDeEditar.equals(produto)){
                     dao.deletar(produtoAntesDeEditar);
-                    dao.inserir(produto);  
+                    try {  
+                        dao.inserir(produto);
+                    } catch (SQLException ex) {
+                        throw new RuntimeException(ex);
+                    }
                 }
 
                 int reply = JOptionPane.showConfirmDialog(null,
@@ -314,7 +322,11 @@ public class TelaEditaProdutos extends javax.swing.JFrame {
                     JOptionPane.YES_NO_OPTION);
 
                 if (reply == JOptionPane.YES_OPTION) {
-                    atualizaTabelaEresetaContadorDaTelaEditar();
+                    try {
+                        atualizaTabelaEresetaContadorDaTelaEditar();
+                    } catch (SQLException ex) {
+                       JOptionPane.showMessageDialog(null, "Erro ao deletar produto","Erro",JOptionPane.INFORMATION_MESSAGE);
+                    }
                 }
             }
             
@@ -324,7 +336,7 @@ public class TelaEditaProdutos extends javax.swing.JFrame {
 
     }//GEN-LAST:event_btn_salvar_clienteMouseClicked
 
-    public void atualizaTabelaEresetaContadorDaTelaEditar() {
+    public void atualizaTabelaEresetaContadorDaTelaEditar() throws SQLException {
         repositorioTabelaProduto.atualizaTabela(dao.getAll());
         Sistema.setTelaEditaProdutos(null);
         dispose();
@@ -388,8 +400,13 @@ public class TelaEditaProdutos extends javax.swing.JFrame {
         
         if (reply == JOptionPane.YES_OPTION) {
             int itemClicado = tabela.getSelectedRow();
-            dao.deletar(dao.getAll().get(itemClicado));
-            atualizaTabelaEresetaContadorDaTelaEditar();
+            try{
+                dao.deletar(dao.getAll().get(itemClicado));
+                atualizaTabelaEresetaContadorDaTelaEditar();
+            }catch (SQLException e){
+                JOptionPane.showMessageDialog(null, "Erro ao deletar produto","Erro",JOptionPane.INFORMATION_MESSAGE);
+            }
+            
         }
     }//GEN-LAST:event_btn_deletar_produtoMouseClicked
 

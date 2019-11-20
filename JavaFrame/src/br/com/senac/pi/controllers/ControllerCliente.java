@@ -1,9 +1,3 @@
-
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package br.com.senac.pi.controllers;
 
 import br.com.senac.pi.model.entidades.Cliente;
@@ -13,10 +7,6 @@ import java.util.List;
 import java.util.Optional;
 import javax.swing.JOptionPane;
 
-/**
- *
- * @author jrneto
- */
 public class ControllerCliente {
 
     private CotrollerTabelaCliente repositorioTabelaCliente;

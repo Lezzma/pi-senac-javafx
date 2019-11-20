@@ -5,7 +5,10 @@ import br.com.senac.pi.model.entidades.Setor;
 import br.com.senac.pi.model.entidades.Usuario;
 import br.com.senac.pi.model.Dao.UsuarioRepositorio;
 import java.awt.Toolkit;
+import java.sql.SQLException;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 
 public class Login extends javax.swing.JFrame {
@@ -209,7 +212,11 @@ public class Login extends javax.swing.JFrame {
                     new TelaFrenteDeCaixa(autUserControler.getUserLogado()).setVisible(true);
                   }else{
                   dispose();
-                    new Sistema(autUserControler.getUserLogado()).setVisible(true);  
+                      try {  
+                          new Sistema(autUserControler.getUserLogado()).setVisible(true);
+                      } catch (SQLException ex) {
+                          Logger.getLogger(Login.class.getName()).log(Level.SEVERE, null, ex);
+                      }
                   }
                     
               }else{

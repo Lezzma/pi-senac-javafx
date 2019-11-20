@@ -29,6 +29,9 @@ import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import br.com.senac.pi.controllers.FactoryTabela;
+import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class Sistema extends javax.swing.JFrame {
 
@@ -39,12 +42,11 @@ public class Sistema extends javax.swing.JFrame {
     CardLayout cardLayout;
     ControlerUsuarios controlerUsuarios = new ControlerUsuarios();
     List<Usuario> listaDeUsuarios = new ArrayList<>();
-    private final ControllerTabelasUsuario repositorioTabelaUsuario;
-    private final FactoryTabela repositorioTabelaProduto;
+    private final ControllerTabelasUsuario controllerTabelaUsuario;
+    private final FactoryTabela controllerTabelaProduto;
     private final CotrollerTabelaCliente repositorioroTabelaCliente;
-    private final ControllerTabelaRelatorio repositorioTabelaRelatorio;
+    private final ControllerTabelaRelatorio controllerTabelaRelatorio;
     private final Validacao valida = new Validacao();
-    private final DaoProduto daoProduto;
     private final Usuario usuarioLogado;
     private final ControllerCliente clienteControler;
     private static TelaEditaProdutos telaEditaProdutos;
@@ -52,14 +54,14 @@ public class Sistema extends javax.swing.JFrame {
     private ControllerCliente clienteControler1;
     private final ControllerRelatorio relatorioControler;
 
-    public Sistema(Usuario user) {
+    public Sistema(Usuario user) throws SQLException {
         initComponents();
         this.setExtendedState(JFrame.MAXIMIZED_BOTH);
         this.usuarioLogado = user;
         //telaPrincipal = new Sistema(user);
-        repositorioTabelaUsuario = new ControllerTabelasUsuario(tabela_de_usuarios);
-        repositorioTabelaProduto = new ControllerTabelaProduto(tabela_de_produtos);
-        repositorioTabelaRelatorio = new ControllerTabelaRelatorio(tabela_relatorio_venda);
+        controllerTabelaUsuario = new ControllerTabelasUsuario(tabela_de_usuarios);
+        controllerTabelaProduto = new ControllerTabelaProduto(tabela_de_produtos);
+        controllerTabelaRelatorio = new ControllerTabelaRelatorio(tabela_relatorio_venda);
 
         cardLayout = (CardLayout) homeJpainel.getLayout();
         cardLayout.show(homeJpainel, "jpainelHome");
@@ -68,13 +70,12 @@ public class Sistema extends javax.swing.JFrame {
         model = (DefaultTableModel) tabela_de_usuarios.getModel();
 
         //realizar cria usuarios de teste
-        repositorioTabelaUsuario.inserirEntidadeTeste(listaDeUsuarios);
-        //inicializa controler de produtos 
-        daoProduto = new DaoProduto();
+        controllerTabelaUsuario.inserirEntidadeTeste(listaDeUsuarios);
+       
         //inicializa o model da tabela produto para manipulas dentro do sitema
         modelTabelaProduto = (DefaultTableModel) tabela_de_produtos.getModel();
         //inserindo produto teste
-        repositorioTabelaProduto.inserirEntidadeTeste(daoProduto.getAll());
+        controllerTabelaProduto.buscaEntidades();
         //coloca os setores para acesso do usuario
         colocaSetoresEmTipoUsuario();
         //difini quais tela e botoes o usuario tera acesso
@@ -85,7 +86,7 @@ public class Sistema extends javax.swing.JFrame {
         this.clienteControler.atualizaTabelaCliente();
         setIcon();
 
-        this.relatorioControler = new ControllerRelatorio(repositorioTabelaRelatorio);
+        this.relatorioControler = new ControllerRelatorio(controllerTabelaRelatorio);
         relatorioControler.inserirVendaTeste();
 
         //tela De relatório prop
@@ -147,7 +148,6 @@ public class Sistema extends javax.swing.JFrame {
         jLabel41 = new javax.swing.JLabel();
         jLabel12 = new javax.swing.JLabel();
         homeJpainel = new javax.swing.JPanel();
-        jPainelHome = new javax.swing.JPanel();
         cadastrarProduto = new javax.swing.JPanel();
         jPanel4 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
@@ -262,6 +262,7 @@ public class Sistema extends javax.swing.JFrame {
         jButton1 = new javax.swing.JButton();
         jLabel14 = new javax.swing.JLabel();
         jYearChooser1 = new com.toedter.calendar.JYearChooser();
+        jPainelHome = new javax.swing.JPanel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Tela principal");
@@ -483,21 +484,6 @@ public class Sistema extends javax.swing.JFrame {
         homeJpainel.setPreferredSize(new java.awt.Dimension(926, 715));
         homeJpainel.setLayout(new java.awt.CardLayout());
 
-        jPainelHome.setBackground(new java.awt.Color(255, 255, 255));
-
-        javax.swing.GroupLayout jPainelHomeLayout = new javax.swing.GroupLayout(jPainelHome);
-        jPainelHome.setLayout(jPainelHomeLayout);
-        jPainelHomeLayout.setHorizontalGroup(
-            jPainelHomeLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 0, Short.MAX_VALUE)
-        );
-        jPainelHomeLayout.setVerticalGroup(
-            jPainelHomeLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 0, Short.MAX_VALUE)
-        );
-
-        homeJpainel.add(jPainelHome, "jpainelHome");
-
         cadastrarProduto.setBackground(new java.awt.Color(255, 255, 255));
 
         jPanel4.setBackground(new java.awt.Color(255, 255, 255));
@@ -540,7 +526,7 @@ public class Sistema extends javax.swing.JFrame {
                         .addGap(8, 8, 8)
                         .addComponent(jLabel1)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(txt_descricao_produto, javax.swing.GroupLayout.DEFAULT_SIZE, 453, Short.MAX_VALUE))
+                        .addComponent(txt_descricao_produto))
                     .addGroup(jPanel4Layout.createSequentialGroup()
                         .addGap(7, 7, 7)
                         .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
@@ -745,14 +731,14 @@ public class Sistema extends javax.swing.JFrame {
             cadastrarProdutoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(cadastrarProdutoLayout.createSequentialGroup()
                 .addComponent(jPanel5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
+                .addGap(29, 29, 29)
                 .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(31, 31, 31)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(cadastrarProdutoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jButton3)
                     .addComponent(jTextField3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane7, javax.swing.GroupLayout.DEFAULT_SIZE, 384, Short.MAX_VALUE)
+                .addComponent(jScrollPane7, javax.swing.GroupLayout.DEFAULT_SIZE, 382, Short.MAX_VALUE)
                 .addContainerGap())
         );
 
@@ -828,7 +814,7 @@ public class Sistema extends javax.swing.JFrame {
                     .addGroup(jPanel7Layout.createSequentialGroup()
                         .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                             .addComponent(txt_nome_user)
-                            .addComponent(txt_cpf_user, javax.swing.GroupLayout.DEFAULT_SIZE, 173, Short.MAX_VALUE)
+                            .addComponent(txt_cpf_user)
                             .addComponent(txt_rg_user))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -841,10 +827,10 @@ public class Sistema extends javax.swing.JFrame {
                                 .addComponent(lbl_confirm_senha_user, javax.swing.GroupLayout.PREFERRED_SIZE, 89, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                    .addComponent(txt_email_user, javax.swing.GroupLayout.DEFAULT_SIZE, 360, Short.MAX_VALUE)
+                                    .addComponent(txt_email_user)
                                     .addComponent(txt_senha_user)
                                     .addComponent(txt_confirm_senha_user))))
-                        .addContainerGap(321, Short.MAX_VALUE))
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                     .addGroup(jPanel7Layout.createSequentialGroup()
                         .addComponent(comboBox_tipo_usuario, javax.swing.GroupLayout.PREFERRED_SIZE, 78, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
@@ -949,7 +935,7 @@ public class Sistema extends javax.swing.JFrame {
         pane_titulo_userLayout.setHorizontalGroup(
             pane_titulo_userLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(pane_titulo_userLayout.createSequentialGroup()
-                .addComponent(jLabel20, javax.swing.GroupLayout.DEFAULT_SIZE, 843, Short.MAX_VALUE)
+                .addComponent(jLabel20, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGap(18, 18, 18)
                 .addComponent(btn_salvar_cliente, javax.swing.GroupLayout.PREFERRED_SIZE, 119, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
@@ -1032,7 +1018,7 @@ public class Sistema extends javax.swing.JFrame {
                     .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jComboBox2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane6, javax.swing.GroupLayout.DEFAULT_SIZE, 389, Short.MAX_VALUE)
+                .addComponent(jScrollPane6, javax.swing.GroupLayout.DEFAULT_SIZE, 378, Short.MAX_VALUE)
                 .addContainerGap())
         );
 
@@ -1409,7 +1395,7 @@ public class Sistema extends javax.swing.JFrame {
                         .addComponent(search_cpf, javax.swing.GroupLayout.PREFERRED_SIZE, 147, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(btn_pesquisa, javax.swing.GroupLayout.PREFERRED_SIZE, 102, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(0, 364, Short.MAX_VALUE))
+                        .addGap(0, 0, Short.MAX_VALUE))
                     .addGroup(telaCadastraCliente1Layout.createSequentialGroup()
                         .addGroup(telaCadastraCliente1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jScrollPane8)
@@ -1420,7 +1406,7 @@ public class Sistema extends javax.swing.JFrame {
             telaCadastraCliente1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(telaCadastraCliente1Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jPanel8, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(jPanel8, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(telaCadastraCliente1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(btn_pesquisa_nome, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -1433,7 +1419,7 @@ public class Sistema extends javax.swing.JFrame {
                             .addComponent(jLabel8, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addComponent(btn_pesquisa, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addGap(18, 18, 18)
-                .addComponent(jScrollPane8))
+                .addComponent(jScrollPane8, javax.swing.GroupLayout.DEFAULT_SIZE, 261, Short.MAX_VALUE))
         );
 
         pane_titulo_user1.setBackground(new java.awt.Color(44, 62, 80));
@@ -1613,23 +1599,39 @@ public class Sistema extends javax.swing.JFrame {
 
         homeJpainel.add(telaDeRelatorio, "telaDeRelatorio");
 
+        jPainelHome.setBackground(new java.awt.Color(255, 255, 255));
+        jPainelHome.setMaximumSize(null);
+
+        javax.swing.GroupLayout jPainelHomeLayout = new javax.swing.GroupLayout(jPainelHome);
+        jPainelHome.setLayout(jPainelHomeLayout);
+        jPainelHomeLayout.setHorizontalGroup(
+            jPainelHomeLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 952, Short.MAX_VALUE)
+        );
+        jPainelHomeLayout.setVerticalGroup(
+            jPainelHomeLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 704, Short.MAX_VALUE)
+        );
+
+        homeJpainel.add(jPainelHome, "jpainelHome");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addComponent(sideBar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 1127, Short.MAX_VALUE))
+                .addContainerGap(951, Short.MAX_VALUE))
             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                    .addGap(210, 210, 210)
-                    .addComponent(homeJpainel, javax.swing.GroupLayout.DEFAULT_SIZE, 1127, Short.MAX_VALUE)))
+                    .addGap(209, 209, 209)
+                    .addComponent(homeJpainel, javax.swing.GroupLayout.DEFAULT_SIZE, 952, Short.MAX_VALUE)))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(sideBar, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(sideBar, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 704, Short.MAX_VALUE)
             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addComponent(homeJpainel, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addComponent(homeJpainel, javax.swing.GroupLayout.DEFAULT_SIZE, 704, Short.MAX_VALUE))
         );
 
         pack();
@@ -1740,35 +1742,44 @@ public class Sistema extends javax.swing.JFrame {
             //variavel responsavel por criar a estrings de erros
             StringBuilder string = new StringBuilder();
 
-            //dao
-            DaoProduto daoProduto = new DaoProduto();
+          
 
             //controlador da tabela
             FactoryTabela repositorioTabelaProduto = new ControllerTabelaProduto(tabela_de_produtos);
             Produtos produtoNovo = new Produtos();
             
-            try {
-                produtoNovo = colocaValoresNoProduto();
-                erros = valida.validaProdutos(produtoNovo);
-            } catch (Exception e) {
-                erros.add("Erro no campo de preços:\n- Não pode está vazio\n- Não pode conter letras.");
-            }
+                try{
+                    produtoNovo = colocaValoresNoProduto();
+                    erros = valida.validaProdutos(produtoNovo);
+                }catch(NumberFormatException e){
+                    JOptionPane.showMessageDialog(null, "- Preço é obrigatório ","Campo invalido",JOptionPane.INFORMATION_MESSAGE);
+                }
+                
             
-         //metodos responsavel por verificar se existe erros
-         //se existir, ele coloca ele concatena cada erros
-         //a uma unica string
-         //caso contrário, salva o novo produto
-        verificaErrosEsalva(erros, string, produtoNovo, daoProduto, repositorioTabelaProduto);
+            
+        try {
+            //metodos responsavel por verificar se existe erros
+            //se existir, ele coloca ele concatena cada erros
+            //a uma unica string
+            //caso contrário, salva o novo produto
+            verificaErrosEsalva(erros, string, produtoNovo);
+        } catch (NumberFormatException ex) {
+            System.out.println("Erro na formatação de numero");
+        } catch (HeadlessException ex) {
+            Logger.getLogger(Sistema.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (SQLException ex) {
+            System.out.println("Erro de banco de dados: "+ex.getMessage());
+        }
     }//GEN-LAST:event_btn_salvar_produtoMouseClicked
 
-    private void verificaErrosEsalva(List<String> erros, StringBuilder string, Produtos produtoNovo, DaoProduto daoProduto1, FactoryTabela repositorioTabelaProduto1) throws NumberFormatException, HeadlessException {
+    private void verificaErrosEsalva(List<String> erros, StringBuilder string, Produtos produtoNovo) throws NumberFormatException, HeadlessException, SQLException {
         if (!erros.isEmpty()) {
             erros.stream().forEach((s) -> {
                 StringBuilder append = string.append(s).append("\n");
             });
             JOptionPane.showMessageDialog(null, string.toString(), "Erro", JOptionPane.WARNING_MESSAGE);
         } else {
-            salvaNovoProduto(produtoNovo, daoProduto1, repositorioTabelaProduto1);
+            salvaNovoProduto(produtoNovo);
         }
     }
 
@@ -1784,10 +1795,10 @@ public class Sistema extends javax.swing.JFrame {
         return produtoNovo;
     }
 
-    private void salvaNovoProduto(Produtos produtoNovo,DaoProduto daoProduto1, FactoryTabela repositorioTabelaProduto1) throws NumberFormatException, HeadlessException {
-        daoProduto1.inserir(produtoNovo);
-        DefaultTableModel modelTabelaProduto = (DefaultTableModel) tabela_de_produtos.getModel();
-        repositorioTabelaProduto1.atualizaTabela(daoProduto1.getAll());
+    private void salvaNovoProduto(Produtos produtoNovo) throws NumberFormatException, HeadlessException, SQLException {
+        DaoProduto dao = new DaoProduto();
+        dao.inserir(produtoNovo);
+        controllerTabelaProduto.atualizaTabela(dao.getAll());
         JOptionPane.showMessageDialog(null, "Sucesso!", "Produto inserido", JOptionPane.INFORMATION_MESSAGE);
     }
 
@@ -1838,7 +1849,7 @@ public class Sistema extends javax.swing.JFrame {
            }else{
                 if (ControlerUsuarios.criarUsuario(novoUsuario)) {
                     JOptionPane.showMessageDialog(null, "Usuario inserido com sucesso");
-                    repositorioTabelaUsuario.atualizaTabela(listaDeUsuarios);
+                    controllerTabelaUsuario.atualizaTabela(listaDeUsuarios);
                 }
            }
        
@@ -1895,7 +1906,7 @@ public class Sistema extends javax.swing.JFrame {
         if (telaEditaProdutos == null) {
             if (evt.getClickCount() == 2) {
                 int produtoClicado = tabela_de_produtos.getSelectedRow();
-                telaEditaProdutos = new TelaEditaProdutos(daoProduto.getAll().get(produtoClicado), tabela_de_produtos);
+               // telaEditaProdutos = new TelaEditaProdutos(daoProduto.getAll().get(produtoClicado), tabela_de_produtos);
                 telaEditaProdutos.setVisible(true);
             }
         }
@@ -2073,7 +2084,7 @@ public class Sistema extends javax.swing.JFrame {
         totalDoMes = retonaTodasVendasNoMes(dia, date, listaDeVenda, totalDoMes);
         
         //atualiza a tabela com os intens encontrados
-        repositorioTabelaRelatorio.atualizaTabela(listaDeVenda);
+        controllerTabelaRelatorio.atualizaTabela(listaDeVenda);
         txt_relatorio_total_mes.setText("R$ " + String.valueOf(totalDoMes));
 
 
@@ -2108,7 +2119,11 @@ public class Sistema extends javax.swing.JFrame {
 
     public static void main(String[] args) {
         java.awt.EventQueue.invokeLater(() -> {
-            new Sistema(null).setVisible(true);
+            try {
+                new Sistema(null).setVisible(true);
+            } catch (SQLException ex) {
+                Logger.getLogger(Sistema.class.getName()).log(Level.SEVERE, null, ex);
+            }
         });
     }
 

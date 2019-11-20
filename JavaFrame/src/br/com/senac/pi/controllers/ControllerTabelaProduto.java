@@ -1,33 +1,28 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package br.com.senac.pi.controllers;
 
+import br.com.senac.pi.model.Dao.DaoProduto;
 import br.com.senac.pi.model.entidades.Produtos;
+import java.sql.SQLException;
+import java.util.ArrayList;
 
 import java.util.List;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 
-/**
- *
- * @author jrneto
- */
 public class ControllerTabelaProduto implements FactoryTabela<Produtos>{
-    DefaultTableModel model;
+    private DefaultTableModel model;
+    private DaoProduto dao = new DaoProduto();
+    private List<Produtos> listaDeProdutos = new ArrayList<>();
     
     public ControllerTabelaProduto(JTable tabela){
         this.convertModelTabela(tabela);
     }
-
+    
     @Override
     public void convertModelTabela(JTable tabela) {
        this.model = (DefaultTableModel) tabela.getModel();
     }
      
-    
     @Override
     public void atualizaTabela(List<Produtos> entidade) {
         new Thread(() -> {
@@ -35,7 +30,7 @@ public class ControllerTabelaProduto implements FactoryTabela<Produtos>{
              entidade.forEach(p -> {
              model.addRow(
                      new Object[]{
-                         p.getCodigo(),
+                         p.getId(),
                          p.getNome(),
                          p.getPreco(),
                          p.getQuantidadeEstoque(),
@@ -62,13 +57,15 @@ public class ControllerTabelaProduto implements FactoryTabela<Produtos>{
              model.setNumRows(0);
              model.addRow(
                      new Object[]{
-                         entidade.getCodigo(),
+                         entidade.getId(),
                          entidade.getNome(),
                          entidade.getPreco(),
                          entidade.getQuantidadeEstoque()
                      });
-       
-      
     }
-    
+
+    @Override
+    public void buscaEntidades() throws SQLException{
+        atualizaTabela(dao.getAll());
+    }
 }
