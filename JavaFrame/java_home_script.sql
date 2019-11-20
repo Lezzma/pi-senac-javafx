@@ -1,15 +1,18 @@
-create database lojamoveis;
+CREATE DATABASE lojamoveis;
 use lojamoveis;
 /* 
+==================================
 SEQUENCIA DE CRICAÇÃO DAS TABELAS
+==================================
 1º TABELA ENDERECO
 2º CLIENTE
 3º USUARIO
-4º
-
-
+4º PRODUTO
+5ª CARRINHO
+6ª VENDA
+===================================
 */
-create table cliente (
+create table cliente (lojamoveis
 id_cli int auto_increment primary key not null,
 cpf_cli int(11) not null unique,
 nome_cli varchar(50) not null,
