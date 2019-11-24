@@ -444,7 +444,7 @@ public class TelaEditarClientes extends javax.swing.JDialog {
             JOptionPane.showMessageDialog(null, todosErros.toString(),"Dados Invalidos!",JOptionPane.WARNING_MESSAGE);
         }else{
             if (!clienteAntesDeEditar.equals(cliente)) {
-                dao.deletar(clienteAntesDeEditar);
+                //dao.deletar(clienteAntesDeEditar);
                 dao.inserir(cliente);
             }
             int reply = JOptionPane.showConfirmDialog(null,

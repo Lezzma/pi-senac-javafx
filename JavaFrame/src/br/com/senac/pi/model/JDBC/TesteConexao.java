@@ -23,13 +23,14 @@ public class TesteConexao {
         
         while(rs.next()){
             int id = Integer.parseInt(rs.getString("id_prod"));
+            String codigo = rs.getString("Codigo");
             String nomeProduto = rs.getString("nome_prod");
             String descricaoProduto = rs.getString("descr_prod");
             String marcaProduto = rs.getString("marca_prod");
             int quantidadeEstoque = Integer.parseInt(rs.getString("qtde_estoq_prod"));
             double preco = Double.parseDouble(rs.getString("preco_prod"));
             
-            Produtos produto = new Produtos(id, nomeProduto, marcaProduto, descricaoProduto, quantidadeEstoque, preco);
+            Produtos produto = new Produtos(codigo, nomeProduto, marcaProduto, descricaoProduto, quantidadeEstoque, preco);
             lista.add(produto);
         }
         

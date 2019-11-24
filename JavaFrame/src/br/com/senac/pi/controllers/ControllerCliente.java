@@ -5,12 +5,11 @@ import br.com.senac.pi.model.entidades.Endereco;
 import br.com.senac.pi.model.Dao.DaoCliente;
 import java.util.List;
 import java.util.Optional;
-import javax.swing.JOptionPane;
 
 public class ControllerCliente {
 
-    private CotrollerTabelaCliente repositorioTabelaCliente;
-    private DaoCliente dao = new DaoCliente();
+    private final CotrollerTabelaCliente repositorioTabelaCliente;
+    private final DaoCliente dao = new DaoCliente();
 
     public ControllerCliente(CotrollerTabelaCliente repositorioTabelaCliente) {
         this.repositorioTabelaCliente = repositorioTabelaCliente;
@@ -32,7 +31,7 @@ public class ControllerCliente {
     }
 
     public void removeCleinte(Cliente cliente) {
-        dao.deletar(cliente);
+        dao.deletar(cliente.getId());
         repositorioTabelaCliente.atualizaTabela(dao.getAll());
     }
 

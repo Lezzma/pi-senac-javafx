@@ -3,6 +3,7 @@ package br.com.senac.pi.controllers;
 import br.com.senac.pi.model.entidades.Cliente;
 import br.com.senac.pi.model.entidades.Usuario;
 import br.com.senac.pi.model.entidades.Venda;
+import java.sql.SQLException;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -77,5 +78,22 @@ public class ControllerTabelaRelatorio implements FactoryTabela<Venda>{
     public void buscaEntidades() {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
+
+    @Override
+    public Venda buscaEntidadeClicada(int index) throws SQLException {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public void apagaEntidade(int id) throws SQLException {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public void editaEntidade(Venda entidade) throws SQLException {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+
     
 }

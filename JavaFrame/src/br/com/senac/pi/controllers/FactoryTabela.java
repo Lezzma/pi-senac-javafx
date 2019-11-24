@@ -21,5 +21,8 @@ public interface FactoryTabela<T> {
     void atualizaTabela(List<T> entidade);
     void inserirEntidadeTeste(List<T> entidade);
     void retornaItemPesquisado(T entidade);
+    T buscaEntidadeClicada(int index)throws SQLException;
+    void apagaEntidade(int id) throws SQLException;
+    void editaEntidade(T entidade)throws SQLException;
     
 }

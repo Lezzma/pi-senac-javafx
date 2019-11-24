@@ -2,6 +2,14 @@
 <project-private xmlns="http://www.netbeans.org/ns/project-private/1">
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="4">
         <file>
+            <url>src/br/com/senac/pi/ui/janelas/atalhos/TelaPesquisaProdutoFrenteDeCaixa.java</url>
+            <bookmark id="2">
+                <name/>
+                <line>217</line>
+                <key/>
+            </bookmark>
+        </file>
+        <file>
             <url>src/br/com/senac/pi/ui/TelaFrenteDeCaixa.java</url>
             <bookmark id="4">
                 <name/>
@@ -14,36 +22,21 @@
                 <key/>
             </bookmark>
         </file>
-        <file>
-            <url>src/br/com/senac/pi/ui/janelas/atalhos/TelaPesquisaProdutoFrenteDeCaixa.java</url>
-            <bookmark id="2">
-                <name/>
-                <line>217</line>
-                <key/>
-            </bookmark>
-        </file>
     </editor-bookmarks>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/C:/Users/jrneto/Documents/NetBeansProjects/pi-senac-javafx/JavaFrame/src/br/com/senac/pi/model/entidades/Endereco.java</file>
-            <file>file:/C:/Users/jrneto/Documents/NetBeansProjects/pi-senac-javafx/JavaFrame/src/br/com/senac/factoryReposit/RepositorioTabelaProduto.java</file>
-            <file>file:/C:/Users/jrneto/Documents/NetBeansProjects/pi-senac-javafx/JavaFrame/src/br/com/senac/pi/model/entidades/Setor.java</file>
-            <file>file:/C:/Users/jrneto/Documents/NetBeansProjects/pi-senac-javafx/JavaFrame/src/br/com/senac/pi/model/entidades/Cliente.java</file>
-            <file>file:/C:/Users/jrneto/Documents/NetBeansProjects/pi-senac-javafx/JavaFrame/src/br/com/senac/pi/ui/TelaEditaProdutos.java</file>
-            <file>file:/C:/Users/jrneto/Documents/NetBeansProjects/pi-senac-javafx/JavaFrame/src/br/com/senac/pi/ui/Login.java</file>
-            <file>file:/C:/Users/jrneto/Documents/NetBeansProjects/pi-senac-javafx/JavaFrame/src/br/com/senac/pi/controlers/LoginControler.java</file>
-            <file>file:/C:/Users/jrneto/Documents/NetBeansProjects/pi-senac-javafx/JavaFrame/src/br/com/senac/utils/TesteValida.java</file>
-            <file>file:/C:/Users/jrneto/Documents/NetBeansProjects/pi-senac-javafx/JavaFrame/src/br/com/senac/pi/ui/janelas/atalhos/TelaEditarClientes.java</file>
-            <file>file:/C:/Users/jrneto/Documents/NetBeansProjects/pi-senac-javafx/JavaFrame/src/br/com/senac/pi/controlers/ControlerUsuarios.java</file>
-            <file>file:/C:/Users/jrneto/Documents/NetBeansProjects/pi-senac-javafx/JavaFrame/src/br/com/senac/pi/model/Dao/DaoCarrinho.java</file>
-            <file>file:/C:/Users/jrneto/Documents/NetBeansProjects/pi-senac-javafx/JavaFrame/src/br/com/senac/pi/ui/Sistema.java</file>
-            <file>file:/C:/Users/jrneto/Documents/NetBeansProjects/pi-senac-javafx/JavaFrame/src/br/com/senac/pi/ui/TelaFrenteDeCaixa.java</file>
-            <file>file:/C:/Users/jrneto/Documents/NetBeansProjects/pi-senac-javafx/JavaFrame/src/br/com/senac/pi/ui/janelas/atalhos/TelaPesquisaProdutoFrenteDeCaixa.java</file>
-            <file>file:/C:/Users/jrneto/Documents/NetBeansProjects/pi-senac-javafx/JavaFrame/src/br/com/senac/pi/ui/janelas/atalhos/TelaDeCadastroDeCliente.java</file>
-            <file>file:/C:/Users/jrneto/Documents/NetBeansProjects/pi-senac-javafx/JavaFrame/src/br/com/senac/pi/model/Dao/DaoProduto.java</file>
-            <file>file:/C:/Users/jrneto/Documents/NetBeansProjects/pi-senac-javafx/JavaFrame/src/br/com/senac/pi/controlers/ClienteControler.java</file>
-            <file>file:/C:/Users/jrneto/Documents/NetBeansProjects/pi-senac-javafx/JavaFrame/src/br/com/senac/utils/Validacao.java</file>
-            <file>file:/C:/Users/jrneto/Documents/NetBeansProjects/pi-senac-javafx/JavaFrame/src/br/com/senac/pi/ui/TelaEditaUsuario.java</file>
+            <file>file:/D:/Users/netos/NetBeansProjects/pi-senac-javafx/JavaFrame/src/br/com/senac/pi/View/TelaEditaProdutos.java</file>
+            <file>file:/D:/Users/netos/NetBeansProjects/pi-senac-javafx/JavaFrame/src/br/com/senac/pi/model/Dao/DaoCliente.java</file>
+            <file>file:/D:/Users/netos/NetBeansProjects/pi-senac-javafx/JavaFrame/src/br/com/senac/pi/View/janelas/atalhos/TelaPesquisaProdutoFrenteDeCaixa.java</file>
+            <file>file:/D:/Users/netos/NetBeansProjects/pi-senac-javafx/JavaFrame/src/br/com/senac/pi/controllers/ControllerTabelaProduto.java</file>
+            <file>file:/D:/Users/netos/NetBeansProjects/pi-senac-javafx/JavaFrame/src/br/com/senac/pi/controllers/ControllerTabelaCarrinho.java</file>
+            <file>file:/D:/Users/netos/NetBeansProjects/pi-senac-javafx/JavaFrame/src/br/com/senac/pi/utils/Validacao.java</file>
+            <file>file:/D:/Users/netos/NetBeansProjects/pi-senac-javafx/JavaFrame/src/br/com/senac/pi/View/TelaFrenteDeCaixa.java</file>
+            <file>file:/D:/Users/netos/NetBeansProjects/pi-senac-javafx/JavaFrame/src/br/com/senac/pi/model/Dao/DaoProduto.java</file>
+            <file>file:/D:/Users/netos/NetBeansProjects/pi-senac-javafx/JavaFrame/src/br/com/senac/pi/model/Dao/DaoRepositorio.java</file>
+            <file>file:/D:/Users/netos/NetBeansProjects/pi-senac-javafx/JavaFrame/src/br/com/senac/pi/View/Login.java</file>
+            <file>file:/D:/Users/netos/NetBeansProjects/pi-senac-javafx/JavaFrame/src/br/com/senac/pi/View/Sistema.java</file>
+            <file>file:/D:/Users/netos/NetBeansProjects/pi-senac-javafx/JavaFrame/src/br/com/senac/pi/model/entidades/Produtos.java</file>
         </group>
     </open-files>
 </project-private>

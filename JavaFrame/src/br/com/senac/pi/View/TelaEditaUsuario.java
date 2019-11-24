@@ -308,7 +308,7 @@ public class TelaEditaUsuario extends javax.swing.JFrame {
             usuario.setCpf(edit_txt_cpf.getText());
             usuario.setSenha(edit_txt_user_senha.getText());
             if(!UsuarioAntesDeEditar.equals(usuario)){
-                dao.deletar(UsuarioAntesDeEditar);
+                //dao.deletar(UsuarioAntesDeEditar);
                 dao.inserir(usuario);
 
             }
@@ -378,7 +378,7 @@ public class TelaEditaUsuario extends javax.swing.JFrame {
 
         if (reply == JOptionPane.YES_OPTION) {
             int itemClicado = tabela.getSelectedRow();
-            dao.deletar(dao.getAll().get(itemClicado));
+           // dao.deletar(dao.getAll().get(itemClicado));
             atualizaTabelaResetaContadorDaTelaEditar();
         }
     }//GEN-LAST:event_btn_deletar_produtoMouseClicked

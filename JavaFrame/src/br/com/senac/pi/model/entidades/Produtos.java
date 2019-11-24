@@ -17,8 +17,9 @@ public class Produtos {
     
     public Produtos(){}
     
-    public Produtos(String codigo, String nome,String marca,String descricao,int quantidadeEstoque,double preco) {
-       
+    
+     public Produtos(int id,String codigo, String nome,String marca,String descricao,int quantidadeEstoque,double preco) {
+        this.id = id;
         this.codigo = codigo;
         this.nome = nome;
         this.marca = marca;
@@ -27,9 +28,8 @@ public class Produtos {
         this.preco = preco;
         
     }
-    
-     public Produtos(int id, String nome,String marca,String descricao,int quantidadeEstoque,double preco) {
-        this.id = id;
+     
+     public Produtos(String codigo, String nome,String marca,String descricao,int quantidadeEstoque,double preco) {
         this.codigo = codigo;
         this.nome = nome;
         this.marca = marca;

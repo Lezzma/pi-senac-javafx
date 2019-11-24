@@ -43,7 +43,7 @@ public class Sistema extends javax.swing.JFrame {
     ControlerUsuarios controlerUsuarios = new ControlerUsuarios();
     List<Usuario> listaDeUsuarios = new ArrayList<>();
     private final ControllerTabelasUsuario controllerTabelaUsuario;
-    private final FactoryTabela controllerTabelaProduto;
+    private final ControllerTabelaProduto controllerTabelaProduto;
     private final CotrollerTabelaCliente repositorioroTabelaCliente;
     private final ControllerTabelaRelatorio controllerTabelaRelatorio;
     private final Validacao valida = new Validacao();
@@ -1741,11 +1741,6 @@ public class Sistema extends javax.swing.JFrame {
 
             //variavel responsavel por criar a estrings de erros
             StringBuilder string = new StringBuilder();
-
-          
-
-            //controlador da tabela
-            FactoryTabela repositorioTabelaProduto = new ControllerTabelaProduto(tabela_de_produtos);
             Produtos produtoNovo = new Produtos();
             
                 try{
@@ -1779,8 +1774,19 @@ public class Sistema extends javax.swing.JFrame {
             });
             JOptionPane.showMessageDialog(null, string.toString(), "Erro", JOptionPane.WARNING_MESSAGE);
         } else {
+            LimpaCampos();
             salvaNovoProduto(produtoNovo);
         }
+    }
+
+    private void LimpaCampos() {
+        txt_codigo_produto.setText("");
+        txt_marca_produto.setText("");
+        txt_nome_produto.setText("");
+        txt_descricao_produto.setText("");
+        txt_preco_produto.setText("");
+        txt_marca_produto.setText("");
+        txt_quantidade_produto_estoque.setValue(0);
     }
 
     private Produtos colocaValoresNoProduto() throws NumberFormatException {
@@ -1906,7 +1912,11 @@ public class Sistema extends javax.swing.JFrame {
         if (telaEditaProdutos == null) {
             if (evt.getClickCount() == 2) {
                 int produtoClicado = tabela_de_produtos.getSelectedRow();
-               // telaEditaProdutos = new TelaEditaProdutos(daoProduto.getAll().get(produtoClicado), tabela_de_produtos);
+                try {
+                    telaEditaProdutos = new TelaEditaProdutos(controllerTabelaProduto.buscaEntidadeClicada(produtoClicado), tabela_de_produtos);
+                } catch (SQLException ex) {
+                    throw new RuntimeException(ex);
+                }
                 telaEditaProdutos.setVisible(true);
             }
         }

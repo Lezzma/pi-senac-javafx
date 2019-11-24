@@ -5,20 +5,15 @@
  */
 package br.com.senac.pi.View;
 
-import br.com.senac.pi.model.entidades.Cliente;
 import br.com.senac.pi.model.entidades.Produtos;
-import br.com.senac.pi.model.Dao.DaoRepositorio;
 import br.com.senac.pi.model.Dao.DaoProduto;
 import br.com.senac.pi.controllers.ControllerTabelaProduto;
 import br.com.senac.pi.utils.Validacao;
 import java.awt.Color;
-import java.awt.HeadlessException;
 import java.awt.Toolkit;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import javax.swing.JTable;
 
@@ -26,16 +21,13 @@ import javax.swing.JTable;
  *
  * @author jose.rsneto10
  */
-public class TelaEditaProdutos extends javax.swing.JFrame {
+public class TelaEditaProdutos extends javax.swing.JFrame{
    
     private final JTable tabela;
-    
     private final Produtos produto;
-    private final Produtos produtoAntesDeEditar;
-    private final DaoRepositorio dao = new DaoProduto();
-    private final List<Produtos> listaDeProdutos;
-    private Cliente cliente;
-    private ControllerTabelaProduto repositorioTabelaProduto;
+    private final DaoProduto dao = new DaoProduto();
+    private List<Produtos> listaDeProdutos;
+    private final ControllerTabelaProduto ControllerTabelaProduto;
     /**
      * Creates new form TelaEditaUsuario
      */
@@ -50,15 +42,14 @@ public class TelaEditaProdutos extends javax.swing.JFrame {
         listaDeProdutos = dao.getAll();
         this.tabela = tabela;
         this.produto = produto;
-        this.produtoAntesDeEditar = produto;
-        this.repositorioTabelaProduto = new ControllerTabelaProduto(tabela);
-        prencheDadosProdutos(produto);
+        this.ControllerTabelaProduto = new ControllerTabelaProduto(tabela);
+        prencheDadosProdutos();
         setIcon();
     }
     
   
-    private void prencheDadosProdutos(Produtos produto) {
-        edit_txt_codigo.setText(produto.getCodigo());
+    private void prencheDadosProdutos() {
+        edit_txt_codigo.setText(String.valueOf(produto.getCodigo()));
         edit_txt_codigo.setEditable(true);
         edit_txt_nome_produto.setText(produto.getNome());
         edit_txt_preco.setText(String.valueOf(produto.getPreco()));  
@@ -307,14 +298,7 @@ public class TelaEditaProdutos extends javax.swing.JFrame {
                 
             }else{
                 
-                if(!produtoAntesDeEditar.equals(produto)){
-                    dao.deletar(produtoAntesDeEditar);
-                    try {  
-                        dao.inserir(produto);
-                    } catch (SQLException ex) {
-                        throw new RuntimeException(ex);
-                    }
-                }
+               
 
                 int reply = JOptionPane.showConfirmDialog(null,
                     "Deseja realmente editar esse produto",
@@ -323,9 +307,11 @@ public class TelaEditaProdutos extends javax.swing.JFrame {
 
                 if (reply == JOptionPane.YES_OPTION) {
                     try {
-                        atualizaTabelaEresetaContadorDaTelaEditar();
+                        ControllerTabelaProduto.editaEntidade(produto);
+                        atualizaTabelaELista();
                     } catch (SQLException ex) {
-                       JOptionPane.showMessageDialog(null, "Erro ao deletar produto","Erro",JOptionPane.INFORMATION_MESSAGE);
+                       JOptionPane.showMessageDialog(null, "Erro ao Editar produto","Erro",JOptionPane.INFORMATION_MESSAGE);
+                       throw new RuntimeException(ex);
                     }
                 }
             }
@@ -335,9 +321,21 @@ public class TelaEditaProdutos extends javax.swing.JFrame {
       
 
     }//GEN-LAST:event_btn_salvar_clienteMouseClicked
+    //limpa lista
+    //repopila lista
+    //colcoa items na tabela
+    //fecha tela editar produto
+    public void atualizaTabelaELista() throws SQLException {
+        
+        listaDeProdutos.removeAll(listaDeProdutos);
+        
+        listaDeProdutos = dao.getAll();
+        
+        ControllerTabelaProduto.atualizaTabela(listaDeProdutos);
+        fechar();
+    }
 
-    public void atualizaTabelaEresetaContadorDaTelaEditar() throws SQLException {
-        repositorioTabelaProduto.atualizaTabela(dao.getAll());
+    private void fechar() {
         Sistema.setTelaEditaProdutos(null);
         dispose();
     }
@@ -400,9 +398,10 @@ public class TelaEditaProdutos extends javax.swing.JFrame {
         
         if (reply == JOptionPane.YES_OPTION) {
             int itemClicado = tabela.getSelectedRow();
+            Produtos produtoClicado = listaDeProdutos.get(itemClicado);
             try{
-                dao.deletar(dao.getAll().get(itemClicado));
-                atualizaTabelaEresetaContadorDaTelaEditar();
+                dao.deletar(produtoClicado.getId());
+                atualizaTabelaELista();
             }catch (SQLException e){
                 JOptionPane.showMessageDialog(null, "Erro ao deletar produto","Erro",JOptionPane.INFORMATION_MESSAGE);
             }

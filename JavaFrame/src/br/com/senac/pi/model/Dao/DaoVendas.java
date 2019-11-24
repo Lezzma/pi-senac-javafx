@@ -2,6 +2,7 @@
 package br.com.senac.pi.model.Dao;
 
 import br.com.senac.pi.model.entidades.Venda;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -21,13 +22,13 @@ public class DaoVendas implements DaoRepositorio<Venda>{
     }
 
     @Override
-    public void att(Venda entidade) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public void deletar(int id) {
+        listaDeVendas.remove(id);
     }
 
     @Override
-    public void deletar(Venda entidade) {
-        listaDeVendas.remove(entidade);
+    public void att(Venda entidade) throws SQLException {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
     
 }

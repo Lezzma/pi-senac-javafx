@@ -9,10 +9,9 @@ import java.util.List;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 
-public class ControllerTabelaProduto implements FactoryTabela<Produtos>{
+public final class ControllerTabelaProduto implements FactoryTabela<Produtos>{
     private DefaultTableModel model;
     private DaoProduto dao = new DaoProduto();
-    private List<Produtos> listaDeProdutos = new ArrayList<>();
     
     public ControllerTabelaProduto(JTable tabela){
         this.convertModelTabela(tabela);
@@ -25,8 +24,9 @@ public class ControllerTabelaProduto implements FactoryTabela<Produtos>{
      
     @Override
     public void atualizaTabela(List<Produtos> entidade) {
-        new Thread(() -> {
+       
              model.setNumRows(0);
+             
              entidade.forEach(p -> {
              model.addRow(
                      new Object[]{
@@ -37,18 +37,11 @@ public class ControllerTabelaProduto implements FactoryTabela<Produtos>{
                          p.getQuantidadeVenda()
                      });
          });
-          }).start();
+         
     }
 
     @Override
     public void inserirEntidadeTeste(List<Produtos> entidade) {
-          new Thread(() -> {
-            if (entidade.isEmpty()) {
-            Produtos produtoTeste = new Produtos("123123","leite","leve leite","leite top",20,12.0);
-            entidade.add(produtoTeste);
-        }
-        atualizaTabela(entidade);
-        }).start();
     }
 
     @Override
@@ -63,9 +56,32 @@ public class ControllerTabelaProduto implements FactoryTabela<Produtos>{
                          entidade.getQuantidadeEstoque()
                      });
     }
-
+    
+    @Override
+    public Produtos buscaEntidadeClicada(int index) throws SQLException{
+        Produtos produtoClicado = dao.getAll().get(index);
+        
+        if(produtoClicado != null){
+         return produtoClicado;
+        }
+        return null;
+    }
+    
     @Override
     public void buscaEntidades() throws SQLException{
         atualizaTabela(dao.getAll());
+    }
+
+    @Override
+    public void apagaEntidade(int id) throws SQLException {
+            dao.deletar(id);
+    }
+
+    @Override
+    public void editaEntidade(Produtos produto) throws SQLException {
+        if(dao.getAll().contains(produto)){
+                dao.att(produto);
+        }
+            
     }
 }
