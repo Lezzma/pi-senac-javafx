@@ -30,7 +30,7 @@ public final class ControllerTabelaProduto implements FactoryTabela<Produtos>{
              entidade.forEach(p -> {
              model.addRow(
                      new Object[]{
-                         p.getId(),
+                         p.getCodigo(),
                          p.getNome(),
                          p.getPreco(),
                          p.getQuantidadeEstoque(),
@@ -50,7 +50,7 @@ public final class ControllerTabelaProduto implements FactoryTabela<Produtos>{
              model.setNumRows(0);
              model.addRow(
                      new Object[]{
-                         entidade.getId(),
+                         entidade.getCodigo(),
                          entidade.getNome(),
                          entidade.getPreco(),
                          entidade.getQuantidadeEstoque()

@@ -25,8 +25,8 @@ import java.util.logging.Logger;
  */
 public class TelaPesquisaProdutoFrenteDeCaixa extends javax.swing.JFrame {
 
-    private FactoryTabela repoTabela;
-    private FactoryTabela repoTabelaCarrinho;
+    private ControllerTabelaProduto repoTabelaProdutos;
+    private ControllerTabelaCarrinho repoTabelaCarrinho;
     
     private final DaoProduto daoProduto;
     private final List<Produtos> listaDeProdutos;
@@ -51,7 +51,7 @@ public class TelaPesquisaProdutoFrenteDeCaixa extends javax.swing.JFrame {
         valor = Double.parseDouble(valototal.getText());
         
         //tabela de pesquisar produtos
-        repoTabela = new ControllerTabelaProduto(tabela_frenteDeCaixa_produtos);
+        repoTabelaProdutos = new ControllerTabelaProduto(tabela_frenteDeCaixa_produtos);
        
         //tabela da frente de caixa
         repoTabelaCarrinho = new ControllerTabelaCarrinho(tabela);
@@ -71,7 +71,7 @@ public class TelaPesquisaProdutoFrenteDeCaixa extends javax.swing.JFrame {
     }
 
     private void configuraTabela(List lista) {
-        repoTabela.inserirEntidadeTeste(lista);
+        repoTabelaProdutos.atualizaTabela(lista);
     }
 
     /**
@@ -265,7 +265,7 @@ public class TelaPesquisaProdutoFrenteDeCaixa extends javax.swing.JFrame {
         if(quantidadeColocada <= produtoClicado.getQuantidadeEstoque() ){
             produtoClicado.setQuantidadeVenda(quantidadeColocada);
             item_quantidade.setValue(0);
-            repoTabela.atualizaTabela(listaDeProdutos);
+            repoTabelaProdutos.atualizaTabela(listaDeProdutos);
         }else{
         JOptionPane.showMessageDialog(null, "A quantidade coloca essede a quantidade em estoque", "Ação não permitida!", JOptionPane.INFORMATION_MESSAGE);
         }
@@ -289,7 +289,7 @@ public class TelaPesquisaProdutoFrenteDeCaixa extends javax.swing.JFrame {
       
                 listaDeProdutos.forEach(p -> {
                     if (p.getCodigo().equals(itemPesquisado)) {
-                        repoTabela.retornaItemPesquisado(p);
+                        repoTabelaProdutos.retornaItemPesquisado(p);
                     }
                 });
              
