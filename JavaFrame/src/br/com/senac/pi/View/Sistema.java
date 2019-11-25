@@ -1,15 +1,12 @@
 package br.com.senac.pi.View;
 
-import br.com.senac.pi.controllers.ControllerCliente;
 import br.com.senac.pi.controllers.ControlerUsuarios;
 import br.com.senac.pi.controllers.ControllerRelatorio;
 import br.com.senac.pi.model.entidades.Cliente;
-import br.com.senac.pi.model.entidades.Endereco;
 import br.com.senac.pi.model.entidades.Produtos;
 import br.com.senac.pi.model.entidades.Setor;
 import br.com.senac.pi.model.entidades.Usuario;
 import br.com.senac.pi.model.Dao.DaoProduto;
-import br.com.senac.pi.View.janelas.atalhos.TelaEditarClientes;
 import br.com.senac.pi.controllers.ControllerTabelaProduto;
 import br.com.senac.pi.controllers.ControllerTabelaRelatorio;
 import br.com.senac.pi.controllers.ControllerTabelasUsuario;
@@ -28,7 +25,6 @@ import java.util.List;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
-import br.com.senac.pi.controllers.FactoryTabela;
 import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -44,14 +40,14 @@ public class Sistema extends javax.swing.JFrame {
     List<Usuario> listaDeUsuarios = new ArrayList<>();
     private final ControllerTabelasUsuario controllerTabelaUsuario;
     private final ControllerTabelaProduto controllerTabelaProduto;
-    private final CotrollerTabelaCliente repositorioroTabelaCliente;
+    private final CotrollerTabelaCliente ControllerTabelaCliente;
     private final ControllerTabelaRelatorio controllerTabelaRelatorio;
     private final Validacao valida = new Validacao();
     private final Usuario usuarioLogado;
-    private final ControllerCliente clienteControler;
+
     private static TelaEditaProdutos telaEditaProdutos;
     private static TelaEditaUsuario telaEditaUsuario;
-    private ControllerCliente clienteControler1;
+
     private final ControllerRelatorio relatorioControler;
 
     public Sistema(Usuario user) throws SQLException {
@@ -80,17 +76,17 @@ public class Sistema extends javax.swing.JFrame {
         colocaSetoresEmTipoUsuario();
         //difini quais tela e botoes o usuario tera acesso
         //definiPoliticaDeAcessoDoUsuario(user);
-        this.repositorioroTabelaCliente = new CotrollerTabelaCliente(tabela_de_clientes);
-        this.clienteControler = new ControllerCliente(this.repositorioroTabelaCliente);
-        this.clienteControler.criaClienteTeste();
-        this.clienteControler.atualizaTabelaCliente();
-        setIcon();
-
+        this.ControllerTabelaCliente = new CotrollerTabelaCliente(tabela_de_clientes);
+        this.ControllerTabelaCliente.buscaEntidades();
+        
         this.relatorioControler = new ControllerRelatorio(controllerTabelaRelatorio);
         relatorioControler.inserirVendaTeste();
 
         //tela De relatório prop
         txt_relatorio_total_mes.setEnabled(false);
+        setIcon();
+
+        
     }
     public Usuario getUsuarioLogado(){
         return usuarioLogado;
@@ -1949,11 +1945,17 @@ public class Sistema extends javax.swing.JFrame {
     }//GEN-LAST:event_btn_salvar_cliente1MouseEntered
 
     private void btn_salvar_cliente1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btn_salvar_cliente1MouseClicked
-        //cria novo cliente
-        salvaNovoCliente();
+        try {
+            //cria novo cliente
+            salvaNovoCliente();
+        } catch (NumberFormatException ex) {
+            throw new RuntimeException(ex);
+        } catch (SQLException ex) {
+            throw new RuntimeException(ex);
+        }
     }//GEN-LAST:event_btn_salvar_cliente1MouseClicked
     
-    public void salvaNovoCliente() throws NumberFormatException {
+    public void salvaNovoCliente() throws NumberFormatException, SQLException {
         // TODO add your handling code here:
         List<String> erros =  new ArrayList<>();
         StringBuilder menssagemErro =  new StringBuilder();
@@ -1966,12 +1968,12 @@ public class Sistema extends javax.swing.JFrame {
                 jComboBox_sexo.getSelectedItem().toString(),
                 jComboBox_estadocivil.getSelectedItem().toString(),
                 txt_email_novo_cliente.getText(),
-                new Endereco(
+                
                         txt_cep_novo_cliente.getText(),
                         txt_bairro_novo_cliente.getText(),
                         txt_rua_novo_cliente.getText(),
                         txt_complemento_novo_cliente.getText(),
-                        txt_num_novo_cliente.getText()));
+                        Integer.valueOf(txt_num_novo_cliente.getText()));
             erros = valida.validaCliente(novoCliente);
             
             erros.forEach(erro ->{
@@ -1979,13 +1981,15 @@ public class Sistema extends javax.swing.JFrame {
             });
             
             if(erros.isEmpty()){
-                clienteControler.criarNovoCliente(novoCliente);
+                ControllerTabelaCliente.inserirEntidade(novoCliente);
+                ControllerTabelaCliente.buscaEntidades();
                 JOptionPane.showMessageDialog(null, "Cliente criado com sucesso!");
             }else{
-                JOptionPane.showMessageDialog(null, menssagemErro.toString());
+                JOptionPane.showMessageDialog(null, menssagemErro.toString(),"Campo invalido",JOptionPane.INFORMATION_MESSAGE);
             }
         } catch (NumberFormatException | HeadlessException e) {
-            System.err.println("Erro: "+e.getMessage()+"\nCausa: "+e.getCause());
+            menssagemErro.append("Numero da residencia é obrigatório!");
+            JOptionPane.showMessageDialog(null, menssagemErro.toString(),"Campo invalido",JOptionPane.INFORMATION_MESSAGE);
         }
         
     }
@@ -2002,7 +2006,7 @@ public class Sistema extends javax.swing.JFrame {
 
     private void btn_pesquisa_nomeMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btn_pesquisa_nomeMouseClicked
         // TODO add your handling code here:
-        clienteControler.pesquisaClienteNome(search_nome.getText());
+       // clienteControler.pesquisaClienteNome(search_nome.getText());
     }//GEN-LAST:event_btn_pesquisa_nomeMouseClicked
 
     private void search_nomeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_search_nomeActionPerformed
@@ -2022,7 +2026,7 @@ public class Sistema extends javax.swing.JFrame {
     private void btn_pesquisaMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btn_pesquisaMouseClicked
         // TODO add your handling code here:
 
-        clienteControler.pesquisaClienteCpf(search_cpf.getText());
+       // clienteControler.pesquisaClienteCpf(search_cpf.getText());
     }//GEN-LAST:event_btn_pesquisaMouseClicked
 
     private void btn_salvar_cliente3MouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btn_salvar_cliente3MouseExited
@@ -2040,7 +2044,7 @@ public class Sistema extends javax.swing.JFrame {
     private void tabela_de_clientesMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tabela_de_clientesMouseClicked
         if (evt.getClickCount() == 2) {
             int itemClicado = tabela_de_clientes.getSelectedRow();
-            new TelaEditarClientes(this, true, clienteControler.pegarTodosClientes().get(itemClicado), tabela_de_clientes, null, null).setVisible(true);
+           // new TelaEditarClientes(this, true, clienteControler.pegarTodosClientes().get(itemClicado), tabela_de_clientes, null, null).setVisible(true);
         }
 
         //        clienteControler.atualizarCliente(itemClicado, null);

@@ -1,22 +1,30 @@
 package br.com.senac.pi.controllers;
 
+import br.com.senac.pi.model.Dao.DaoCliente;
 import br.com.senac.pi.model.entidades.Cliente;
 import java.sql.SQLException;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 
 public class CotrollerTabelaCliente implements FactoryTabela<Cliente>{
-     DefaultTableModel model;
-    
-    public CotrollerTabelaCliente(JTable tabela){
+     
+    private DefaultTableModel model;
+     private DaoCliente dao = new DaoCliente();
+     private List<Cliente> listaDeCliente;
+     
+    public CotrollerTabelaCliente(JTable tabela) throws SQLException{
         this.convertModelTabela(tabela);
+        listaDeCliente = dao.getAll();
     }
 
     @Override
     public void convertModelTabela(JTable tabela) {
        this.model = (DefaultTableModel) tabela.getModel();
     }
+
     
     @Override
     public void atualizaTabela(List<Cliente> entidade) {
@@ -32,7 +40,7 @@ public class CotrollerTabelaCliente implements FactoryTabela<Cliente>{
                         p.getSexo(),
                         p.getEstadoCivil(),
                         p.getEmail(),
-                        p.getEndereco().getBairro()+" - Cep:"+p.getEndereco().getCep()
+                        p.getCep()+" - "+p.getBairro()
                     });
         });
          }).start();
@@ -62,8 +70,12 @@ public class CotrollerTabelaCliente implements FactoryTabela<Cliente>{
     }
 
     @Override
-    public void buscaEntidades() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public void buscaEntidades() throws SQLException {
+        if(!listaDeCliente.isEmpty()){
+            listaDeCliente.removeAll(listaDeCliente);
+            listaDeCliente = dao.getAll();
+        }
+        atualizaTabela(listaDeCliente);
     }
 
     @Override
@@ -81,5 +93,13 @@ public class CotrollerTabelaCliente implements FactoryTabela<Cliente>{
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
+    @Override
+    public void inserirEntidade(Cliente entidade) throws SQLException{
+           
+                dao.inserir(entidade);
+            
+    }
+    
+    
     
 }

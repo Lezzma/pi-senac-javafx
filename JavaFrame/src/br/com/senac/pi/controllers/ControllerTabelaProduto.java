@@ -84,4 +84,9 @@ public final class ControllerTabelaProduto implements FactoryTabela<Produtos>{
         }
             
     }
+
+    @Override
+    public void inserirEntidade(Produtos entidade) throws SQLException {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
 }

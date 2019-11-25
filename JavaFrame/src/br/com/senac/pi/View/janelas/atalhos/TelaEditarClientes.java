@@ -5,19 +5,18 @@
  */
 package br.com.senac.pi.View.janelas.atalhos;
 
-import br.com.senac.pi.controllers.ControllerCliente;
 import br.com.senac.pi.model.entidades.Cliente;
 import br.com.senac.pi.model.Dao.DaoCliente;
 import br.com.senac.pi.View.TelaFrenteDeCaixa;
 import br.com.senac.pi.controllers.CotrollerTabelaCliente;
-import br.com.senac.pi.model.entidades.Endereco;
 import br.com.senac.pi.model.entidades.Setor;
-import br.com.senac.pi.model.entidades.Usuario;
 import br.com.senac.pi.utils.Validacao;
 import java.awt.Color;
-import java.awt.Frame;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import javax.swing.JTable;
 
@@ -428,12 +427,11 @@ public class TelaEditarClientes extends javax.swing.JDialog {
         cliente.setNome(edit_txt_nome.getText());
         cliente.setCpf(edit_txt_cpf.getText());
         cliente.setEmail(edit_txt_email_cliente.getText());
-        cliente.setEndereco(new Endereco(
-                edit_txt_cep_cliente.getText(),
-                edit_txt_bairro_Cliente.getText(), 
-                edit_txt_rua_cliente.getText(), 
-                edit_txt_comple_cliente.getText(), 
-                edit_txt_num_cliente.getText()));
+        cliente.setCep(edit_txt_cep_cliente.getText());
+        cliente.setBairro(edit_txt_bairro_Cliente.getText());
+        cliente.setRua(edit_txt_rua_cliente.getText());
+        cliente.setComplemento(edit_txt_comple_cliente.getText());
+        cliente.setNumero(Integer.valueOf(edit_txt_num_cliente.getText()));
         cliente.setDataDeNascimento(edit_txt_nascimento_cliente.getText());
         erros = valida.validaCliente(cliente);
         
@@ -444,8 +442,12 @@ public class TelaEditarClientes extends javax.swing.JDialog {
             JOptionPane.showMessageDialog(null, todosErros.toString(),"Dados Invalidos!",JOptionPane.WARNING_MESSAGE);
         }else{
             if (!clienteAntesDeEditar.equals(cliente)) {
-                //dao.deletar(clienteAntesDeEditar);
-                dao.inserir(cliente);
+                try {
+                    //dao.deletar(clienteAntesDeEditar);
+                    dao.inserir(cliente);
+                } catch (SQLException ex) {
+                    Logger.getLogger(TelaEditarClientes.class.getName()).log(Level.SEVERE, null, ex);
+                }
             }
             int reply = JOptionPane.showConfirmDialog(null,
                     "Deseja realmente editar esse cliente",
@@ -453,7 +455,11 @@ public class TelaEditarClientes extends javax.swing.JDialog {
                     JOptionPane.YES_NO_OPTION);
 
             if (reply == JOptionPane.YES_OPTION) {
-                new CotrollerTabelaCliente(tabela).atualizaTabela(dao.getAll());
+                try {
+                    new CotrollerTabelaCliente(tabela).atualizaTabela(dao.getAll());
+                } catch (SQLException ex) {
+                    Logger.getLogger(TelaEditarClientes.class.getName()).log(Level.SEVERE, null, ex);
+                }
                 dispose();
             }
         }
@@ -466,10 +472,10 @@ public class TelaEditarClientes extends javax.swing.JDialog {
         edit_txt_tell_cliente.setText(cliente.getTell());
         edit_txt_cell_cliente.setText(cliente.getTell());
         edit_txt_nascimento_cliente.setText(cliente.getDataDeNascimento());
-        edit_txt_bairro_Cliente.setText(cliente.getEndereco().getBairro());
-        edit_txt_num_cliente.setText(cliente.getEndereco().getNumero());
-        edit_txt_rua_cliente.setText(cliente.getEndereco().getRua());
-        edit_txt_comple_cliente.setText(cliente.getEndereco().getComplemento());
+        edit_txt_bairro_Cliente.setText(cliente.getBairro());
+        edit_txt_num_cliente.setText(String.valueOf(cliente.getNumero()));
+        edit_txt_rua_cliente.setText(cliente.getRua());
+        edit_txt_comple_cliente.setText(String.valueOf(cliente.getComplemento()));
     }
     private void btn_salvar_clienteMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btn_salvar_clienteMouseEntered
         // TODO add your handling code here:
@@ -509,7 +515,11 @@ public class TelaEditarClientes extends javax.swing.JDialog {
                 JOptionPane.YES_NO_OPTION);
 
         if (reply == JOptionPane.YES_OPTION) {
-            new ControllerCliente(new CotrollerTabelaCliente(tabela)).removeCleinte(cliente);
+           // try {
+                //new ControllerCliente(new CotrollerTabelaCliente(tabela)).removeCleinte(cliente);
+            //} catch (SQLException ex) {
+               // Logger.getLogger(TelaEditarClientes.class.getName()).log(Level.SEVERE, null, ex);
+           // }
             dispose();
         }
 

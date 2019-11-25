@@ -1,15 +1,16 @@
 package br.com.senac.pi.View.janelas.atalhos;
 
-import br.com.senac.pi.controllers.ControllerCliente;
 import br.com.senac.pi.View.TelaFrenteDeCaixa;
 import br.com.senac.pi.controllers.CotrollerTabelaCliente;
 import br.com.senac.pi.model.entidades.Cliente;
-import br.com.senac.pi.model.entidades.Endereco;
 import br.com.senac.pi.utils.Validacao;
 import java.awt.Color;
 import java.awt.HeadlessException;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 
 /**
@@ -18,13 +19,13 @@ import javax.swing.JOptionPane;
  */
 public class TelaDeCadastroDeCliente extends javax.swing.JDialog {
 
-    private ControllerCliente clienteControler;
+  
     private TelaFrenteDeCaixa caixa;
     private Validacao valida;
     /**
      * Creates new form TelaDeCadastroDeCliente
      */
-    public TelaDeCadastroDeCliente(java.awt.Frame parent, boolean modal, TelaFrenteDeCaixa telaPrincipal) {
+    public TelaDeCadastroDeCliente(java.awt.Frame parent, boolean modal, TelaFrenteDeCaixa telaPrincipal) throws SQLException {
         super(parent, modal);
         initComponents();
         
@@ -33,11 +34,7 @@ public class TelaDeCadastroDeCliente extends javax.swing.JDialog {
         //controler da entidade cliente
         //controla os eventos sobre a tabela
         //@param repositorioTabelaCLIENTE
-        clienteControler = new ControllerCliente(new CotrollerTabelaCliente(tabela_de_clientes));
 
-        //criando um cliente teste, somente para prenchimento da tabela
-        clienteControler.criaClienteTeste();
-        clienteControler.atualizaTabelaCliente();
         valida = new Validacao();
     }
 
@@ -550,12 +547,11 @@ public class TelaDeCadastroDeCliente extends javax.swing.JDialog {
                 jComboBox_sexo.getSelectedItem().toString(),
                 jComboBox_estadocivil.getSelectedItem().toString(),
                 txt_email_novo_cliente.getText(),
-                new Endereco(
                         txt_cep_novo_cliente.getText(),
                         txt_bairro_novo_cliente.getText(),
                         txt_rua_novo_cliente.getText(),
                         txt_complemento_novo_cliente.getText(),
-                        txt_num_novo_cliente.getText()));
+                        Integer.parseInt(txt_num_novo_cliente.getText()));
             erros = valida.validaCliente(novoCliente);
             
             erros.forEach(erro ->{
@@ -563,7 +559,7 @@ public class TelaDeCadastroDeCliente extends javax.swing.JDialog {
             });
             
             if(erros.isEmpty()){
-                clienteControler.criarNovoCliente(novoCliente);
+               // clienteControler.criarNovoCliente(novoCliente);
                 JOptionPane.showMessageDialog(null, "Cliente criado com sucesso!");
             }else{
                 JOptionPane.showMessageDialog(null, menssagemErro.toString());
@@ -571,7 +567,7 @@ public class TelaDeCadastroDeCliente extends javax.swing.JDialog {
         } catch (NumberFormatException | HeadlessException e) {
             e.printStackTrace();
             System.err.println("Erro: "+e.getMessage()+"\nCausa: "+e.getCause());
-        }
+        } 
     }//GEN-LAST:event_btn_salvar_clienteMouseClicked
 
     private void btn_salvar_clienteMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btn_salvar_clienteMouseEntered
@@ -601,12 +597,13 @@ public class TelaDeCadastroDeCliente extends javax.swing.JDialog {
             if (null == null) {
                 int itemClicado = tabela_de_clientes.getSelectedRow();
                 // TODO add your handling code here:
-               new TelaEditarClientes(null,
+                new TelaEditarClientes(null,
                         true,
-                        clienteControler.pegarTodosClientes().get(itemClicado),
+                        null,
+                        //clienteControler.pegarTodosClientes().get(itemClicado),
                         tabela_de_clientes,
                         caixa,
-                        TelaDeCadastroDeCliente.this).setVisible(true);              
+                        TelaDeCadastroDeCliente.this).setVisible(true);
                 
             } else {
                 JOptionPane.showMessageDialog(null, "Já possui um cliente vinculado\n"
@@ -620,8 +617,8 @@ public class TelaDeCadastroDeCliente extends javax.swing.JDialog {
 
     private void btn_pesquisaMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btn_pesquisaMouseClicked
         // TODO add your handling code here:
- 
-             clienteControler.pesquisaClienteCpf(search_cpf.getText());
+        
+       // clienteControler.pesquisaClienteCpf(search_cpf.getText());
         
       
     }//GEN-LAST:event_btn_pesquisaMouseClicked
@@ -632,7 +629,7 @@ public class TelaDeCadastroDeCliente extends javax.swing.JDialog {
 
     private void btn_pesquisa_nomeMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btn_pesquisa_nomeMouseClicked
         // TODO add your handling code here:
-            clienteControler.pesquisaClienteNome(search_nome.getText());
+        //clienteControler.pesquisaClienteNome(search_nome.getText());
     }//GEN-LAST:event_btn_pesquisa_nomeMouseClicked
 
     private void btn_pesquisa_nomeMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btn_pesquisa_nomeMouseEntered
@@ -675,14 +672,18 @@ public class TelaDeCadastroDeCliente extends javax.swing.JDialog {
         /* Create and display the dialog */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                TelaDeCadastroDeCliente dialog = new TelaDeCadastroDeCliente(new javax.swing.JFrame(), true, null);
-                dialog.addWindowListener(new java.awt.event.WindowAdapter() {
-                    @Override
-                    public void windowClosing(java.awt.event.WindowEvent e) {
-                        System.exit(0);
-                    }
-                });
-                dialog.setVisible(true);
+                try {
+                    TelaDeCadastroDeCliente dialog = new TelaDeCadastroDeCliente(new javax.swing.JFrame(), true, null);
+                    dialog.addWindowListener(new java.awt.event.WindowAdapter() {
+                        @Override
+                        public void windowClosing(java.awt.event.WindowEvent e) {
+                            System.exit(0);
+                        }
+                    });
+                    dialog.setVisible(true);
+                } catch (SQLException ex) {
+                    Logger.getLogger(TelaDeCadastroDeCliente.class.getName()).log(Level.SEVERE, null, ex);
+                }
             }
         });
     }

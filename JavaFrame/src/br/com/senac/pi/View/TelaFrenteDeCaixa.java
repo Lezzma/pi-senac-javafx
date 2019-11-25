@@ -24,8 +24,6 @@ import java.awt.event.KeyEvent;
 import java.sql.SQLException;
 import java.time.Instant;
 import java.util.Date;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
@@ -131,7 +129,7 @@ public class TelaFrenteDeCaixa extends javax.swing.JFrame {
                             
                         }
                         if (ke.getID() == ke.KEY_RELEASED && ke.getKeyCode() == KeyEvent.VK_F8) {
-                            new TelaDeCadastroDeCliente(TelaFrenteDeCaixa.this, true, TelaFrenteDeCaixa.this).setVisible(true);
+                            //new TelaDeCadastroDeCliente(TelaFrenteDeCaixa.this, true, TelaFrenteDeCaixa.this).setVisible(true);
                             return true;
                         }
 

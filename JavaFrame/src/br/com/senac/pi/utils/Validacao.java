@@ -85,20 +85,16 @@ public class Validacao {
         } else if (cliente.getCpf().equals("")) {
             erros.add("CPF do cliente é obrigatório!");
         }
-        if (!validaCep(cliente.getEndereco().getCep()) && !cliente.getEndereco().getCep().equals("")) {
+        if (!validaCep(cliente.getCep()) && !cliente.getCep().equals("")) {
             erros.add("CEP inválido!");
-        } else if (cliente.getEndereco().getCep().equals("")) {
+        } else if (cliente.getCep().equals("")) {
             erros.add("CEP do cliente é obrigatório!");
         }
         if (!verificaNomeNull(cliente.getSexo())) {
             erros.add("Sexo não pode ser nulo");
         }
 
-        if (!verificaNumero(cliente.getEndereco().getNumero()) && !cliente.getEndereco().getNumero().equals("")) {
-            erros.add("No numero da residencia só pode conter numeros!");
-        } else if (cliente.getEndereco().getNumero().equals("")) {
-            erros.add("Numero da residencia do cliente é obrigatório!");
-        }
+       
 
         return erros;
     }

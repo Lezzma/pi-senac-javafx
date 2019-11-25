@@ -24,5 +24,6 @@ public interface FactoryTabela<T> {
     T buscaEntidadeClicada(int index)throws SQLException;
     void apagaEntidade(int id) throws SQLException;
     void editaEntidade(T entidade)throws SQLException;
+    void inserirEntidade(T entidade)throws SQLException;
     
 }

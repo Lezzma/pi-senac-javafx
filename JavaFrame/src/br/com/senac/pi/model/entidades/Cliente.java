@@ -20,11 +20,15 @@ public class Cliente {
     private String sexo;
     private String estadoCivil;
     private String email;
-    private Endereco endereco;
+    private String cep;
+    private String bairro;
+    private String rua;
+    private String complemento;
+    private int numero;
     
     public Cliente(){}
 
-    public Cliente(String nome, String cpf, String dataDeNascimento, String tell, String sexo, String estadoCivil, String email, Endereco endereco) {
+    public Cliente(String nome, String cpf, String dataDeNascimento, String tell, String sexo, String estadoCivil, String email,String cep, String bairro,String rua,String complemento, int numero) {
         this.nome = nome;
         this.cpf = cpf;
         this.dataDeNascimento = dataDeNascimento;
@@ -32,9 +36,33 @@ public class Cliente {
         this.sexo = sexo;
         this.estadoCivil = estadoCivil;
         this.email = email;
-        this.endereco = endereco;
+        this.cep = cep;
+        this.bairro = bairro;
+        this.rua = rua; 
+        this.complemento = complemento;
+        this.numero = numero;
     }
-   
+    
+    public Cliente(int id,String nome, String cpf, String dataDeNascimento, String tell, String sexo, String estadoCivil, String email,String cep, String bairro,String rua,String complemento, int numero) {
+        this.id = id;
+        this.nome = nome;
+        this.cpf = cpf;
+        this.dataDeNascimento = dataDeNascimento;
+        this.tell = tell;
+        this.sexo = sexo;
+        this.estadoCivil = estadoCivil;
+        this.email = email;
+        this.cep = cep;
+        this.bairro = bairro;
+        this.rua = rua; 
+        this.complemento = complemento;
+        this.numero = numero;
+    }
+    
+    public int getId(){
+        return id;
+    }
+    
     public String getNome() {
         return nome;
     }
@@ -49,10 +77,6 @@ public class Cliente {
 
     public void setCpf(String cpf) {
         this.cpf = cpf;
-    }
-
-    public int getId() {
-        return id;
     }
 
     public String getDataDeNascimento() {
@@ -95,14 +119,47 @@ public class Cliente {
         this.email = email;
     }
 
-    public Endereco getEndereco() {
-        return endereco;
+    public String getCep() {
+        return cep;
     }
 
-    public void setEndereco(Endereco endereco) {
-        this.endereco = endereco;
+    public void setCep(String cep) {
+        this.cep = cep;
     }
-    
+
+    public String getBairro() {
+        return bairro;
+    }
+
+    public void setBairro(String bairro) {
+        this.bairro = bairro;
+    }
+
+    public String getRua() {
+        return rua;
+    }
+
+    public void setRua(String rua) {
+        this.rua = rua;
+    }
+
+    public String getComplemento() {
+        return complemento;
+    }
+
+    public void setComplemento(String complemento) {
+        this.complemento = complemento;
+    }
+
+    public int getNumero() {
+        return numero;
+    }
+
+    public void setNumero(int numero) {
+        this.numero = numero;
+    }
+
+  
     @Override
     public int hashCode() {
         int hash = 3;
