@@ -23,32 +23,32 @@ CREATE TABLE IF NOT EXISTS `carrinho` (
   PRIMARY KEY (`id`),
   KEY `id_prod` (`id_prod`),
   CONSTRAINT `carrinho_ibfk_1` FOREIGN KEY (`id_prod`) REFERENCES `produto` (`id_prod`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB AUTO_INCREMENT=24 DEFAULT CHARSET=utf8mb4;
 
-
+-- Exportação de dados foi desmarcado.
 
 -- Copiando estrutura para tabela lojamoveis.cliente
 CREATE TABLE IF NOT EXISTS `cliente` (
-  `id_cli` int(11) NOT NULL AUTO_INCREMENT,
-  `cpf_cli` varchar(50) NOT NULL DEFAULT '',
-  `nome_cli` varchar(50) NOT NULL,
-  `data_nasc_cli` tinyblob DEFAULT NULL,
-  `tel_cli` varchar(50) DEFAULT NULL,
-  `cel_cli` varchar(50) DEFAULT NULL,
-  `sexo_cli` varchar(10) DEFAULT NULL,
-  `est_civil_cli` varchar(50) DEFAULT NULL,
-  `email_cli` varchar(30) NOT NULL,
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `cpf` varchar(50) NOT NULL DEFAULT '',
+  `nome` varchar(50) NOT NULL,
+  `data_nasc` tinyblob DEFAULT NULL,
+  `tel` varchar(50) DEFAULT NULL,
+  `cel` varchar(50) DEFAULT NULL,
+  `sexo` varchar(10) DEFAULT NULL,
+  `est_civil` varchar(50) DEFAULT NULL,
+  `email` varchar(30) NOT NULL,
   `cep` varchar(50) DEFAULT NULL,
   `bairro` varchar(50) DEFAULT NULL,
   `rua` varchar(50) DEFAULT NULL,
   `complemento` char(2) DEFAULT NULL,
   `numero` int(11) DEFAULT NULL,
-  PRIMARY KEY (`id_cli`),
-  UNIQUE KEY `cpf_cli` (`cpf_cli`),
-  UNIQUE KEY `email_cli` (`email_cli`)
-) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8mb4;
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `cpf_cli` (`cpf`),
+  UNIQUE KEY `email_cli` (`email`)
+) ENGINE=InnoDB AUTO_INCREMENT=15 DEFAULT CHARSET=utf8mb4;
 
-
+-- Exportação de dados foi desmarcado.
 
 -- Copiando estrutura para tabela lojamoveis.produto
 CREATE TABLE IF NOT EXISTS `produto` (
@@ -62,7 +62,7 @@ CREATE TABLE IF NOT EXISTS `produto` (
   PRIMARY KEY (`id_prod`)
 ) ENGINE=InnoDB AUTO_INCREMENT=20 DEFAULT CHARSET=utf8mb4;
 
-
+-- Exportação de dados foi desmarcado.
 
 -- Copiando estrutura para tabela lojamoveis.usuario
 CREATE TABLE IF NOT EXISTS `usuario` (
@@ -77,22 +77,26 @@ CREATE TABLE IF NOT EXISTS `usuario` (
   UNIQUE KEY `email_usu` (`email_usu`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
-
+-- Exportação de dados foi desmarcado.
 
 -- Copiando estrutura para tabela lojamoveis.venda
 CREATE TABLE IF NOT EXISTS `venda` (
   `id_venda` int(11) NOT NULL AUTO_INCREMENT,
   `id_cli` int(11) NOT NULL,
-  `id_vend` int(11) NOT NULL,
+  `id_vendedor` int(11) DEFAULT NULL,
   `id_carrinho` int(11) NOT NULL,
   `valor_total` double(50,2) NOT NULL,
   `qtd_produtos` int(11) NOT NULL,
-  `data_venda` date NOT NULL,
+  `data_venda` varchar(50) NOT NULL DEFAULT '',
   PRIMARY KEY (`id_venda`),
-  KEY `id_carrinho` (`id_carrinho`),
-  CONSTRAINT `venda_ibfk_1` FOREIGN KEY (`id_carrinho`) REFERENCES `carrinho` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+  KEY `id_vendedor` (`id_vendedor`),
+  KEY `id_cli` (`id_cli`),
+  KEY `fk_carrinho` (`id_carrinho`),
+  CONSTRAINT `fk_carrinho` FOREIGN KEY (`id_carrinho`) REFERENCES `carrinho` (`id`),
+  CONSTRAINT `fk_cliente` FOREIGN KEY (`id_cli`) REFERENCES `cliente` (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=14 DEFAULT CHARSET=utf8mb4;
 
+-- Exportação de dados foi desmarcado.
 
 /*!40101 SET SQL_MODE=IFNULL(@OLD_SQL_MODE, '') */;
 /*!40014 SET FOREIGN_KEY_CHECKS=IF(@OLD_FOREIGN_KEY_CHECKS IS NULL, 1, @OLD_FOREIGN_KEY_CHECKS) */;
