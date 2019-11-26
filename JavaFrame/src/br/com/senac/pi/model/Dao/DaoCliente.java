@@ -27,15 +27,15 @@ public class DaoCliente implements DaoRepositorio<Cliente>{
         rs =  ps.executeQuery();
         
         while(rs.next()){
-            int id = rs.getInt("id_cli");
-            String nome = rs.getString("nome_cli");
-            String dataNascimento = rs.getString("data_nasc_cli");
-            String tel = rs.getString("tel_cli");
-            String cpf = rs.getString("cpf_cli");
-            String cel = rs.getString("cel_cli");
-            String sexo = rs.getString("sexo_cli");
-            String estadoSivil = rs.getString("est_civil_cli");
-            String email = rs.getString("email_cli");
+            int id = rs.getInt("id");
+            String nome = rs.getString("nome");
+            String dataNascimento = rs.getString("data_nasc");
+            String tel = rs.getString("tel");
+            String cpf = rs.getString("cpf");
+            String cel = rs.getString("cel");
+            String sexo = rs.getString("sexo");
+            String estadoSivil = rs.getString("est_civil");
+            String email = rs.getString("email");
             String nomeRua = rs.getString("rua");
             String bairro = rs.getString("bairro");
             int numCasa = rs.getInt("numero");
@@ -60,9 +60,9 @@ public class DaoCliente implements DaoRepositorio<Cliente>{
     @Override
     public void inserir(Cliente entidade) throws SQLException {
        conexao =  new ConnectioFactory().getConnection();
-       ps = conexao.prepareStatement("insert into cliente (cpf_cli, nome_cli,"
-               + "data_nasc_cli, tel_cli, sexo_cli, est_civil_cli,"
-               + " email_cli, cep, bairro, rua, complemento, numero)"
+       ps = conexao.prepareStatement("insert into cliente (cpf, nome,"
+               + "data_nasc, tel, sexo, est_civil,"
+               + " email, cep, bairro, rua, complemento, numero)"
                + "values (?,?,?,?,?,?,?,?,?,?,?,?)");
        
        ps.setString(1, entidade.getCpf());
@@ -78,20 +78,41 @@ public class DaoCliente implements DaoRepositorio<Cliente>{
        ps.setString(11,String.valueOf(entidade.getComplemento()));
        ps.setInt(12,entidade.getNumero());
        ps.execute();
-       ps.close();
        fecharConexao();
     }
 
     
 
     @Override
-    public void deletar(int id) {
-       
+    public void deletar(int id) throws SQLException {
+            conexao =  new ConnectioFactory().getConnection();
+            ps = conexao.prepareStatement("DELETE FROM cliente WHERE id = ?");
+            ps.setInt(1, id);
+            ps.execute();
+            fecharConexao();
     }
 
     @Override
     public void att(Cliente entidade) throws SQLException {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+          conexao =  new ConnectioFactory().getConnection();
+       ps = conexao.prepareStatement("UPDATE cliente SET cpf=?, nome=?, data_nasc=?, tel=?, sexo=?, est_civil=?,"
+               + "email=?, cep=?, bairro=?, rua=?, complemento=?, numero=? WHERE id=?");
+       
+       ps.setString(1, entidade.getCpf());
+       ps.setString(2, entidade.getNome());
+       ps.setString(3, entidade.getDataDeNascimento());
+       ps.setString(4, entidade.getTell());
+       ps.setString(5, entidade.getSexo());
+       ps.setString(6, entidade.getEstadoCivil());
+       ps.setString(7, entidade.getEmail());
+       ps.setString(8,entidade.getCep());
+       ps.setString(9,entidade.getBairro());
+       ps.setString(10,entidade.getRua());
+       ps.setString(11,String.valueOf(entidade.getComplemento()));
+       ps.setInt(12,entidade.getNumero());
+       ps.setInt(13, entidade.getId());
+       ps.execute();
+       fecharConexao();
     }
     
 }

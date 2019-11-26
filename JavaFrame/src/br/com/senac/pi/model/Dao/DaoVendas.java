@@ -2,14 +2,19 @@
 package br.com.senac.pi.model.Dao;
 
 import br.com.senac.pi.model.entidades.Venda;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
 public class DaoVendas implements DaoRepositorio<Venda>{
-    private static List<Venda> listaDeVendas = new ArrayList<>();
-
-  
+    private List<Venda> listaDeVendas = new ArrayList<>();
+    private Connection conexao;
+    private PreparedStatement ps;
+    private ResultSet rs;
+   
 
     @Override
     public List<Venda> getAll() {
@@ -18,7 +23,7 @@ public class DaoVendas implements DaoRepositorio<Venda>{
 
     @Override
     public void inserir(Venda entidade) {
-        listaDeVendas.add(entidade);
+        
     }
 
     @Override

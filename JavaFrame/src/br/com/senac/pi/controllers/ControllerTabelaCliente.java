@@ -4,18 +4,16 @@ import br.com.senac.pi.model.Dao.DaoCliente;
 import br.com.senac.pi.model.entidades.Cliente;
 import java.sql.SQLException;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 
-public class CotrollerTabelaCliente implements FactoryTabela<Cliente>{
+public final class ControllerTabelaCliente implements FactoryTabela<Cliente>{
      
     private DefaultTableModel model;
-     private DaoCliente dao = new DaoCliente();
+     private final DaoCliente dao = new DaoCliente();
      private List<Cliente> listaDeCliente;
      
-    public CotrollerTabelaCliente(JTable tabela) throws SQLException{
+    public ControllerTabelaCliente(JTable tabela) throws SQLException{
         this.convertModelTabela(tabela);
         listaDeCliente = dao.getAll();
     }
@@ -29,6 +27,8 @@ public class CotrollerTabelaCliente implements FactoryTabela<Cliente>{
     @Override
     public void atualizaTabela(List<Cliente> entidade) {
         new Thread(() -> {
+            
+            
             model.setNumRows(0);
             entidade.forEach(p -> {
             model.addRow(
@@ -72,32 +72,38 @@ public class CotrollerTabelaCliente implements FactoryTabela<Cliente>{
     @Override
     public void buscaEntidades() throws SQLException {
         if(!listaDeCliente.isEmpty()){
-            listaDeCliente.removeAll(listaDeCliente);
-            listaDeCliente = dao.getAll();
+            atualizaListaDeClientes();
         }
-        atualizaTabela(listaDeCliente);
     }
 
     @Override
     public Cliente buscaEntidadeClicada(int index) throws SQLException {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return listaDeCliente.get(index);
     }
 
     @Override
     public void apagaEntidade(int id) throws SQLException {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        dao.deletar(id);
+        atualizaListaDeClientes();
+        
+    }
+
+    private void atualizaListaDeClientes() throws SQLException {
+        listaDeCliente.removeAll(listaDeCliente);
+        listaDeCliente = dao.getAll();
+        atualizaTabela(listaDeCliente);
     }
 
     @Override
-    public void editaEntidade(Cliente entidade) throws SQLException {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public void editaEntidade(Cliente entidade) throws SQLException {   
+                dao.att(entidade);
+                atualizaListaDeClientes(); 
     }
 
     @Override
-    public void inserirEntidade(Cliente entidade) throws SQLException{
-           
+    public void inserirEntidade(Cliente entidade) throws SQLException{      
                 dao.inserir(entidade);
-            
+                atualizaListaDeClientes();    
     }
     
     

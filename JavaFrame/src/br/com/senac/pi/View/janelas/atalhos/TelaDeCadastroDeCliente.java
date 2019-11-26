@@ -1,7 +1,7 @@
 package br.com.senac.pi.View.janelas.atalhos;
 
 import br.com.senac.pi.View.TelaFrenteDeCaixa;
-import br.com.senac.pi.controllers.CotrollerTabelaCliente;
+import br.com.senac.pi.controllers.ControllerTabelaCliente;
 import br.com.senac.pi.model.entidades.Cliente;
 import br.com.senac.pi.utils.Validacao;
 import java.awt.Color;
@@ -22,6 +22,9 @@ public class TelaDeCadastroDeCliente extends javax.swing.JDialog {
   
     private TelaFrenteDeCaixa caixa;
     private Validacao valida;
+    private ControllerTabelaCliente controllerTabelaCliente;
+    private TelaEditarClientes telaEditarClientes;
+    private Cliente cliente;
     /**
      * Creates new form TelaDeCadastroDeCliente
      */
@@ -30,12 +33,9 @@ public class TelaDeCadastroDeCliente extends javax.swing.JDialog {
         initComponents();
         
         this.caixa = telaPrincipal;
-
-        //controler da entidade cliente
-        //controla os eventos sobre a tabela
-        //@param repositorioTabelaCLIENTE
-
         valida = new Validacao();
+        controllerTabelaCliente = new ControllerTabelaCliente(tabela_de_clientes);
+        controllerTabelaCliente.buscaEntidades();
     }
 
     /**
@@ -559,7 +559,8 @@ public class TelaDeCadastroDeCliente extends javax.swing.JDialog {
             });
             
             if(erros.isEmpty()){
-               // clienteControler.criarNovoCliente(novoCliente);
+              
+                controllerTabelaCliente.inserirEntidade(novoCliente);
                 JOptionPane.showMessageDialog(null, "Cliente criado com sucesso!");
             }else{
                 JOptionPane.showMessageDialog(null, menssagemErro.toString());
@@ -567,6 +568,8 @@ public class TelaDeCadastroDeCliente extends javax.swing.JDialog {
         } catch (NumberFormatException | HeadlessException e) {
             e.printStackTrace();
             System.err.println("Erro: "+e.getMessage()+"\nCausa: "+e.getCause());
+        } catch (SQLException ex) {
+            throw new RuntimeException(ex);
         } 
     }//GEN-LAST:event_btn_salvar_clienteMouseClicked
 
@@ -594,16 +597,20 @@ public class TelaDeCadastroDeCliente extends javax.swing.JDialog {
 
     private void tabela_de_clientesMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tabela_de_clientesMouseClicked
         if (evt.getClickCount() == 2) {
-            if (null == null) {
+            if (telaEditarClientes == null) {
                 int itemClicado = tabela_de_clientes.getSelectedRow();
-                // TODO add your handling code here:
-                new TelaEditarClientes(null,
-                        true,
-                        null,
-                        //clienteControler.pegarTodosClientes().get(itemClicado),
-                        tabela_de_clientes,
-                        caixa,
-                        TelaDeCadastroDeCliente.this).setVisible(true);
+                try {
+                    cliente = controllerTabelaCliente.buscaEntidadeClicada(itemClicado);
+                     new TelaEditarClientes(null,
+                            true,
+                            cliente,
+                            tabela_de_clientes,
+                            caixa,
+                            TelaDeCadastroDeCliente.this).setVisible(true);
+                } catch (SQLException ex) {
+                    throw new RuntimeException(ex);
+                }
+           
                 
             } else {
                 JOptionPane.showMessageDialog(null, "Já possui um cliente vinculado\n"

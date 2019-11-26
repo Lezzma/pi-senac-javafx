@@ -44,7 +44,6 @@ public class DaoProduto implements DaoRepositorio<Produtos> {
     
     public void fecharConexao() throws SQLException{
         ps.close();
-        
         conexao.close();
     }
     @Override

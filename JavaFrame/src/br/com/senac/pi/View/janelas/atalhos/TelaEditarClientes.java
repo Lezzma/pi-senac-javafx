@@ -5,18 +5,15 @@
  */
 package br.com.senac.pi.View.janelas.atalhos;
 
+import br.com.senac.pi.View.Sistema;
 import br.com.senac.pi.model.entidades.Cliente;
-import br.com.senac.pi.model.Dao.DaoCliente;
 import br.com.senac.pi.View.TelaFrenteDeCaixa;
-import br.com.senac.pi.controllers.CotrollerTabelaCliente;
+import br.com.senac.pi.controllers.ControllerTabelaCliente;
 import br.com.senac.pi.model.entidades.Setor;
 import br.com.senac.pi.utils.Validacao;
 import java.awt.Color;
 import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import javax.swing.JTable;
 
@@ -27,12 +24,11 @@ import javax.swing.JTable;
 public class TelaEditarClientes extends javax.swing.JDialog {
 
     private Cliente cliente;
-    private Cliente clienteAntesDeEditar;
 
-    private DaoCliente dao;
     private JTable tabela;
     private TelaFrenteDeCaixa caixa;
     private TelaDeCadastroDeCliente cadastroDeCliente;
+    private ControllerTabelaCliente controllerTabelaCliente;
 
     /**
      * Creates new form TelaEditarClientes
@@ -42,6 +38,7 @@ public class TelaEditarClientes extends javax.swing.JDialog {
      * @param tabela
      * @param caixa
      * @param telaDeCadastroDeCliente
+     * @throws java.sql.SQLException
      */
     public TelaEditarClientes(
             java.awt.Frame parent,
@@ -49,7 +46,7 @@ public class TelaEditarClientes extends javax.swing.JDialog {
             Cliente cliente,
             JTable tabela,
             TelaFrenteDeCaixa caixa,
-            TelaDeCadastroDeCliente telaDeCadastroDeCliente) {
+            TelaDeCadastroDeCliente telaDeCadastroDeCliente) throws SQLException {
         
         super(parent, modal);
 
@@ -57,10 +54,8 @@ public class TelaEditarClientes extends javax.swing.JDialog {
         this.caixa = caixa;
         this.cadastroDeCliente = telaDeCadastroDeCliente;
         this.cliente = cliente;
-        this.clienteAntesDeEditar = cliente;
-        this.dao = new DaoCliente();
         this.tabela = tabela;
-        
+        this.controllerTabelaCliente  = new ControllerTabelaCliente(tabela);
         if(this.caixa != null){
             if(this.caixa.getUsuarioLogado().getSetor().equals(Setor.vendas)){
                 btn_remover_cliente.setVisible(false);
@@ -410,7 +405,7 @@ public class TelaEditarClientes extends javax.swing.JDialog {
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, 300, Short.MAX_VALUE)
+            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, 319, Short.MAX_VALUE)
         );
 
         pack();
@@ -421,7 +416,7 @@ public class TelaEditarClientes extends javax.swing.JDialog {
         // TODO add your handling code here:
         // TODO add your handling code here:
         Validacao valida = new Validacao();
-        List<String> erros = new ArrayList<>();
+        List<String> erros;
         StringBuilder todosErros =  new StringBuilder();
         
         cliente.setNome(edit_txt_nome.getText());
@@ -441,14 +436,7 @@ public class TelaEditarClientes extends javax.swing.JDialog {
             });
             JOptionPane.showMessageDialog(null, todosErros.toString(),"Dados Invalidos!",JOptionPane.WARNING_MESSAGE);
         }else{
-            if (!clienteAntesDeEditar.equals(cliente)) {
-                try {
-                    //dao.deletar(clienteAntesDeEditar);
-                    dao.inserir(cliente);
-                } catch (SQLException ex) {
-                    Logger.getLogger(TelaEditarClientes.class.getName()).log(Level.SEVERE, null, ex);
-                }
-            }
+            
             int reply = JOptionPane.showConfirmDialog(null,
                     "Deseja realmente editar esse cliente",
                     "Editar cliente",
@@ -456,11 +444,12 @@ public class TelaEditarClientes extends javax.swing.JDialog {
 
             if (reply == JOptionPane.YES_OPTION) {
                 try {
-                    new CotrollerTabelaCliente(tabela).atualizaTabela(dao.getAll());
+                     controllerTabelaCliente.editaEntidade(cliente);
                 } catch (SQLException ex) {
-                    Logger.getLogger(TelaEditarClientes.class.getName()).log(Level.SEVERE, null, ex);
+                   throw new RuntimeException(ex);
                 }
-                dispose();
+                limpaCampos();
+                fecha();
             }
         }
 
@@ -473,6 +462,7 @@ public class TelaEditarClientes extends javax.swing.JDialog {
         edit_txt_cell_cliente.setText(cliente.getTell());
         edit_txt_nascimento_cliente.setText(cliente.getDataDeNascimento());
         edit_txt_bairro_Cliente.setText(cliente.getBairro());
+        edit_txt_cep_cliente.setText(cliente.getCep());
         edit_txt_num_cliente.setText(String.valueOf(cliente.getNumero()));
         edit_txt_rua_cliente.setText(cliente.getRua());
         edit_txt_comple_cliente.setText(String.valueOf(cliente.getComplemento()));
@@ -489,13 +479,21 @@ public class TelaEditarClientes extends javax.swing.JDialog {
 
     private void btn_cancelar_editar_userMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btn_cancelar_editar_userMouseClicked
         // TODO add your handling code here:
-        dispose();
+        fecha();
         limpaCampos();
     }//GEN-LAST:event_btn_cancelar_editar_userMouseClicked
     private void limpaCampos() {
-        edit_txt_cpf.setText("");
-
         edit_txt_nome.setText("");
+        edit_txt_cpf.setText("");
+        edit_txt_email_cliente.setText("");
+        edit_txt_tell_cliente.setText("");
+        edit_txt_cell_cliente.setText("");
+        edit_txt_nascimento_cliente.setText("");
+        edit_txt_bairro_Cliente.setText("");
+        edit_txt_cep_cliente.setText("");
+        edit_txt_num_cliente.setText("");
+        edit_txt_rua_cliente.setText("");
+        edit_txt_comple_cliente.setText("");
     }
     private void btn_cancelar_editar_userMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btn_cancelar_editar_userMouseEntered
         // TODO add your handling code here:
@@ -515,40 +513,49 @@ public class TelaEditarClientes extends javax.swing.JDialog {
                 JOptionPane.YES_NO_OPTION);
 
         if (reply == JOptionPane.YES_OPTION) {
-           // try {
-                //new ControllerCliente(new CotrollerTabelaCliente(tabela)).removeCleinte(cliente);
-            //} catch (SQLException ex) {
-               // Logger.getLogger(TelaEditarClientes.class.getName()).log(Level.SEVERE, null, ex);
-           // }
-            dispose();
+           try {
+                controllerTabelaCliente.apagaEntidade(cliente.getId());
+             
+            } catch (SQLException ex) {
+               throw new RuntimeException(ex);
+            }
+            fecha();
         }
 
     }//GEN-LAST:event_btn_remover_clienteMouseClicked
 
     private void btn_remover_clienteMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btn_remover_clienteMouseEntered
         // TODO add your handling code here:
+        btn_remover_cliente.setBackground(new Color(119, 183, 225));//Cor quando entra no botton
     }//GEN-LAST:event_btn_remover_clienteMouseEntered
 
     private void btn_remover_clienteMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btn_remover_clienteMouseExited
         // TODO add your handling code here:
+        btn_remover_cliente.setBackground(new Color(51, 152, 219));//cor quando sai do botton
     }//GEN-LAST:event_btn_remover_clienteMouseExited
 
     private void btn_vincula_cliente_paraCompraMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btn_vincula_cliente_paraCompraMouseClicked
         // TODO add your handling code here:
-       caixa.setClienteVinculado(cliente);
-       caixa.verificaTemCliente(caixa.getClienteVinculado());
+       if(cliente != null){
+        caixa.setClienteVinculado(cliente);
+        caixa.verificaTemCliente(caixa.getClienteVinculado());
+       }  
        cadastroDeCliente.dispose();
-       dispose();
-       
-
+       fecha();
     }//GEN-LAST:event_btn_vincula_cliente_paraCompraMouseClicked
-
+    
+    private void fecha(){
+        Sistema.setTelaEditarCliente(null);
+        dispose();
+    }
     private void btn_vincula_cliente_paraCompraMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btn_vincula_cliente_paraCompraMouseEntered
         // TODO add your handling code here:
+        btn_vincula_cliente_paraCompra.setBackground(new Color(119, 183, 225));//Cor quando entra no botton
     }//GEN-LAST:event_btn_vincula_cliente_paraCompraMouseEntered
 
     private void btn_vincula_cliente_paraCompraMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btn_vincula_cliente_paraCompraMouseExited
         // TODO add your handling code here:
+         btn_vincula_cliente_paraCompra.setBackground(new Color(51, 152, 219));//cor quando sai do botton
     }//GEN-LAST:event_btn_vincula_cliente_paraCompraMouseExited
 
     private void edit_txt_tell_clienteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_edit_txt_tell_clienteActionPerformed

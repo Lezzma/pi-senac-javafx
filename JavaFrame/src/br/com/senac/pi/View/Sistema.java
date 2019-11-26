@@ -1,5 +1,6 @@
 package br.com.senac.pi.View;
 
+import br.com.senac.pi.View.janelas.atalhos.TelaEditarClientes;
 import br.com.senac.pi.controllers.ControlerUsuarios;
 import br.com.senac.pi.controllers.ControllerRelatorio;
 import br.com.senac.pi.model.entidades.Cliente;
@@ -10,7 +11,7 @@ import br.com.senac.pi.model.Dao.DaoProduto;
 import br.com.senac.pi.controllers.ControllerTabelaProduto;
 import br.com.senac.pi.controllers.ControllerTabelaRelatorio;
 import br.com.senac.pi.controllers.ControllerTabelasUsuario;
-import br.com.senac.pi.controllers.CotrollerTabelaCliente;
+import br.com.senac.pi.controllers.ControllerTabelaCliente;
 import br.com.senac.pi.model.Dao.DaoVendas;
 import br.com.senac.pi.model.entidades.Venda;
 import br.com.senac.pi.utils.Validacao;
@@ -40,14 +41,14 @@ public class Sistema extends javax.swing.JFrame {
     List<Usuario> listaDeUsuarios = new ArrayList<>();
     private final ControllerTabelasUsuario controllerTabelaUsuario;
     private final ControllerTabelaProduto controllerTabelaProduto;
-    private final CotrollerTabelaCliente ControllerTabelaCliente;
+    private final ControllerTabelaCliente ControllerTabelaCliente;
     private final ControllerTabelaRelatorio controllerTabelaRelatorio;
     private final Validacao valida = new Validacao();
     private final Usuario usuarioLogado;
 
     private static TelaEditaProdutos telaEditaProdutos;
     private static TelaEditaUsuario telaEditaUsuario;
-
+    private static TelaEditarClientes telaEditarCliente;
     private final ControllerRelatorio relatorioControler;
 
     public Sistema(Usuario user) throws SQLException {
@@ -76,7 +77,7 @@ public class Sistema extends javax.swing.JFrame {
         colocaSetoresEmTipoUsuario();
         //difini quais tela e botoes o usuario tera acesso
         //definiPoliticaDeAcessoDoUsuario(user);
-        this.ControllerTabelaCliente = new CotrollerTabelaCliente(tabela_de_clientes);
+        this.ControllerTabelaCliente = new ControllerTabelaCliente(tabela_de_clientes);
         this.ControllerTabelaCliente.buscaEntidades();
         
         this.relatorioControler = new ControllerRelatorio(controllerTabelaRelatorio);
@@ -97,12 +98,16 @@ public class Sistema extends javax.swing.JFrame {
         setIconImage(Toolkit.getDefaultToolkit().getImage(getClass().getResource("Icone.png")));
     }
 
-    static void setTelaEditaProdutos(TelaEditaProdutos telaEditaProdutos) {
+    public static void setTelaEditaProdutos(TelaEditaProdutos telaEditaProdutos) {
         Sistema.telaEditaProdutos = telaEditaProdutos;
     }
 
-    static void setTelaEditaUsuario(TelaEditaUsuario telaEditaUsuario) {
+    public static void setTelaEditaUsuario(TelaEditaUsuario telaEditaUsuario) {
         Sistema.telaEditaUsuario = telaEditaUsuario;
+    }
+    
+    public static void setTelaEditarCliente(TelaEditarClientes telaEditarClientes){
+        Sistema.telaEditarCliente = telaEditarClientes;
     }
 
     //=====================================================================
@@ -2043,8 +2048,18 @@ public class Sistema extends javax.swing.JFrame {
 
     private void tabela_de_clientesMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tabela_de_clientesMouseClicked
         if (evt.getClickCount() == 2) {
-            int itemClicado = tabela_de_clientes.getSelectedRow();
-           // new TelaEditarClientes(this, true, clienteControler.pegarTodosClientes().get(itemClicado), tabela_de_clientes, null, null).setVisible(true);
+              int itemClicado = tabela_de_clientes.getSelectedRow();
+            try {
+                Cliente clienteClicado = ControllerTabelaCliente.buscaEntidadeClicada(itemClicado);
+                if(telaEditarCliente == null){
+                    telaEditarCliente = new TelaEditarClientes(this, true, clienteClicado, tabela_de_clientes, null, null);
+                    telaEditarCliente.setVisible(true);
+                }
+            } catch (SQLException ex) {
+                throw new RuntimeException(ex);
+            }
+            
+           
         }
 
         //        clienteControler.atualizarCliente(itemClicado, null);
