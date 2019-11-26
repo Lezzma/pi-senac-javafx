@@ -81,7 +81,7 @@ public class Sistema extends javax.swing.JFrame {
         this.ControllerTabelaCliente.buscaEntidades();
         
         this.relatorioControler = new ControllerRelatorio(controllerTabelaRelatorio);
-        relatorioControler.inserirVendaTeste();
+        
 
         //tela De relatório prop
         txt_relatorio_total_mes.setEnabled(false);
@@ -2108,9 +2108,13 @@ public class Sistema extends javax.swing.JFrame {
         List<Venda> listaDeVenda = new ArrayList<>();
         int totalDoMes = 0;
         
-        //percorre a lista procurando items com o mês correspondente
-        //retorna o total do mês
-        totalDoMes = retonaTodasVendasNoMes(dia, date, listaDeVenda, totalDoMes);
+        try {
+            //percorre a lista procurando items com o mês correspondente
+            //retorna o total do mês
+            totalDoMes = retonaTodasVendasNoMes(dia, date, listaDeVenda, totalDoMes);
+        } catch (SQLException ex) {
+            Logger.getLogger(Sistema.class.getName()).log(Level.SEVERE, null, ex);
+        }
         
         //atualiza a tabela com os intens encontrados
         controllerTabelaRelatorio.atualizaTabela(listaDeVenda);
@@ -2119,7 +2123,7 @@ public class Sistema extends javax.swing.JFrame {
 
     }//GEN-LAST:event_jButton1ActionPerformed
 
-    private int retonaTodasVendasNoMes(Calendar dia, Date date, List<Venda> listaDeVenda, int totalDoMes) {
+    private int retonaTodasVendasNoMes(Calendar dia, Date date, List<Venda> listaDeVenda, int totalDoMes) throws SQLException {
         int mes = mesChooser_relatorio.getMonth();
         DaoVendas vendas = new DaoVendas();
         
@@ -2138,8 +2142,14 @@ public class Sistema extends javax.swing.JFrame {
         // TODO add your handling code here:
 
         int idexItem = tabela_relatorio_venda.getSelectedRow();
-        Venda vendaClicada = new DaoVendas().getAll().get(idexItem);
-        new TelaRelatorioAnalitico(vendaClicada).setVisible(true);
+        
+        try {
+            Venda vendaClicada  = new DaoVendas().getAll().get(idexItem);
+            new TelaRelatorioAnalitico(vendaClicada).setVisible(true);
+        } catch (SQLException ex) {
+            Logger.getLogger(Sistema.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
     }//GEN-LAST:event_tabela_relatorio_vendaMouseClicked
 
     private void txt_complemento_novo_clienteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txt_complemento_novo_clienteActionPerformed

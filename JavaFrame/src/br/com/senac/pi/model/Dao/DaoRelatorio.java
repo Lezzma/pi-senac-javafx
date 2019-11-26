@@ -8,7 +8,7 @@ import java.util.List;
 
 
 public class DaoRelatorio  implements DaoRepositorio<Venda>{
-    private static List<Venda> LISTA_DE_RELATORIO = new DaoVendas().getAll();
+    private static List<Venda> LISTA_DE_RELATORIO;
     @Override
     public List<Venda> getAll() {
         return LISTA_DE_RELATORIO;

@@ -11,6 +11,7 @@ package br.com.senac.pi.model.entidades;
  */
 public class Produtos {
     int id;
+    int id_venda;
     private String codigo, nome,marca,descricao;
     private double preco;
     private int quantidadeVenda, quantidadeEstoque;
@@ -43,6 +44,13 @@ public class Produtos {
         return id;
     }
     
+    public void setIdVenda(int id){
+        id_venda = id;
+    }
+    
+    public int getIdVenda(){
+        return id_venda;
+    }
     public String getDescricao() {
         return descricao;
     }

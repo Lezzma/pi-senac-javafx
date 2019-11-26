@@ -692,10 +692,17 @@ public class TelaFrenteDeCaixa extends javax.swing.JFrame {
         vendaRealizada.setTotal_pago(Double.parseDouble(ValorTotal.getText()));
 
         colocaValorTotal();
-        finalizaVenda(vendaRealizada);
+        try {
+            daoVendas.inserir(vendaRealizada);
+            finalizaVenda(vendaRealizada);
+        } catch (HeadlessException ex) {
+            throw new RuntimeException(ex);
+        } catch (SQLException ex) {
+            throw new RuntimeException(ex);
+        }
     }//GEN-LAST:event_btn_realizarVendaMouseClicked
 
-    private void finalizaVenda(Venda vendaRealizada) throws HeadlessException {
+    private void finalizaVenda(Venda vendaRealizada) throws HeadlessException, SQLException {
         if (realizaPagamento()) {
             daoVendas.inserir(vendaRealizada);
             if (!daoVendas.getAll().isEmpty()) {

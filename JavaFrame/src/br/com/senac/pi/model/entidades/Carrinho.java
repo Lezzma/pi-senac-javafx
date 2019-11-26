@@ -21,7 +21,9 @@ public class Carrinho {
     public Carrinho(List<Produtos> lista) {
         this.listaDeProdutos = lista;
     }
-    
+    public int getId(){
+        return id;
+    }
     public void adicionaProduto(Produtos produto){
         listaDeProdutos.add(produto); 
     }

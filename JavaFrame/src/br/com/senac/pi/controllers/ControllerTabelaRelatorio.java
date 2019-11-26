@@ -1,5 +1,6 @@
 package br.com.senac.pi.controllers;
 
+import br.com.senac.pi.model.Dao.DaoVendas;
 import br.com.senac.pi.model.entidades.Cliente;
 import br.com.senac.pi.model.entidades.Usuario;
 import br.com.senac.pi.model.entidades.Venda;
@@ -17,7 +18,7 @@ import javax.swing.table.DefaultTableModel;
 
 public class ControllerTabelaRelatorio implements FactoryTabela<Venda>{
     DefaultTableModel model;
-    
+    private DaoVendas dao = new DaoVendas();
     public ControllerTabelaRelatorio(JTable tabela){
         this.convertModelTabela(tabela);
     }
@@ -75,8 +76,8 @@ public class ControllerTabelaRelatorio implements FactoryTabela<Venda>{
     }
 
     @Override
-    public void buscaEntidades() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public void buscaEntidades() throws SQLException {
+           atualizaTabela(dao.getAll());
     }
 
     @Override
